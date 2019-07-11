@@ -6,32 +6,41 @@ var socialMedia = {
 };
 
 function addicons(){
+    iconList = document.querySelectorAll('.socialmediaicons');
     output = "<ul>";
     Object.keys(socialMedia).forEach( function(site){
-      output
-    } )
-}();
+      output = output + '<li><a href="' + socialMedia[site] +
+                '"><img src="images/' + site + '.png" alt="' + site + '"></a></li>'
+    } );
+    output = output + "</ul>"
+    for (var i = 0; i < iconList.length; i++) {
+      iconList[i].innerHTML = output;
+    }
+};
 
 
-var social = function(){
-      //establishing output, which will become our ul and li list items:
-      var output = '<ul>';
-      //grabbing the nav elements with the .socialmediaicons class
-      myList = document.querySelectorAll('.socialmediaicons');
+addicons();
 
 
-      for (var key in arguments[0]){
-        output += '<li><a href="' + socialMedia[key] +
-                  '"><img src="images/' + key + '.png" alt="' + key + '"></a></li>'
-      }
-
-      output += '</ul>';
-
-      for (var i = 0; i < myList.length; i++) {
-        myList[i].innerHTML = output;
-      }
-
-}(socialMedia);
+// var social = function(){
+//       //establishing output, which will become our ul and li list items:
+//       var output = '<ul>';
+//       //grabbing the nav elements with the .socialmediaicons class
+//       myList = document.querySelectorAll('.socialmediaicons');
+//
+//
+//       for (var key in arguments[0]){
+//         output += '<li><a href="' + socialMedia[key] +
+//                   '"><img src="images/' + key + '.png" alt="' + key + '"></a></li>'
+//       }
+//
+//       output += '</ul>';
+//
+//       for (var i = 0; i < myList.length; i++) {
+//         myList[i].innerHTML = output;
+//       }
+//
+// }(socialMedia);
 
 ///////////////////////////////////////////////
   //MORE PRACTICE WITH FOR (VAR ___ IN _____) LOOPS
