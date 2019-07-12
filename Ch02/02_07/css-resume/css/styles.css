@@ -41,7 +41,7 @@ a:hover {
 .content-wrap {
   max-width: 950px;
   margin: 0 auto;
-  padding: 50px;
+  padding: 60px 50px;
   overflow: hidden;
 }
 .col-narrow {
@@ -65,6 +65,10 @@ header, footer {
   color: #8D99AE;
 }
 /* header */
+header{
+  padding-top: 50px;
+}
+
 header h1, header h2 {
   color: #EDF2F4;
   margin: 0;
@@ -86,6 +90,11 @@ footer {
 -------------------------*/
 nav {
   text-align: center;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 nav a {
   display: inline-block;
