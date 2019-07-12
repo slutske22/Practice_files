@@ -5,6 +5,8 @@ var socialMedia = {
   youtube: 'http://youtube.com/planetoftheweb'
 };
 
+
+//12 line code cycling through socialMedia object and adding images and links into the nav.socialmediaicons element through a <ul><li>...</li></ul> through use of the object.keys(socialMedia).forEach loops
 function addicons(){
     iconList = document.querySelectorAll('.socialmediaicons');
     output = "<ul>";
@@ -21,26 +23,19 @@ function addicons(){
 
 addicons();
 
-
-// var social = function(){
-//       //establishing output, which will become our ul and li list items:
-//       var output = '<ul>';
-//       //grabbing the nav elements with the .socialmediaicons class
-//       myList = document.querySelectorAll('.socialmediaicons');
-//
-//
-//       for (var key in arguments[0]){
-//         output += '<li><a href="' + socialMedia[key] +
-//                   '"><img src="images/' + key + '.png" alt="' + key + '"></a></li>'
-//       }
-//
-//       output += '</ul>';
-//
-//       for (var i = 0; i < myList.length; i++) {
-//         myList[i].innerHTML = output;
-//       }
-//
-// }(socialMedia);
+//11 line code cycling through socialMedia object and adding images and links into the nav.socialmediaicons element through a <ul><li>...</li></ul>, using a for (var X in Y) loop.  Expressed as an immediately invoked function
+var social = function(){
+      var output = '<ul>';
+      myList = document.querySelectorAll('.socialmediaicons');
+      for (var key in socialMedia){
+        output += '<li><a href="' + socialMedia[key] +
+                  '"><img src="images/' + key + '.png" alt="' + key + '"></a></li>'
+      }
+      output += '</ul>';
+      for (var i = 0; i < myList.length; i++) {
+        myList[i].innerHTML = output;
+      }
+}(socialMedia);
 
 ///////////////////////////////////////////////
   //MORE PRACTICE WITH FOR (VAR ___ IN _____) LOOPS
