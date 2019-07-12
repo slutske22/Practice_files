@@ -16,7 +16,7 @@ function addicons(){
     for (var i = 0; i < iconList.length; i++) {
       iconList[i].innerHTML = output;
     }
-};
+}();
 
 
 addicons();
