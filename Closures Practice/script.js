@@ -19,9 +19,9 @@ function fred(num){
 
       var btns = document.querySelectorAll("button");
       for (var i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", (function(x){
+        btns[i].addEventListener("click", (function(innerEye){
           return function(){
-            console.log('click: ', x + 1);
+            console.log('click: ', innerEye, i);
           }
         })(i)   );
       }
