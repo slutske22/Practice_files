@@ -15,16 +15,27 @@
     <body>
         <div id="root"></div>
         <script type="text/babel">
-            const Hello = () => {
-               return (
-               <div className="heading">
-                  <h1>Welcome to React</h1>
-               </div>
-            )
-         }
+
+            const Lake = ({name}) => <h1>{name}</h1>;
+
+            class App extends React.Component {
+               state = {
+                  loggedIn: true
+               }
+               render() {
+                  return  (
+                     <div>
+                        <div>The user is {this.state.loggedIn ? "logged in" : "not logged in"}.</div>
+                        <Lake name="Lake Tahoe" />
+                        <Lake name="Jenny Lake" />
+                        <Lake name="Lake Yellowstone" />
+                     </div>
+                  );
+               }
+            }
 
             ReactDOM.render(
-                <Hello />,
+               <App />,
                 document.getElementById("root")
             );
         </script>
