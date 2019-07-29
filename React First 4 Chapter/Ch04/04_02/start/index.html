@@ -10,42 +10,25 @@
                 color: purple;
             }
         </style>
-    
+
     </head>
     <body>
         <div id="root"></div>
         <script type="text/babel">
-            
-            const Lake = ({name}) => <h1>{name}</h1>;
 
-            class App extends React.Component {
-                state = {
-                    loggedIn: false
-                }
-                logIn = () => this.setState({loggedIn: true})
-                logOut = () => this.setState({loggedIn: false})
-                render() {
-                    return (
-                        <div>
-                            <button onClick={this.logIn}>Log In</button>
-                            <button onClick={this.logOut}>Log Out</button>
-                            <div>
-                                The user is {
-                                this.state.loggedIn 
-                                ? "logged in" 
-                                : "not logged in"}.
-                            </div>
-                            <Lake name="Lake Tahoe" />
-                            <Lake name="Angora Lake" />
-                            <Lake name="Shirley Lake" />
-                            <Lake name="Cathedral Lake" />
-                        </div>
-                    )
-                }
-            }
-            
+            const Lake = ({name}) => <h1>{name}</h1>;
+            const SkiResort = ({name}) => <h1>{name}</h1>;
+
+            const App = ({summer}) => (
+               <div>
+                  {summer
+                     ? <Lake name="Lake Tahoe"/>
+                     : <SkiResort name="Alpine Meadows"/>}
+               </div>
+            )
+
             ReactDOM.render(
-                <App />,
+                <App summer={false}/>,
                 document.getElementById("root")
             );
         </script>

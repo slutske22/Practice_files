@@ -10,25 +10,29 @@
                 color: purple;
             }
         </style>
-    
+
     </head>
     <body>
         <div id="root"></div>
         <script type="text/babel">
-            
-            const Lake = ({name}) => <h1>{name}</h1>;
-            const SkiResort = ({name}) => <h1>{name}</h1>;
 
-            const App = ({summer}) => (
-                <div>
-                    {summer 
-                        ? <Lake name="Lake Tahoe"/> 
-                        : <SkiResort name="Alpine Meadows"/>}
-                </div>
+            const lakeList = [
+               {id: 1, name: "Echo lake", trailhead: "Echo Trail"},
+               {id: 2, name: "Maud lake", trailhead: "Maud Trail"},
+               {id: 3, name: "Cascade lake", trailhead: "Bayview Trail"}
+            ];
+
+            const App = ({lakes}) => (
+               <ul>
+                  {lakes.map( lake =>
+                     <li key={lake.id}>{lake.name} | Trailhead: {lake.trailhead}</li>
+
+                  )}
+               </ul>
             )
-            
+
             ReactDOM.render(
-                <App summer={false}/>,
+                <App lakes={lakeList}/>,
                 document.getElementById("root")
             );
         </script>
