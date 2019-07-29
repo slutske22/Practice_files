@@ -10,15 +10,21 @@
                 color: purple;
             }
         </style>
-    
+
     </head>
     <body>
         <div id="root"></div>
         <script type="text/babel">
-            let city = "Madrid";
-            
+            const Hello = () => {
+               return (
+               <div className="heading">
+                  <h1>Welcome to React</h1>
+               </div>
+            )
+         }
+
             ReactDOM.render(
-                <h1 className="heading">Hello {city}</h1>,
+                <Hello />,
                 document.getElementById("root")
             );
         </script>
