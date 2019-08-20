@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: 0; }
   .grid .item img {
     display: block;
-    border-radius: 10px;
+    border-radius: 20px;
     max-width: 100%; }
 
 .background {
@@ -83,6 +83,8 @@ h1, h2, h3, h4, h5, h6 {
       margin-top: 0; }
 
 .jumbotron {
+  margin: 0;
+  padding: 0;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.6)), url("../images/water.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -130,3 +132,73 @@ h1, h2, h3, h4, h5, h6 {
   .media a {
     text-decoration: none;
     color: #022933; }
+
+.table {
+  font-size: 1.5rem;
+  text-align: left;
+  width: 100%; }
+  .table caption {
+    font-size: 2.5rem;
+    text-align: left;
+    padding-bottom: 5px; }
+  .table > thead > tr:hover,
+  .table > tbody > tr:hover,
+  .table > tfoot > tr:hover {
+    background-color: #dfc5b2; }
+  .table > thead > tr:nth-child(even),
+  .table > tbody > tr:nth-child(even),
+  .table > tfoot > tr:nth-child(even) {
+    background-color: rgba(255, 186, 0, 0.2); }
+    .table > thead > tr:nth-child(even):hover,
+    .table > tbody > tr:nth-child(even):hover,
+    .table > tfoot > tr:nth-child(even):hover {
+      background-color: rgba(255, 186, 0, 0.5); }
+  .table > thead > tr > th,
+  .table > thead > tr > td,
+  .table > tbody > tr > th,
+  .table > tbody > tr > td,
+  .table > tfoot > tr > th,
+  .table > tfoot > tr > td {
+    padding: 10px;
+    border-bottom: 1px dotted #0076A3; }
+  .table > thead > tr {
+    background-color: #0076A3;
+    color: #EEE8D6; }
+    .table > thead > tr:hover {
+      background-color: #a32d00; }
+    .table > thead > tr > th {
+      border-bottom: none; }
+
+nav .container {
+  padding: 0; }
+
+header nav {
+  background-color: #003f57; }
+
+nav .branding {
+  float: left; }
+
+nav .branding h1 {
+  font-size: 2.75rem;
+  overflow: hidden;
+  margin: 0;
+  color: #FFBA00; }
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0; }
+  nav ul:before, nav ul:after {
+    content: " ";
+    display: table; }
+  nav ul:after {
+    clear: both; }
+
+nav ul li {
+  float: right;
+  padding: 10px 5px; }
+
+nav ul li a {
+  text-decoration: none;
+  padding: 10px 5px;
+  color: #EEE8D6; }
