@@ -21,3 +21,25 @@
       clear: both;
    }
 }
+
+@mixin imageGrid($qty, $margin) {
+   width: (( 100% - (($qty - 1) * $margin))/$qty);
+
+   //the item div takes up 100% of its parent width
+   //100%
+   //subtract the margins from the width
+   //but only qty-1 margins, because we will end up deleting the last margin
+   //( 100% - (($qty - 1) * $margin))
+   // divide the whole thing by the qty of item you want in a row
+   //you end up with each div having a width of 100% / qty + margin / qty
+   //width: (( 100% - (($qty - 1) * $margin))/$qty)
+                                 
+   &:nth-child(n) {
+      margin-bottom: $margin;
+      margin-right: $margin;
+   }
+   &:nth-child(#{$qty}n) {
+      margin-bottom: 0;
+      margin-right: 0;
+   }
+}
