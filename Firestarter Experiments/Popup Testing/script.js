@@ -43,12 +43,19 @@ L.Marker.include({
 
    allowRemoval: function(){
 
-         myContainer = this._popup._wrapper;
-         var templateRemoveMe = L.DomUtil.create('a', 'popupMod remove', myContainer)
-         templateRemoveMe.innerHTML = "Remove this marker";
-         removeButton = L.DomUtil.get(myContainer)
 
-         return removeButton;
+         myContainer = this.getPopup()._wrapper;
+         let templateRemoveMe = L.DomUtil.create('a', 'popupMod remove', myContainer)
+         templateRemoveMe.innerHTML = "Remove this marker";
+         let removeButton = L.DomUtil.get(templateRemoveMe)
+
+         let thisStandIn = this;
+
+         removeButton.addEventListener("click", function(){
+            thisStandIn.remove(leafletMap)
+         }, false)
+
+
 
 
    }
