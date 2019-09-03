@@ -20,94 +20,86 @@ var baseLayer =  new L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 
 baseLayer.addTo(leafletMap)
 
-// Creating the nodes to be added
-var removeMeNode = document.createElement("a");
-var removeMeText = document.createTextNode("Remove this marker");
-removeMeNode.appendChild(removeMeText);
-removeMeNode.classList.add("popupMod", "remove");
-removeMeNode.setAttribute("href", "#close");
+var mapOptions = {
+  center: [33.270, -116.650],
+  zoom: 8
+}
 
-var editMeNode = document.createElement("a");
-var editMeText = document.createTextNode("Edit");
-editMeNode.appendChild(editMeText);
-editMeNode.classList.add("popupMod", "edit");
-editMeNode.setAttribute("href", "#edit");
+const markers = [{
+    longlat: [33.270, -116.650],
+    popupContent: false,
+    markerRef: ''
+  },
+  // {
+  //   longlat: [33.270, -116],
+  //   editContent: '',
+  //   popupContent: '',
+  // },
+  // {
+  //   longlat: [33, -116],
+  //   popupContent: ''
+  // },
+];
 
 
-L.Marker.include({
+markers.forEach( function(markerItem){
 
-   optionToRemove: function(){
-      //  If popup is already open at time of window load
-      if ( this._popup.isOpen() ){
-         this.removeCore();
+  var marker = L.marker(markerItem.longlat).addTo(leafletMap)
+    .bindPopup('<strong>Science Hall</strong><br>Where the <button>GISC</button> was born.')
+    .openPopup();
+
+  leafletMap.on('popupopen', function(e) {
+    var marker = e.popup._source;
+    // console.log('e', e, $(e.popup._wrapper))
+    $(e.popup._wrapper).find('button').on('click', function() {
+      // console.log('close', e)
+      leafletMap.removeLayer(marker);
+   }) // $(e.popup._wrapper).on
+}); // leafletMap.on
+})  // For each
+
+
+
+const markerTypes = {
+   limited: {
+      allowRemove: false,
+      allowEdit: false
+   },
+   removable: {
+      allowRemove: true,
+      allowEdit: false
+   },
+   editable: {
+      allowRemove: false,
+      allowEdit: true
+   },
+   removableAndEditable: {
+      allowRemove: true,
+      allowEdit: true
+   },
+}
+
+let marker;
+
+function CreateMarker(type,location,content){
+   this.markerType = type;
+   this.create = function(){
+
+      let marker = L.marker(location).addTo(leafletMap);
+      marker.bindPopup(content);
+
+      if ( this.markerType === 'limited' ){
+         return
+      } else if ( this.markerType === 'removable' ){
+
+      } else if ( this.markerType === 'editable' ){
+
+      } else if ( this.markerType === 'removableAndEditable' ){
+
       }
-      //  If not, when user clicks the marker to open the popup
-      this.addEventListener("click", function(){
-         this.removeCore();
-      }, false);
-   },
-
-   removeCore: function(){
-      let thisStandIn = this;
-      currentPopupTotalContent = this._popup._container.firstChild
-      currentPopupTotalContent.appendChild( removeMeNode )
-      removeMeNode.addEventListener("click", function(){
-         thisStandIn.remove(leafletMap);
-      })
-   },
-
-
-
-   optionToEdit: function(){
-
-      //  If popup is already open at time of window load
-      if ( this._popup.isOpen() ){
-         this.editCore();
-      }
-      //  If not, when user clicks the marker to open the popup
-      this.addEventListener("click", function(){
-         this.editCore();
-      }, false);
-
-   },
-
-   editCore: function(){
-      let thisStandIn = this;
-      currentPopupTotalContent = this._popup._container.firstChild
-      currentPopupTotalContent.appendChild( editMeNode )
-
-      currentPopupInnerContent = this._popup._container.children[0].firstChild
-
-      editMeNode.addEventListener("click", function(){
-         currentPopupInnerContent.innerHTML =
-         "<input type='text' placeholder='Type your edit here'>"
-      })
    }
 
-})
+}
 
-
-
-
-var centerMarkerPopup = new L.Popup()
-   .setLatLng([[33.270, -116.650]])
-   .setContent("This is the Center Marker")
-
-var centerMarker =  L.marker( [33.270, -116.650] );
-centerMarker
-   .addTo(leafletMap)
-   .bindPopup(centerMarkerPopup)
-   .openPopup()
-   .optionToRemove()
-   .optionToEdit()
-
-
-var anotherMarkerPopup = new L.Popup()
-   .setLatLng([[33.270, -116]])
-   .setContent("This is Another Marker")
-
-var anotherMarker =  L.marker( [33.270, -116] );
-anotherMarker
-   .addTo(leafletMap)
-   .bindPopup(anotherMarkerPopup)
-   .optionToRemove();
+var marker = new CreateMarker('limited', [33.270, -116], 'My content goes here' );
+marker.create();
