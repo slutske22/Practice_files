@@ -21,68 +21,38 @@ var baseLayer =  new L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 baseLayer.addTo(leafletMap)
 
 // Creating the nodes to be added
-var removeMeNode = document.createElement("a");
-var removeMeText = document.createTextNode("Remove this marker");
-removeMeNode.appendChild(removeMeText);
-removeMeNode.classList.add("popupMod", "remove");
-removeMeNode.setAttribute("href", "#close");
+// var removeMeNode = document.createElement("a");
+// var removeMeText = document.createTextNode("Remove this marker");
+// removeMeNode.appendChild(removeMeText);
+// removeMeNode.classList.add("popupMod", "remove");
+// removeMeNode.setAttribute("href", "#close");
+//
+// var editMeNode = document.createElement("a");
+// var editMeText = document.createTextNode("Edit");
+// editMeNode.appendChild(editMeText);
+// editMeNode.classList.add("popupMod", "edit");
+// editMeNode.setAttribute("href", "#edit");
 
-var editMeNode = document.createElement("a");
-var editMeText = document.createTextNode("Edit");
-editMeNode.appendChild(editMeText);
-editMeNode.classList.add("popupMod", "edit");
-editMeNode.setAttribute("href", "#edit");
+
+var templateRemoveMe =
+   `<a class="popupMod remove" href="#close">Remove this marker</a>`
+
 
 
 L.Marker.include({
 
-   optionToRemove: function(){
-      //  If popup is already open at time of window load
-      if ( this._popup.isOpen() ){
-         this.removeCore();
-      }
-      //  If not, when user clicks the marker to open the popup
-      this.addEventListener("click", function(){
-         this.removeCore();
-      }, false);
-   },
+   allowRemoval: function(){
 
-   removeCore: function(){
-      let thisStandIn = this;
-      currentPopupTotalContent = this._popup._container.firstChild
-      currentPopupTotalContent.appendChild( removeMeNode )
-      removeMeNode.addEventListener("click", function(){
-         thisStandIn.remove(leafletMap);
-      })
-   },
+         myContainer = this._popup._wrapper;
+         var templateRemoveMe = L.DomUtil.create('a', 'popupMod remove', myContainer)
+         templateRemoveMe.innerHTML = "Remove this marker";
+         removeButton = L.DomUtil.get(myContainer)
+
+         return removeButton;
 
 
-
-   optionToEdit: function(){
-
-      //  If popup is already open at time of window load
-      if ( this._popup.isOpen() ){
-         this.editCore();
-      }
-      //  If not, when user clicks the marker to open the popup
-      this.addEventListener("click", function(){
-         this.editCore();
-      }, false);
-
-   },
-
-   editCore: function(){
-      let thisStandIn = this;
-      currentPopupTotalContent = this._popup._container.firstChild
-      currentPopupTotalContent.appendChild( editMeNode )
-
-      currentPopupInnerContent = this._popup._container.children[0].firstChild
-
-      editMeNode.addEventListener("click", function(){
-         currentPopupInnerContent.innerHTML =
-         "<input type='text' placeholder='Type your edit here'>"
-      })
    }
+
 
 })
 
@@ -98,8 +68,7 @@ centerMarker
    .addTo(leafletMap)
    .bindPopup(centerMarkerPopup)
    .openPopup()
-   .optionToRemove()
-   .optionToEdit()
+   .allowRemoval();
 
 
 var anotherMarkerPopup = new L.Popup()
@@ -110,4 +79,3 @@ var anotherMarker =  L.marker( [33.270, -116] );
 anotherMarker
    .addTo(leafletMap)
    .bindPopup(anotherMarkerPopup)
-   .optionToRemove();
