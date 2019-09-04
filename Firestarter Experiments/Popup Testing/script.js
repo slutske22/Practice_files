@@ -29,164 +29,149 @@ var mapOptions = {
 //  Yona's method
 
 //-------------------------------------------------------------------
-const markers = [{
-    longlat: [33.270, -116.650],
-    popupContent: false,
-    markerRef: ''
+const markersArray = [{
+   longlat: [33.270, -116.650],
+   removable: true,
+   editable: false,
+   content: 'Marker A'
   },
   {
     longlat: [33.270, -116],
-    editContent: '',
-    popupContent: '',
+    removable: false,
+    editable: false,
+    content: 'Marker B'
   },
   {
-    longlat: [33, -116],
-    popupContent: ''
+    longlat: [33.270, -115.5],
+    removable: true,
+    editable: false,
+    content: 'Marker D'
   },
+  {
+    longlat: [32.7, -116.650],
+    removable: true,
+    editable: true,
+    content: 'Marker E. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'
+    },
+    {
+    longlat: [32.7, -116],
+    removable: false,
+    editable: true,
+    content: 'Marker F.  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'
+    },
+    {
+    longlat: [32.7, -115.5],
+    removable: false,
+    editable: false,
+    content: 'Marker G'
+    },
 ];
 
+var templateRemoveMe =
+   `<div class="popupModWrapper"><a class="popupMod removeOnly" href="#close">Remove this marker</a></div>`;
+var templateEditMe =
+   `<div class="popupModWrapper"><a class="popupMod edit only" href="#close">Edit</a></div>`;
+var templateRemoveAndEditMe =
+   `<div class="popupModWrapper"><a class="popupMod remove" href="#close">Remove this marker</a><a class="popupMod edit" href="#close">Edit</a></div>`;
 
-markers.forEach( function(markerItem){
 
-  var marker = L.marker(markerItem.longlat).addTo(leafletMap)
-    .bindPopup('<strong>Science Hall</strong><br>Where the <button>GISC</button> was born.')
-    .openPopup();
+markersArray.forEach( function(markerItem){
 
-  leafletMap.on('popupopen', function(e) {
-    var marker = e.popup._source;
-    // console.log('e', e, $(e.popup._wrapper))
-    $(e.popup._wrapper).find('button').on('click', function() {
-      // console.log('close', e)
-      leafletMap.removeLayer(marker);
-   }) // $(e.popup._wrapper).on
-}); // leafletMap.on
+   markerContent = `<div class="innerContent">${markerItem.content}</div>`
+
+   var marker = L.marker(markerItem.longlat).addTo(leafletMap)
+
+      if (markerItem.removable && !markerItem.editable){
+         markerContent = markerContent + templateRemoveMe;
+      }
+
+      if (markerItem.editable && !markerItem.removable){
+         markerContent = markerContent + templateEditMe;
+      }
+
+      if (markerItem.removable && markerItem.editable){
+         markerContent = markerContent + templateRemoveAndEditMe;
+      }
+
+      marker.bindPopup(markerContent);
+
+
+      leafletMap.on('popupopen', function(e) {
+
+         var marker = e.popup._source;
+         console.log(e)
+         $(e.popup._wrapper).find('.remove').on('click', function() {
+            // console.log('close', e)
+            leafletMap.removeLayer(marker);
+         }) // $(e.popup._wrapper).on
+
+         $(e.popup._wrapper).find('.edit').on('click', function() {
+            // console.log('close', e)
+            console.log(marker.getPopup().setContent()
+         }) // $(e.popup._wrapper).on
+
+      })
+
+
+
+
 })  // For each
 //-------------------------------------------------------------------
 
 
 
-// Some bullshit I'm trying
-//-------------------------------------------------------------------
-const markerTypes = {
-   limited: {
-      allowRemove: false,
-      allowEdit: false
-   },
-   removable: {
-      allowRemove: true,
-      allowEdit: false
-   },
-   editable: {
-      allowRemove: false,
-      allowEdit: true
-   },
-   removableAndEditable: {
-      allowRemove: true,
-      allowEdit: true
-   },
-}
+// // Some bullshit I'm trying
+// //-------------------------------------------------------------------
+// const markerTypes = {
+//    limited: {
+//       allowRemove: false,
+//       allowEdit: false
+//    },
+//    removable: {
+//       allowRemove: true,
+//       allowEdit: false
+//    },
+//    editable: {
+//       allowRemove: false,
+//       allowEdit: true
+//    },
+//    removableAndEditable: {
+//       allowRemove: true,
+//       allowEdit: true
+//    },
+// }
+//
+//
+// function CreateMarker(type,location,content){
+//    this.markerType = type;
+//    this.create = function(){
+//
+//       let marker = L.marker(location).addTo(leafletMap);
+//       marker.bindPopup(content);
+//
+//       if ( this.markerType === 'limited' ){
+//          return
+//       } else if ( this.markerType === 'removable' ){
+//
+//       } else if ( this.markerType === 'editable' ){
+//
+//       } else if ( this.markerType === 'removableAndEditable' ){
+//
+//       }
+//    }
+//
+// }
+//
+// var marker = new CreateMarker('limited', [33.270, -116], 'My content goes here' );
+// marker.create();
+// //-------------------------------------------------------------------
+//
 
 
-function CreateMarker(type,location,content){
-   this.markerType = type;
-   this.create = function(){
-
-      let marker = L.marker(location).addTo(leafletMap);
-      marker.bindPopup(content);
-
-      if ( this.markerType === 'limited' ){
-         return
-      } else if ( this.markerType === 'removable' ){
-
-      } else if ( this.markerType === 'editable' ){
-
-      } else if ( this.markerType === 'removableAndEditable' ){
-
-      }
-   }
-
-}
-
-var marker = new CreateMarker('limited', [33.270, -116], 'My content goes here' );
-marker.create();
-//-------------------------------------------------------------------
 
 
 
 //  Very promising  http://embed.plnkr.co/8qVoW5/
-
-
-// var template = '<form id="popup-form">\
-//   <label for="input-speed">New speed:</label>\
-//   <input id="input-speed" class="popup-input" type="number" />\
-//   <table class="popup-table">\
-//     <tr class="popup-table-row">\
-//       <th class="popup-table-header">Arc numer:</th>\
-//       <td id="value-arc" class="popup-table-data"></td>\
-//     </tr>\
-//     <tr class="popup-table-row">\
-//       <th class="popup-table-header">Current speed:</th>\
-//       <td id="value-speed" class="popup-table-data"></td>\
-//     </tr>\
-//   </table>\
-//   <button id="button-submit" type="button">Save Changes</button>\
-// </form>';
-//
-// function layerClickHandler (e) {
-//
-//   var marker = e.target,
-//       properties = e.target.feature.properties;
-//
-//   if (marker.hasOwnProperty('_popup')) {
-//     marker.unbindPopup();
-//   }
-//
-//   marker.bindPopup(template);
-//   marker.openPopup();
-//
-//   L.DomUtil.get('value-arc').textContent = properties.arc;
-//   L.DomUtil.get('value-speed').textContent = properties.speed;
-//
-//   var inputSpeed = L.DomUtil.get('input-speed');
-//   inputSpeed.value = properties.speed;
-//   L.DomEvent.addListener(inputSpeed, 'change', function (e) {
-//     properties.speed = e.target.value;
-//   });
-//
-//   var buttonSubmit = L.DomUtil.get('button-submit');
-//   L.DomEvent.addListener(buttonSubmit, 'click', function (e) {
-//     marker.closePopup();
-//   });
-//
-// }
-//
-// var map = L.map('leaflet', {
-//   'center': [0, 0],
-//   'zoom': 0,
-//   'layers': [
-//     L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-//       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-//     }),
-//     L.geoJson({
-//       "type": "FeatureCollection",
-//       "features": [{
-//         "type": "Feature",
-//         "geometry": {
-//           "type": "Point",
-//           "coordinates": [0,0]
-//         },
-//         "properties": {
-//           "arc": 321,
-//           "speed": 123
-//         }
-//       }]
-//     }, {
-//       onEachFeature: function (feature, layer) {
-//         layer.on('click', layerClickHandler);
-//       }
-//     })
-//   ]
-// });
 
 
 

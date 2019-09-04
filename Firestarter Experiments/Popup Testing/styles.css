@@ -5,13 +5,24 @@ body,
   width: 100%;
 }
 
-.popupMod{
-   display: inline-block;
-   padding: 5px 15px;
+.leaflet-popup-content .innerContent{
+   /* background-color: lightblue; */
+   /* padding-bottom: 15px; */
+}
+
+.popupModWrapper{
+   display: flex;
+   justify-content: space-between;
 }
 a.popupMod{
+   display: inline-block;
+   margin-top: 15px;
    border-bottom: none;
    text-decoration: none;
+}
+a.popupMod.edit.only{
+   width: 100%;
+   text-align: right;
 }
 a.popupMod:hover{
    color: #0078A8;
