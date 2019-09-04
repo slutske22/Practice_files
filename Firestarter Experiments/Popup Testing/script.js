@@ -73,6 +73,8 @@ var templateEditMe =
    `<div class="popupModWrapper"><a class="popupMod edit only" href="#close">Edit</a></div>`;
 var templateRemoveAndEditMe =
    `<div class="popupModWrapper"><a class="popupMod remove" href="#close">Remove this marker</a><a class="popupMod edit" href="#close">Edit</a></div>`;
+var templateEditInput =
+   `<input type="text" class="popupInput">`
 
 
 markersArray.forEach( function(markerItem){
@@ -106,9 +108,10 @@ markersArray.forEach( function(markerItem){
          }) // $(e.popup._wrapper).on
 
          $(e.popup._wrapper).find('.edit').on('click', function() {
-            // console.log('close', e)
-            console.log(marker.getPopup().setContent()
-         }) // $(e.popup._wrapper).on
+
+            marker.getPopup().setContent(templateEditInput)
+
+         })
 
       })
 
