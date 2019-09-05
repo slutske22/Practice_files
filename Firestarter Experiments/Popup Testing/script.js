@@ -134,7 +134,7 @@ L.Popup.include({
       saveButton.href = "#save";
       saveButton.innerHTML = 'Save';
 
-      this.setLatLng( this._source.getLatLng() )
+      this.update();
 
       L.DomEvent.stop(e);
    },
