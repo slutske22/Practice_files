@@ -62,29 +62,52 @@ L.Popup.include({
          L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
       }
 
-      //  ------------    My additions  --------------------- //
+      //  ----------------    Source code  ---------------------------- //
 
-      if (this.options.removable){
-         console.log(this.getContent() + ' is removable');
-         var removeButton = this._removeButton = L.DomUtil.create('a', prefix + '-remove-button', wrapper);
+
+
+
+      //  ---------------    My additions  --------------------------- //
+
+      if (this.options.removable && !this.options.editable){
+         var userActionButtons = this._userActionButtons = L.DomUtil.create('div', prefix + '-useraction-buttons', wrapper);
+         var removeButton = this._removeButton = L.DomUtil.create('a', prefix + '-remove-button', userActionButtons);
          removeButton.href = '#close';
          removeButton.innerHTML = 'Remove this marker';
+         this.options.minWidth = 110;
 
          L.DomEvent.on(removeButton, 'click', this._onRemoveButtonClick, this);
       }
 
-      if (this.options.editable){
-         var editButton = this._editButton = L.DomUtil.create('a', prefix + '-edit-button', wrapper);
+      if (this.options.editable && !this.options.removable){
+         var userActionButtons = this._userActionButtons = L.DomUtil.create('div', prefix + '-useraction-buttons', wrapper);
+         var editButton = this._editButton = L.DomUtil.create('a', prefix + '-edit-button', userActionButtons);
          editButton.href = '#edit';
          editButton.innerHTML = 'Edit';
 
          L.DomEvent.on(editButton, 'click', this._onEditButtonClick, this);
       }
 
+      if (this.options.editable && this.options.removable){
+         var userActionButtons = this._userActionButtons = L.DomUtil.create('div', prefix + '-useraction-buttons', wrapper);
+         var removeButton = this._removeButton = L.DomUtil.create('a', prefix + '-remove-button', userActionButtons);
+         removeButton.href = '#close';
+         removeButton.innerHTML = 'Remove this marker';
+         var editButton = this._editButton = L.DomUtil.create('a', prefix + '-edit-button', userActionButtons);
+         editButton.href = '#edit';
+         editButton.innerHTML = 'Edit';
+         this.options.minWidth = 160;
+
+         L.DomEvent.on(removeButton, 'click', this._onRemoveButtonClick, this);
+         L.DomEvent.on(editButton, 'click', this._onEditButtonClick, this);
+
+
+      }
+
+
 
 
    },
-   //  ----------------    Source code  ---------------------------- //
 
 
    _onRemoveButtonClick: function (e) {
@@ -93,7 +116,14 @@ L.Popup.include({
    },
 
    _onEditButtonClick: function (e) {
-      console.log(this.getContent() + ' is editable');
+      popupContent = L.DomUtil.get(this._contentNode);
+      popupContent.style.display = 'none';
+
+      var wrapper = this._wrapper;
+      var inputField = this._inputField = L.DomUtil.create('input', 'leaflet-popup-input', wrapper);
+      inputField.setAttribute("type", "text");
+      L.DomUtil.toFront(inputField);
+
       L.DomEvent.stop(e);
    },
 
@@ -103,9 +133,8 @@ L.Popup.include({
 
 
 
-var centerMarkerPopup = new L.Popup( {removable: true, editable: true} )
-   .setLatLng([[33.270, -116.650]])
-   .setContent("This is the Center Marker")
+var centerMarkerPopup = new L.Popup( {removable: true} )
+   .setContent("Center Marker")
 
 var centerMarker =  L.marker( [33.270, -116.650] );
 centerMarker
@@ -114,14 +143,16 @@ centerMarker
    .openPopup()
 
 
-var anotherMarkerPopup = new L.Popup( {removable: true} )
-   .setLatLng([[33.270, -116]])
-   .setContent("This is Another Marker")
+var anotherMarkerPopup = new L.Popup( {editable: true} )
+   .setContent("Another Marker")
 
 var anotherMarker =  L.marker( [33.270, -116] );
 anotherMarker
    .addTo(leafletMap)
    .bindPopup(anotherMarkerPopup)
 
+var thirdPopup = new L.Popup( {editable: true, removable: true} )
+   .setContent("Third Marker")
 var thirdMarker = L.marker( [33.270, -115.5] )
    .addTo(leafletMap)
+   .bindPopup( thirdPopup );
