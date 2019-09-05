@@ -119,6 +119,8 @@ L.Popup.include({
       this._contentNode.style.display = "none";
       this._userActionButtons.style.display = "none";
 
+
+
       var wrapper = this._wrapper;
       L.DomUtil.empty(wrapper);
 
@@ -132,8 +134,15 @@ L.Popup.include({
       saveButton.href = "#save";
       saveButton.innerHTML = 'Save';
 
+      this.setLatLng( this._source.getLatLng() )
+
       L.DomEvent.stop(e);
    },
+
+//  Creating a growing text input box:
+// http://www.brianchu.com/blog/2013/11/02/creating-an-auto-growing-text-input/
+// using divs https://stackoverflow.com/questions/7168727/make-html-text-input-field-grow-as-i-type
+
 
 
 })
@@ -141,26 +150,20 @@ L.Popup.include({
 
 
 
-var centerMarkerPopup = new L.Popup( {removable: true} )
-   .setContent("Center Marker")
 
 var centerMarker =  L.marker( [33.270, -116.650] );
 centerMarker
    .addTo(leafletMap)
-   .bindPopup(centerMarkerPopup)
+   .bindPopup( "Center Marker" , {removable: true} )
    .openPopup()
 
-
-var anotherMarkerPopup = new L.Popup( {editable: true} )
-   .setContent("Another Marker")
 
 var anotherMarker =  L.marker( [33.270, -116] );
 anotherMarker
    .addTo(leafletMap)
-   .bindPopup(anotherMarkerPopup)
+   .bindPopup( "Another Marker" , {editable: true} )
 
-var thirdPopup = new L.Popup( {editable: true, removable: true} )
-   .setContent("Third Marker")
+
 var thirdMarker = L.marker( [33.270, -115.5] )
    .addTo(leafletMap)
-   .bindPopup( thirdPopup );
+   .bindPopup( "Third Marker" , {editable: true, removable: true} );
