@@ -24,56 +24,21 @@ baseLayer.addTo(leafletMap)
 
 
 
-// Creating the nodes to be added
-// var removeMeNode = document.createElement("a");
-// var removeMeText = document.createTextNode("Remove this marker");
-// removeMeNode.appendChild(removeMeText);
-// removeMeNode.classList.add("popupMod", "remove");
-// removeMeNode.setAttribute("href", "#close");
-//
-// var editMeNode = document.createElement("a");
-// var editMeText = document.createTextNode("Edit");
-// editMeNode.appendChild(editMeText);
-// editMeNode.classList.add("popupMod", "edit");
-// editMeNode.setAttribute("href", "#edit");
+//  Adding new options to the default options of a popup
+L.Popup.mergeOptions({
+   removable: false,
+   editable: false
+})
+
+// Modifying the popup mechanics
+L.Popup.include({
 
 
-var templateRemoveMe =
-   `<a class="popupMod remove" href="#close">Remove this marker</a>`
+   // modifying the _initLayout method to include edit and remove buttons, if those options are enabled
 
-
-
-L.Marker.include({
-
-   allowRemoval: function(){
-
-
-         // myContainer = this.getPopup()._wrapper;
-         // let templateRemoveMe = L.DomUtil.create('a', 'popupMod remove', myContainer)
-         // templateRemoveMe.innerHTML = "Remove this marker";
-         // let removeButton = L.DomUtil.get(templateRemoveMe)
-         //
-         // let thisStandIn = this;
-         //
-         // removeButton.addEventListener("click", function(){
-         //    thisStandIn.remove(leafletMap)
-         // }, false)
-
-         this.on("click", function(e){
-            console.log( 'e.target :' );
-            console.log( e.target );
-         })
-
-         this.options.removable = true;
-
-         this.getPopup()._initLayout = this.initLayoutWithRemove;
-
-         // https://github.com/Leaflet/Leaflet/blob/master/src/layer/Popup.js
-
-   },
-
-
-   initLayoutWithRemove: function () {
+   //  ----------------    Source code  ---------------------------- //
+   // original from https://github.com/Leaflet/Leaflet/blob/master/src/layer/Popup.js
+   _initLayout: function () {
       var prefix = 'leaflet-popup',
           container = this._container = L.DomUtil.create('div',
          prefix + ' ' + (this.options.className || '') +
@@ -96,6 +61,40 @@ L.Marker.include({
 
          L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
       }
+
+      //  ------------    My additions  --------------------- //
+
+      if (this.options.removable){
+         console.log(this.getContent() + ' is removable');
+         var removeButton = this._removeButton = L.DomUtil.create('a', prefix + '-remove-button', wrapper);
+         removeButton.href = '#close';
+         removeButton.innerHTML = 'Remove this marker';
+
+         L.DomEvent.on(removeButton, 'click', this._onRemoveButtonClick, this);
+      }
+
+      if (this.options.editable){
+         var editButton = this._editButton = L.DomUtil.create('a', prefix + '-edit-button', wrapper);
+         editButton.href = '#edit';
+         editButton.innerHTML = 'Edit';
+
+         L.DomEvent.on(editButton, 'click', this._onEditButtonClick, this);
+      }
+
+
+
+   },
+   //  ----------------    Source code  ---------------------------- //
+
+
+   _onRemoveButtonClick: function (e) {
+      this._source.remove(leafletMap);  //  this could be written better
+      L.DomEvent.stop(e);
+   },
+
+   _onEditButtonClick: function (e) {
+      console.log(this.getContent() + ' is editable');
+      L.DomEvent.stop(e);
    },
 
 
@@ -104,7 +103,7 @@ L.Marker.include({
 
 
 
-var centerMarkerPopup = new L.Popup()
+var centerMarkerPopup = new L.Popup( {removable: true, editable: true} )
    .setLatLng([[33.270, -116.650]])
    .setContent("This is the Center Marker")
 
@@ -113,10 +112,9 @@ centerMarker
    .addTo(leafletMap)
    .bindPopup(centerMarkerPopup)
    .openPopup()
-   .allowRemoval();
 
 
-var anotherMarkerPopup = new L.Popup()
+var anotherMarkerPopup = new L.Popup( {removable: true} )
    .setLatLng([[33.270, -116]])
    .setContent("This is Another Marker")
 
