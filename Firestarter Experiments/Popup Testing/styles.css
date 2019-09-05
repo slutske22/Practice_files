@@ -5,7 +5,20 @@ body,
   width: 100%;
 }
 
-.popupMod{
+a.leaflet-popup-remove-button,
+a.leaflet-popup-edit-button{
+   border-bottom: none;
+   text-decoration: none;
+}
+a.leaflet-popup-remove-button:hover,
+a.leaflet-popup-edit-button:hover{
+   color: #0078A8;
+   text-decoration: underline;
+   cursor: pointer;
+}
+
+
+/* .popupMod{
    display: inline-block;
    padding: 5px 15px;
 }
@@ -17,4 +30,4 @@ a.popupMod:hover{
    color: #0078A8;
    text-decoration: underline;
    cursor: pointer;
-}
+} */
