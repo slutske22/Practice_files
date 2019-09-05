@@ -116,13 +116,21 @@ L.Popup.include({
    },
 
    _onEditButtonClick: function (e) {
-      popupContent = L.DomUtil.get(this._contentNode);
-      popupContent.style.display = 'none';
+      this._contentNode.style.display = "none";
+      this._userActionButtons.style.display = "none";
 
       var wrapper = this._wrapper;
-      var inputField = this._inputField = L.DomUtil.create('input', 'leaflet-popup-input', wrapper);
+      L.DomUtil.empty(wrapper);
+
+      var inputField = this._inputField = L.DomUtil.create('input', '.leaflet-popup-useraction-buttons leaflet-popup-input', wrapper);
       inputField.setAttribute("type", "text");
-      L.DomUtil.toFront(inputField);
+      var inputActions = this._inputActions = L.DomUtil.create('div', 'leaflet-popup-input-actions', wrapper);
+      var cancelButton = this._cancelButton = L.DomUtil.create('a', 'leaflet-popup-input-cancel', inputActions);
+      cancelButton.href = '#cancel';
+      cancelButton.innerHTML = 'Cancel';
+      var saveButton = this._saveButton = L.DomUtil.create('a', 'leaflet-popup-input-save', inputActions);
+      saveButton.href = "#save";
+      saveButton.innerHTML = 'Save';
 
       L.DomEvent.stop(e);
    },
