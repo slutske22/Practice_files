@@ -111,7 +111,7 @@ L.Popup.include({
 
 
    _onRemoveButtonClick: function (e) {
-      this._source.remove(leafletMap);  //  this could be written better
+      this._source.remove();
       L.DomEvent.stop(e);
    },
 
@@ -135,7 +135,6 @@ L.Popup.include({
       saveButton.innerHTML = 'Save';
 
       this.update();
-
       L.DomEvent.stop(e);
    },
 
