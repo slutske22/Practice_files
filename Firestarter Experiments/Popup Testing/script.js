@@ -135,6 +135,9 @@ L.Popup.include({
       saveButton.href = "#save";
       saveButton.innerHTML = 'Save';
 
+      L.DomEvent.on(cancelButton, 'click', this._onCancelButtonClick, this)
+      L.DomEvent.on(saveButton, 'click', this._onSaveButtonClick, this)
+
       this.update();
       L.DomEvent.stop(e);
    },
