@@ -138,6 +138,8 @@ L.Popup.include({
       // var ruler = L.DomUtil.create('div', 'leaflet-popup-input-ruler', editScreen);
       // ruler.innerHTML = inputField.innerHTML;
 
+      // https://blog.mastykarz.nl/measuring-the-length-of-a-string-in-pixels-using-javascript/
+
 
 
 
