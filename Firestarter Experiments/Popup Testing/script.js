@@ -119,17 +119,14 @@ L.Popup.include({
    },
 
    _onEditButtonClick: function (e) {
+      //Needs to be defined first to capture width before changes are applied
       var inputFieldWidth = this._inputFieldWidth = this._container.offsetWidth - 2*19;
 
       this._contentNode.style.display = "none";
       this._userActionButtons.style.display = "none";
 
-
-
       var wrapper = this._wrapper;
-
       var editScreen = this._editScreen = L.DomUtil.create('div', 'leaflet-popup-edit-screen', wrapper)
-
       var inputField = this._inputField = L.DomUtil.create('div', 'leaflet-popup-input', editScreen);
       inputField.setAttribute("contenteditable", "true");
       inputField.innerHTML = this.getContent()
