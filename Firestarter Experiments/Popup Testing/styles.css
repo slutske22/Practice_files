@@ -48,11 +48,9 @@ a.leaflet-popup-input-save:hover{
 .leaflet-popup-input-ruler{
    position: fixed;
    top: -100px;
-   /* visibility: hidden; */
-   /* white-space: nowrap; */
+   visibility: hidden;
    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
    background-color: lightgrey;
-   max-width: calc(300px)
 }
 
 
