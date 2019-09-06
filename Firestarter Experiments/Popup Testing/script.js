@@ -122,11 +122,12 @@ L.Popup.include({
 
 
       var wrapper = this._wrapper;
-      L.DomUtil.empty(wrapper);
 
-      var inputField = this._inputField = L.DomUtil.create('input', '.leaflet-popup-useraction-buttons leaflet-popup-input', wrapper);
-      inputField.setAttribute("type", "text");
-      var inputActions = this._inputActions = L.DomUtil.create('div', 'leaflet-popup-input-actions', wrapper);
+      var editScreen = this._editScreen = L.DomUtil.create('div', 'leaflet-popup-edit-screen', wrapper)
+      var inputField = this._inputField = L.DomUtil.create('div', 'leaflet-popup-input', editScreen);
+      inputField.setAttribute("contenteditable", "true");
+      inputField.innerHTML = this.getContent()
+      var inputActions = this._inputActions = L.DomUtil.create('div', 'leaflet-popup-input-actions', editScreen);
       var cancelButton = this._cancelButton = L.DomUtil.create('a', 'leaflet-popup-input-cancel', inputActions);
       cancelButton.href = '#cancel';
       cancelButton.innerHTML = 'Cancel';
@@ -143,6 +144,33 @@ L.Popup.include({
 // using divs https://stackoverflow.com/questions/7168727/make-html-text-input-field-grow-as-i-type
 
 
+   _onCancelButtonClick: function (e) {
+      L.DomUtil.remove(this._editScreen);
+      this._contentNode.style.display = "block";
+      this._userActionButtons.style.display = "flex";
+
+      this.update();
+      L.DomEvent.stop(e);
+   },
+
+   _onSaveButtonClick: function (e) {
+      var inputField = this._inputField;
+      if (inputField.innerHTML.length > 0){
+         this.setContent(inputField.innerHTML)
+      } else {
+         alert('Enter something');
+      };
+
+      L.DomUtil.remove(this._editScreen);
+      this._contentNode.style.display = "block";
+      this._userActionButtons.style.display = "flex";
+
+      this.update();
+      L.DomEvent.stop(e);
+
+
+
+   }
 
 })
 
