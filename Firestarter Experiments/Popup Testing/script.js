@@ -98,11 +98,14 @@ L.Popup.include({
          editButton.innerHTML = 'Edit';
          this.options.minWidth = 160;
 
+
          L.DomEvent.on(removeButton, 'click', this._onRemoveButtonClick, this);
          L.DomEvent.on(editButton, 'click', this._onEditButtonClick, this);
 
 
       }
+
+
 
 
 
@@ -116,6 +119,8 @@ L.Popup.include({
    },
 
    _onEditButtonClick: function (e) {
+      var inputFieldWidth = this._inputFieldWidth = this._container.offsetWidth - 2*19;
+
       this._contentNode.style.display = "none";
       this._userActionButtons.style.display = "none";
 
@@ -124,9 +129,26 @@ L.Popup.include({
       var wrapper = this._wrapper;
 
       var editScreen = this._editScreen = L.DomUtil.create('div', 'leaflet-popup-edit-screen', wrapper)
+
       var inputField = this._inputField = L.DomUtil.create('div', 'leaflet-popup-input', editScreen);
       inputField.setAttribute("contenteditable", "true");
       inputField.innerHTML = this.getContent()
+
+
+      //  -----------  Making the input field grow till max width ------- //
+      inputField.style.width = inputFieldWidth + 'px';
+
+      // var ruler = L.DomUtil.create('div', 'leaflet-popup-input-ruler', editScreen);
+      // ruler.innerHTML = inputField.innerHTML;
+
+
+
+
+
+
+      //  ----------------------------------------------------- ------- //
+
+
       var inputActions = this._inputActions = L.DomUtil.create('div', 'leaflet-popup-input-actions', editScreen);
       var cancelButton = this._cancelButton = L.DomUtil.create('a', 'leaflet-popup-input-cancel', inputActions);
       cancelButton.href = '#cancel';
@@ -137,6 +159,7 @@ L.Popup.include({
 
       L.DomEvent.on(cancelButton, 'click', this._onCancelButtonClick, this)
       L.DomEvent.on(saveButton, 'click', this._onSaveButtonClick, this)
+
 
       this.update();
       L.DomEvent.stop(e);
@@ -185,7 +208,6 @@ var centerMarker =  L.marker( [33.270, -116.650] );
 centerMarker
    .addTo(leafletMap)
    .bindPopup( "Center Marker" , {removable: true} )
-   .openPopup()
 
 
 var anotherMarker =  L.marker( [33.270, -116] );
@@ -196,4 +218,5 @@ anotherMarker
 
 var thirdMarker = L.marker( [33.270, -115.5] )
    .addTo(leafletMap)
-   .bindPopup( "Third Marker" , {editable: true, removable: true} );
+   .bindPopup( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' , {editable: true, removable: true} )
+   .openPopup()
