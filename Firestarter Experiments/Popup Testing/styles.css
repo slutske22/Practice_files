@@ -35,7 +35,14 @@ a.leaflet-popup-input-save:hover{
 }
 
 .leaflet-popup-input{
+   border: 1px solid lightgrey;
+   min-width: 160px;
    margin: 19px 19px 0px 19px;
+   padding: 5px;
+}
+.leaflet-popup-input:focus{
+   outline: 2px solid #60b7da;
+   border: 1px solid #60b7da;
 }
 
 
