@@ -134,18 +134,39 @@ L.Popup.include({
 
       //  -----------  Making the input field grow till max width ------- //
       inputField.style.width = inputFieldWidth + 'px';
+      var inputFieldDiv = L.DomUtil.get(this._inputField);
 
-      // var ruler = L.DomUtil.create('div', 'leaflet-popup-input-ruler', editScreen);
-      // ruler.innerHTML = inputField.innerHTML;
+      // create invisible div to measure the text width in pixels
+      var ruler = L.DomUtil.create('div', 'leaflet-popup-input-ruler', editScreen);
+
+      let thisStandIn = this;
+
+      // Padd event listener to the textinput to trigger a check
+      this._inputField.addEventListener("keydown", function(){
+      // Check to see if the popup is already at its maxWidth
+      // and that text doesnt take up whole field
+         if (thisStandIn._container.offsetWidth < thisStandIn.options.maxWidth + 38
+            && thisStandIn._inputFieldWidth + 5 < inputFieldDiv.clientWidth){
+            ruler.innerHTML = inputField.innerHTML;
+
+            // console.clear();
+            // console.log(`Text width: ${ruler.offsetWidth}`);
+            // console.log(`InputField width: ${inputFieldDiv.clientWidth}`);
+            // console.log(`Popup width: ${thisStandIn._container.offsetWidth}`);
+
+            if (ruler.offsetWidth + 20 > inputFieldDiv.clientWidth){
+               console.log('expand now');
+               inputField.style.width = thisStandIn._inputField.style.width = ruler.offsetWidth + 10 + 'px';
+               thisStandIn.update();
+            }
+
+         }
+      }, false)
+
 
       // https://blog.mastykarz.nl/measuring-the-length-of-a-string-in-pixels-using-javascript/
-
-
-
-
-
-
       //  ----------------------------------------------------- ------- //
+
 
 
       var inputActions = this._inputActions = L.DomUtil.create('div', 'leaflet-popup-input-actions', editScreen);
@@ -163,10 +184,6 @@ L.Popup.include({
       this.update();
       L.DomEvent.stop(e);
    },
-
-//  Creating a growing text input box:
-// http://www.brianchu.com/blog/2013/11/02/creating-an-auto-growing-text-input/
-// using divs https://stackoverflow.com/questions/7168727/make-html-text-input-field-grow-as-i-type
 
 
    _onCancelButtonClick: function (e) {
