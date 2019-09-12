@@ -1,3 +1,19 @@
+/*-----------------------------------------------------------------------
+███    ███  █████  ██████
+████  ████ ██   ██ ██   ██
+██ ████ ██ ███████ ██████
+██  ██  ██ ██   ██ ██
+██      ██ ██   ██ ██
+
+██ ███    ██ ██ ████████ ██  █████  ██      ██ ███████ ███████
+██ ████   ██ ██    ██    ██ ██   ██ ██      ██    ███  ██
+██ ██ ██  ██ ██    ██    ██ ███████ ██      ██   ███   █████
+██ ██  ██ ██ ██    ██    ██ ██   ██ ██      ██  ███    ██
+██ ██   ████ ██    ██    ██ ██   ██ ███████ ██ ███████ ███████
+-----------------------------------------------------------------------*/
+
+
+
 var mapOptions = {
   center: [33.270, -116.650],
   zoom: 8
@@ -8,7 +24,7 @@ var mapOptions = {
 var leafletMap = L.map('leafletMapid', mapOptions);
 
 //add a baseLayer
-var baseLayer =  new L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+var baseLayer =  new L.tileLayer('https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
       id: 'mapbox.outdoors',
@@ -21,6 +37,14 @@ var baseLayer =  new L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 baseLayer.addTo(leafletMap)
 
 
+
+/*-----------------------------------------------------------------------
+██████   ██████  ██████  ██    ██ ██████      ███    ███  ██████  ██████
+██   ██ ██    ██ ██   ██ ██    ██ ██   ██     ████  ████ ██    ██ ██   ██
+██████  ██    ██ ██████  ██    ██ ██████      ██ ████ ██ ██    ██ ██   ██
+██      ██    ██ ██      ██    ██ ██          ██  ██  ██ ██    ██ ██   ██
+██       ██████  ██       ██████  ██          ██      ██  ██████  ██████
+-----------------------------------------------------------------------*/
 
 
 
@@ -217,6 +241,14 @@ L.Popup.include({
 })
 
 
+/*-----------------------------------------------------------------------
+███    ███  █████  ██████  ██   ██ ███████ ██████  ███████
+████  ████ ██   ██ ██   ██ ██  ██  ██      ██   ██ ██
+██ ████ ██ ███████ ██████  █████   █████   ██████  ███████
+██  ██  ██ ██   ██ ██   ██ ██  ██  ██      ██   ██      ██
+██      ██ ██   ██ ██   ██ ██   ██ ███████ ██   ██ ███████
+-----------------------------------------------------------------------*/
+
 
 
 
@@ -236,3 +268,22 @@ var thirdMarker = L.marker( [33.270, -115.5] )
    .addTo(leafletMap)
    .bindPopup( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' , {editable: true, removable: true} )
    .openPopup()
+
+
+
+
+/*-----------------------------------------------------------------------
+███████ ██      ███████ ██    ██  █████  ████████ ██  ██████  ███    ██
+██      ██      ██      ██    ██ ██   ██    ██    ██ ██    ██ ████   ██
+█████   ██      █████   ██    ██ ███████    ██    ██ ██    ██ ██ ██  ██
+██      ██      ██       ██  ██  ██   ██    ██    ██ ██    ██ ██  ██ ██
+███████ ███████ ███████   ████   ██   ██    ██    ██  ██████  ██   ████
+
+████████ ███████ ███████ ████████ ███████
+   ██    ██      ██         ██    ██
+   ██    █████   ███████    ██    ███████
+   ██    ██           ██    ██         ██
+   ██    ███████ ███████    ██    ███████
+------------------------------------------------------------------------*/
+
+var getPixels = require("get-pixels");
