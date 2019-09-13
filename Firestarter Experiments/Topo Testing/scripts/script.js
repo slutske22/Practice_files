@@ -73,6 +73,10 @@ leafletMap.on('click', function(event){
    console.log(color);
 })
 
+function getElevation(location){
+   var color = colorPicker.getColor(location)
+}
+
 
 var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -103,6 +107,9 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 //                RANDOM MARKER
 //------------------------------------------------------------------------//
 
+randomMarkerArray = [];
+
+
 function randomNumber(min, max){
    return ( Math.random() * (max - min) ) + min
 };
@@ -120,7 +127,7 @@ randomMarkerButton.addEventListener("click", function(){
    let randomLng = randomNumber(mapBoundLeft, mapBoundRight);
    let randomLat = randomNumber(mapBoundTop, mapBoundBottom);
 
-   let randomCircle = L.marker( [randomLat, randomLng], {
+   let randomMarker = L.marker( [randomLat, randomLng], {
       color: 'red',
       weight: 0.5,
 	   fillColor: '#f03',
@@ -134,6 +141,12 @@ randomMarkerButton.addEventListener("click", function(){
       .openPopup();
 
    leafletMap.panTo([randomLat, randomLng])
+
+   randomMarker._name = `Random Marker ${randomMarkerArray.length + 1}`
+   randomMarkerArray.push(randomMarker)
+   console.clear();
+   console.log(`randomMarkerArray:`)
+   console.log(randomMarkerArray);
 
 })
 
