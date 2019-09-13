@@ -67,17 +67,23 @@ var colorPicker = L.tileLayer.colorPicker('https://api.mapbox.com/v4/mapbox.terr
          //mapbox.com PW: ורדינה1!
       }).addTo(leafletMap);
 
-// Write some code which utilizes the getColor function, pulling data from the colorPicker layer
-leafletMap.on('click', function(event){
-   var color = colorPicker.getColor(event.latlng);
-   console.log(color);
-})
 
+// Write a function which utilizes the getColor function, pulling data from the colorPicker layer
 function getElevation(location){
    var color = colorPicker.getColor(location)
+   let R = color[0];
+   let G = color[1];
+   let B = color[2];
+
+   let height = -10000 + ((R * 256 * 256 + G * 256 + B) * 0.1)
+   let heightRounded = Math.round( height * 10) / 10 + ' meters';
+   return heightRounded;
 }
 
-
+// Then add the outdoors layer to be the one to be seen by the viewer
+// Not ideal as it loads both baselayers.  visual performance issues
+// Need to figure out how to get data from the RGB layer without showing it
+// This will be the case for all data layers
 var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
@@ -107,49 +113,66 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 //                RANDOM MARKER
 //------------------------------------------------------------------------//
 
+// Make empty array to recieve randomly generated markers
 randomMarkerArray = [];
 
-
+// Useful random number function
 function randomNumber(min, max){
    return ( Math.random() * (max - min) ) + min
 };
 
+// Define buttons
+var randomMarkerButton = document.querySelector('#randomMarker');
+var clearMarkersButton = document.querySelector('#clearRandomMarkers');
 
-randomMarkerButton = document.querySelector('#randomMarker');
+// Empty variable to recieve the layergroup which is created when a the button is pressed
+var randomMarkerGroup;
 
+// When the button is pressed:
 randomMarkerButton.addEventListener("click", function(){
+   // Get map bounds:
    let mapBoundLeft = leafletMap.getBounds()._southWest.lng;
    let mapBoundRight = leafletMap.getBounds()._northEast.lng;
    let mapBoundTop = leafletMap.getBounds()._northEast.lat;
    let mapBoundBottom = leafletMap.getBounds()._southWest.lat;
 
-
+   // Make random number within bounds
    let randomLng = randomNumber(mapBoundLeft, mapBoundRight);
    let randomLat = randomNumber(mapBoundTop, mapBoundBottom);
 
-   let randomMarker = L.marker( [randomLat, randomLng], {
-      color: 'red',
-      weight: 0.5,
-	   fillColor: '#f03',
-	   fillOpacity: 0.5,
-	   radius: 10
-   })
-      .addTo(leafletMap)
+   let position = [randomLat, randomLng];
+   let elevation = getElevation( position );
+
+   // Create a random marker
+   let randomMarker = L.marker( position )
       .bindPopup(`This is a randomly placed marker<br>
+         <br>
          Latitude: ${randomLat}<br>
-         Longitude: ${randomLng}` , {removable: true, editable: true})
-      .openPopup();
+         Longitude: ${randomLng}<br>
+         Elevation: ${elevation}` , {removable: true, editable: true});
 
-   leafletMap.panTo([randomLat, randomLng])
+   // leafletMap.panTo(position)
 
-   randomMarker._name = `Random Marker ${randomMarkerArray.length + 1}`
-   randomMarkerArray.push(randomMarker)
-   console.clear();
-   console.log(`randomMarkerArray:`)
-   console.log(randomMarkerArray);
+   // Give each random marker its own name with its index for easy reference
+   randomMarker._name = `Random Marker ${randomMarkerArray.length + 1}`;
+   // Push it into the array
+   randomMarkerArray.push(randomMarker);
+
+   // Create layerGroup using the array
+   randomMarkerGroup = L.layerGroup( randomMarkerArray )
+      .addTo(leafletMap);
+   // Open popup on most recently added marker
+   randomMarkerArray[randomMarkerArray.length - 1].openPopup();
 
 })
 
+
+clearMarkersButton.addEventListener("click", function(){
+   // Remove the layergroup of random markers
+   randomMarkerGroup.remove();
+   // Empty the array to truly refresh the random marker layer
+   randomMarkerArray = [];
+}, false);
 
 
 

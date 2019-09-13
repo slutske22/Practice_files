@@ -7,15 +7,23 @@ body,
 #leafletMapid{
   height:100%;
   width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 #leafletMapid{
    z-index: 0;
 }
 
-#randomMarker{
+.controlButtons{
    position: absolute;
    bottom: 50px;
    right: 50px;
    z-index: 10;
+}
+
+#randomMarker,
+#clearRandomMarkers{
+   width: 100%;
+   margin-bottom: 10px;
 }
