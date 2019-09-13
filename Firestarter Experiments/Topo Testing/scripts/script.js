@@ -62,9 +62,6 @@ var colorPicker = L.tileLayer.colorPicker('https://api.mapbox.com/v4/mapbox.terr
       maxZoom: 18,
       id: 'mapbox.outdoors',
       accessToken: 'pk.eyJ1Ijoic2x1dHNrZTIyIiwiYSI6ImNqeGw1Y3BibDAybG4zeHFyaXl3OXVwZXUifQ.fZ_5Raq5z-DUpo2AK-bQHA'
-         //accesstoken from mapbox.com account
-         //mapbox.com username: slutske22
-         //mapbox.com PW: ורדינה1!
       }).addTo(leafletMap);
 
 
