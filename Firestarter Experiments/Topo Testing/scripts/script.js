@@ -40,78 +40,6 @@ baseLayer.addTo(leafletMap)
 
 
 /*-----------------------------------------------------------------------
-███    ███  █████  ██████  ██   ██ ███████ ██████  ███████
-████  ████ ██   ██ ██   ██ ██  ██  ██      ██   ██ ██
-██ ████ ██ ███████ ██████  █████   █████   ██████  ███████
-██  ██  ██ ██   ██ ██   ██ ██  ██  ██      ██   ██      ██
-██      ██ ██   ██ ██   ██ ██   ██ ███████ ██   ██ ███████
------------------------------------------------------------------------*/
-
-
-
-
-var centerMarker =  L.marker( [33.270, -116.650] );
-centerMarker
-   .addTo(leafletMap)
-   .bindPopup( "Center Marker" , {removable: true} )
-
-
-var anotherMarker =  L.marker( [33.270, -116] );
-anotherMarker
-   .addTo(leafletMap)
-   .bindPopup( "Another Marker" , {editable: true} )
-
-
-var thirdMarker = L.marker( [33.270, -115.5] )
-   .addTo(leafletMap)
-   .bindPopup( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' , {editable: true, removable: true} )
-   .openPopup()
-
-
-
-
-   //------------------------------------------------------------------------//
-   //                RANDOM MARKER
-   //------------------------------------------------------------------------//
-
-   function randomNumber(min, max){
-      return ( Math.random() * (max - min) ) + min
-   };
-
-
-   randomMarkerButton = document.querySelector('#randomMarker');
-
-   randomMarkerButton.addEventListener("click", function(){
-      let mapBoundLeft = leafletMap.getBounds()._southWest.lng;
-      let mapBoundRight = leafletMap.getBounds()._northEast.lng;
-      let mapBoundTop = leafletMap.getBounds()._northEast.lat;
-      let mapBoundBottom = leafletMap.getBounds()._southWest.lat;
-
-
-      let randomLng = randomNumber(mapBoundLeft, mapBoundRight);
-      let randomLat = randomNumber(mapBoundTop, mapBoundBottom);
-
-      let randomCircle = L.circleMarker( [randomLat, randomLng], {
-         color: 'red',
-         weight: 0.5,
-   	   fillColor: '#f03',
-   	   fillOpacity: 0.5,
-   	   radius: 10
-      })
-         .addTo(leafletMap)
-         .bindPopup(`This is a randomly placed marker<br>
-            Latitude: ${randomLat}<br>
-            Longitude: ${randomLng}` , {removable: true, editable: true})
-         .openPopup();
-
-      leafletMap.panTo([randomLat, randomLng])
-
-   })
-
-
-
-
-/*-----------------------------------------------------------------------
 ███████ ██      ███████ ██    ██  █████  ████████ ██  ██████  ███    ██
 ██      ██      ██      ██    ██ ██   ██    ██    ██ ██    ██ ████   ██
 █████   ██      █████   ██    ██ ███████    ██    ██ ██    ██ ██ ██  ██
@@ -162,6 +90,52 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 
 
 
+/*-----------------------------------------------------------------------
+███    ███  █████  ██████  ██   ██ ███████ ██████  ███████
+████  ████ ██   ██ ██   ██ ██  ██  ██      ██   ██ ██
+██ ████ ██ ███████ ██████  █████   █████   ██████  ███████
+██  ██  ██ ██   ██ ██   ██ ██  ██  ██      ██   ██      ██
+██      ██ ██   ██ ██   ██ ██   ██ ███████ ██   ██ ███████
+-----------------------------------------------------------------------*/
+
+
+//------------------------------------------------------------------------//
+//                RANDOM MARKER
+//------------------------------------------------------------------------//
+
+function randomNumber(min, max){
+   return ( Math.random() * (max - min) ) + min
+};
+
+
+randomMarkerButton = document.querySelector('#randomMarker');
+
+randomMarkerButton.addEventListener("click", function(){
+   let mapBoundLeft = leafletMap.getBounds()._southWest.lng;
+   let mapBoundRight = leafletMap.getBounds()._northEast.lng;
+   let mapBoundTop = leafletMap.getBounds()._northEast.lat;
+   let mapBoundBottom = leafletMap.getBounds()._southWest.lat;
+
+
+   let randomLng = randomNumber(mapBoundLeft, mapBoundRight);
+   let randomLat = randomNumber(mapBoundTop, mapBoundBottom);
+
+   let randomCircle = L.marker( [randomLat, randomLng], {
+      color: 'red',
+      weight: 0.5,
+	   fillColor: '#f03',
+	   fillOpacity: 0.5,
+	   radius: 10
+   })
+      .addTo(leafletMap)
+      .bindPopup(`This is a randomly placed marker<br>
+         Latitude: ${randomLat}<br>
+         Longitude: ${randomLng}` , {removable: true, editable: true})
+      .openPopup();
+
+   leafletMap.panTo([randomLat, randomLng])
+
+})
 
 
 
@@ -178,7 +152,11 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 
 
 
-//--------------  USING CANVAS MODE -------------------------------------//
+
+
+
+//  ------------  ELEVATION TESTS   -----------------------------------  //
+//  ------------  USING CANVAS MODE -----------------------------------  //
 //                no idea what im doing here lol                         //
 
 ///  from https://labs.mapbox.com/bites/00307/?elev=10#8/37.727/-123.975
