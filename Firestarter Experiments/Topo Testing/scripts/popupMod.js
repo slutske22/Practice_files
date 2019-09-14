@@ -1,53 +1,3 @@
-/*-----------------------------------------------------------------------
-███    ███  █████  ██████
-████  ████ ██   ██ ██   ██
-██ ████ ██ ███████ ██████
-██  ██  ██ ██   ██ ██
-██      ██ ██   ██ ██
-
-██ ███    ██ ██ ████████ ██  █████  ██      ██ ███████ ███████
-██ ████   ██ ██    ██    ██ ██   ██ ██      ██    ███  ██
-██ ██ ██  ██ ██    ██    ██ ███████ ██      ██   ███   █████
-██ ██  ██ ██ ██    ██    ██ ██   ██ ██      ██  ███    ██
-██ ██   ████ ██    ██    ██ ██   ██ ███████ ██ ███████ ███████
------------------------------------------------------------------------*/
-
-
-
-var mapOptions = {
-  center: [33.270, -116.650],
-  zoom: 8
-}
-
-
-//Create a map and assign it to the map div
-var leafletMap = L.map('leafletMapid', mapOptions);
-
-//add a baseLayer
-var baseLayer =  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      maxZoom: 18,
-      id: 'mapbox.outdoors',
-      accessToken: 'pk.eyJ1Ijoic2x1dHNrZTIyIiwiYSI6ImNqeGw1Y3BibDAybG4zeHFyaXl3OXVwZXUifQ.fZ_5Raq5z-DUpo2AK-bQHA'
-         //accesstoken from mapbox.com account
-         //mapbox.com username: slutske22
-         //mapbox.com PW: ורדינה1!
-      });
-
-baseLayer.addTo(leafletMap)
-
-
-
-/*-----------------------------------------------------------------------
-██████   ██████  ██████  ██    ██ ██████      ███    ███  ██████  ██████
-██   ██ ██    ██ ██   ██ ██    ██ ██   ██     ████  ████ ██    ██ ██   ██
-██████  ██    ██ ██████  ██    ██ ██████      ██ ████ ██ ██    ██ ██   ██
-██      ██    ██ ██      ██    ██ ██          ██  ██  ██ ██    ██ ██   ██
-██       ██████  ██       ██████  ██          ██      ██  ██████  ██████
------------------------------------------------------------------------*/
-
-
-
 //  Adding new options to the default options of a popup
 L.Popup.mergeOptions({
    removable: false,
@@ -241,47 +191,76 @@ L.Popup.include({
 })
 
 
-/*-----------------------------------------------------------------------
-███    ███  █████  ██████  ██   ██ ███████ ██████  ███████
-████  ████ ██   ██ ██   ██ ██  ██  ██      ██   ██ ██
-██ ████ ██ ███████ ██████  █████   █████   ██████  ███████
-██  ██  ██ ██   ██ ██   ██ ██  ██  ██      ██   ██      ██
-██      ██ ██   ██ ██   ██ ██   ██ ███████ ██   ██ ███████
------------------------------------------------------------------------*/
 
 
 
-
-var centerMarker =  L.marker( [33.270, -116.650] );
-centerMarker
-   .addTo(leafletMap)
-   .bindPopup( "This popup has options." , {removable: true, editable: true} )
-
-
-// var anotherMarker =  L.marker( [33.270, -116] );
-// anotherMarker
-//    .addTo(leafletMap)
-//    .bindPopup( "Another Marker" , {editable: true} )
 //
 //
-// var thirdMarker = L.marker( [33.270, -115.5] )
-//    .addTo(leafletMap)
-//    .bindPopup( 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' , {editable: true, removable: true} )
-//    .openPopup()
+//          CCCCCCCCCCCCC   SSSSSSSSSSSSSSS    SSSSSSSSSSSSSSS
+//       CCC::::::::::::C SS:::::::::::::::S SS:::::::::::::::S
+//     CC:::::::::::::::CS:::::SSSSSS::::::SS:::::SSSSSS::::::S
+//    C:::::CCCCCCCC::::CS:::::S     SSSSSSSS:::::S     SSSSSSS
+//   C:::::C       CCCCCCS:::::S            S:::::S
+//  C:::::C              S:::::S            S:::::S
+//  C:::::C               S::::SSSS          S::::SSSS
+//  C:::::C                SS::::::SSSSS      SS::::::SSSSS
+//  C:::::C                  SSS::::::::SS      SSS::::::::SS
+//  C:::::C                     SSSSSS::::S        SSSSSS::::S
+//  C:::::C                          S:::::S            S:::::S
+//   C:::::C       CCCCCC            S:::::S            S:::::S
+//    C:::::CCCCCCCC::::CSSSSSSS     S:::::SSSSSSSS     S:::::S
+//     CC:::::::::::::::CS::::::SSSSSS:::::SS::::::SSSSSS:::::S
+//       CCC::::::::::::CS:::::::::::::::SS S:::::::::::::::SS
+//          CCCCCCCCCCCCC SSSSSSSSSSSSSSS    SSSSSSSSSSSSSSS
+//
+//
+// http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
 
 
 
-
-/*-----------------------------------------------------------------------
-███████ ██      ███████ ██    ██  █████  ████████ ██  ██████  ███    ██
-██      ██      ██      ██    ██ ██   ██    ██    ██ ██    ██ ████   ██
-█████   ██      █████   ██    ██ ███████    ██    ██ ██    ██ ██ ██  ██
-██      ██      ██       ██  ██  ██   ██    ██    ██ ██    ██ ██  ██ ██
-███████ ███████ ███████   ████   ██   ██    ██    ██  ██████  ██   ████
-
-████████ ███████ ███████ ████████ ███████
-   ██    ██      ██         ██    ██
-   ██    █████   ███████    ██    ███████
-   ██    ██           ██    ██         ██
-   ██    ███████ ███████    ██    ███████
-------------------------------------------------------------------------*/
+// .leaflet-popup-useraction-buttons,
+// .leaflet-popup-input-actions{
+//    display: flex;
+//    justify-content: space-between;
+//    padding: 13px 19px 10px 19px;
+// }
+//
+// a.leaflet-popup-remove-button,
+// a.leaflet-popup-edit-button,
+// a.leaflet-popup-input-cancel,
+// a.leaflet-popup-input-save{
+//    border-bottom: none;
+//    text-decoration: none;
+// }
+// a.leaflet-popup-edit-button,
+// a.leaflet-popup-input-save{
+//    margin-left: auto;
+//    text-align: right;
+// }
+// a.leaflet-popup-remove-button:hover,
+// a.leaflet-popup-edit-button:hover,
+// a.leaflet-popup-input-cancel:hover,
+// a.leaflet-popup-input-save:hover{
+//    color: #0078A8;
+//    text-decoration: underline;
+//    cursor: pointer;
+// }
+//
+// .leaflet-popup-input{
+//    border: 1px solid lightgrey;
+//    min-width: 160px;
+//    margin: 19px 19px 0px 19px;
+//    padding: 5px;
+// }
+// .leaflet-popup-input:focus{
+//    outline: 2px solid #60b7da;
+//    border: 1px solid #60b7da;
+// }
+//
+// .leaflet-popup-input-ruler{
+//    position: fixed;
+//    top: -100px;
+//    visibility: hidden;
+//    font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+//    background-color: lightgrey;
+// }

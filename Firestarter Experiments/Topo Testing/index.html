@@ -12,19 +12,27 @@
       integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
       crossorigin=""></script>
 
-      <!-- RequireJS allows use of require in the browser -->
-      <script src="require.js" type="text/javascript" defer></script>
+      <!-- leaflet color picker -->
+      <script src="scripts/leaflet-tilelayer-colorpicker.js"></script>
 
-
+      <!-- PopupMod Script and CSS -->
+      <link rel="stylesheet" href="css/popupMod.css">
+      <script src="scripts/popupMod.js" type="text/javascript" defer></script>
 
       <!-- Personal style and script file links -->
-      <link rel="stylesheet" href="styles.css">
-      <script src="script.js" type="text/javascript" defer></script>
+      <link rel="stylesheet" href="css/styles.css">
+      <script src="scripts/script.js" type="text/javascript" defer></script>
 
    </head>
    <body>
 
       <div id="leafletMapid" class="mapdiv"></div>
+
+      <div class="controlButtons">
+         <button type="button" name="button" id="randomMarker">Create a Random Maker</button>
+         <br>
+         <button type="button" name="button" id="clearRandomMarkers">Clear Random markers</button>
+      </div>
 
 
    </body>
