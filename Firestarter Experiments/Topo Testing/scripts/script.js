@@ -23,6 +23,9 @@ var mapOptions = {
 //Create a map and assign it to the map div
 var leafletMap = L.map('leafletMapid', mapOptions);
 
+// use only active activearea
+leafletMap.setActiveArea('activeArea')
+
 //add a baseLayer
 var baseLayer =  new L.tileLayer('https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -174,8 +177,17 @@ clearMarkersButton.addEventListener("click", function(){
 
 
 
+//------------------------------------------------------------------------//
+//                MAP CENTERING ON POPUP OPEN
+//------------------------------------------------------------------------//
+// A nice little function lifted from https://stackoverflow.com/questions/22538473/leaflet-center-popup-and-marker-to-the-map.  This centers the map at the center of the popup, not at the origin of its source.  Works great for small source popups (markers, small circles, etc.)  Will need to adjust when the source is large, like a large polygon.
 
 
+leafletMap.on('popupopen', function(e) {
+    var px = leafletMap.project(e.target._popup._latlng); // find the pixel location on the map where the popup anchor is
+    px.y -= e.target._popup._container.clientHeight/2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+    leafletMap.panTo(leafletMap.unproject(px),{animate: true}); // pan to new center
+});
 
 
 
