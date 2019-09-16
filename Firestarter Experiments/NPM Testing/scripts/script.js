@@ -23,6 +23,9 @@ var mapOptions = {
 //Create a map and assign it to the map div
 var leafletMap = L.map('leafletMapid', mapOptions);
 
+// Trying set active area plugin:
+leafletMap.setActiveArea('activeArea', true, true);
+
 //add a baseLayer
 var baseLayer =  new L.tileLayer('https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -63,7 +66,7 @@ var colorPicker = L.tileLayer.colorPicker('https://api.mapbox.com/v4/mapbox.terr
       id: 'mapbox.outdoors',
       accessToken: 'pk.eyJ1Ijoic2x1dHNrZTIyIiwiYSI6ImNqeGw1Y3BibDAybG4zeHFyaXl3OXVwZXUifQ.fZ_5Raq5z-DUpo2AK-bQHA'
       }).addTo(leafletMap);
-
+colorPicker.setOpacity(0);
 
 // Write a function which utilizes the getColor function, pulling data from the colorPicker layer
 function getElevation(location){
@@ -146,7 +149,7 @@ randomMarkerButton.addEventListener("click", function(){
          <br>
          Latitude: ${randomLat}<br>
          Longitude: ${randomLng}<br>
-         Elevation: ${elevation}` , {removable: true, editable: true});
+         Elevation: ${elevation}` , {removable: true, editable: true, autoPan: false});
 
    // leafletMap.panTo(position)
 
@@ -159,7 +162,7 @@ randomMarkerButton.addEventListener("click", function(){
    randomMarkerGroup = L.layerGroup( randomMarkerArray )
       .addTo(leafletMap);
    // Open popup on most recently added marker
-   randomMarkerArray[randomMarkerArray.length - 1].openPopup();
+   // randomMarkerArray[randomMarkerArray.length - 1].openPopup();
 
 })
 

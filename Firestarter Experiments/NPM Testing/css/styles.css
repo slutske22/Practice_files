@@ -27,3 +27,14 @@ body,
    width: 100%;
    margin-bottom: 10px;
 }
+
+.activeArea{
+   z-index: 1;
+   position: absolute;
+   top: 10%;
+   left: 10%;
+   width: 50%;
+   height: 50%;
+   border: 3px solid black;
+   pointer-events: none;
+}
