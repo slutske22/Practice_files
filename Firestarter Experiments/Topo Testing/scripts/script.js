@@ -62,7 +62,8 @@ var colorPicker = L.tileLayer.colorPicker('https://api.mapbox.com/v4/mapbox.terr
       maxZoom: 18,
       id: 'mapbox.outdoors',
       accessToken: 'pk.eyJ1Ijoic2x1dHNrZTIyIiwiYSI6ImNqeGw1Y3BibDAybG4zeHFyaXl3OXVwZXUifQ.fZ_5Raq5z-DUpo2AK-bQHA'
-      }).addTo(leafletMap);
+      }).addTo(leafletMap)
+      .setOpacity(0);
 
 
 // Write a function which utilizes the getColor function, pulling data from the colorPicker layer
