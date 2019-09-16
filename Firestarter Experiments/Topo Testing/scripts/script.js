@@ -94,6 +94,7 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 
 
 
+L.control.mousePosition().addTo(leafletMap);
 
 
 
