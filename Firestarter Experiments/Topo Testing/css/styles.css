@@ -35,4 +35,5 @@ body,
    height: 50%;
    width: 50%;
    border: 2px solid black;
+   pointer-events: none;
 }

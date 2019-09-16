@@ -183,11 +183,11 @@ clearMarkersButton.addEventListener("click", function(){
 // A nice little function lifted from https://stackoverflow.com/questions/22538473/leaflet-center-popup-and-marker-to-the-map.  This centers the map at the center of the popup, not at the origin of its source.  Works great for small source popups (markers, small circles, etc.)  Will need to adjust when the source is large, like a large polygon.
 
 
-leafletMap.on('popupopen', function(e) {
-    var px = leafletMap.project(e.target._popup._latlng); // find the pixel location on the map where the popup anchor is
-    px.y -= e.target._popup._container.clientHeight/2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
-    leafletMap.panTo(leafletMap.unproject(px),{animate: true}); // pan to new center
-});
+// leafletMap.on('popupopen', function(e) {
+//     var px = leafletMap.project(e.target._popup._latlng); // find the pixel location on the map where the popup anchor is
+//     px.y -= e.target._popup._container.clientHeight/2; // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+//     leafletMap.panTo(leafletMap.unproject(px),{animate: true}); // pan to new center
+// });
 
 
 
