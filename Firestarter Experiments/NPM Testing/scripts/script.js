@@ -162,7 +162,8 @@ randomMarkerButton.addEventListener("click", function(){
    randomMarkerGroup = L.layerGroup( randomMarkerArray )
       .addTo(leafletMap);
    // Open popup on most recently added marker
-   // randomMarkerArray[randomMarkerArray.length - 1].openPopup();
+   leafletMap.panTo(position)
+   randomMarkerArray[randomMarkerArray.length - 1].openPopup();
 
 })
 
