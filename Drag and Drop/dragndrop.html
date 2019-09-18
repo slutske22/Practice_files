@@ -52,7 +52,7 @@
       <div class="container">
 
          <div class="dropzone yellow">
-            <div class="draggable" draggable="true"></div>
+            <div class="draggable" id="draggable" draggable="true"></div>
          </div>
          <div class="dropzone orange"></div>
          <div class="dropzone red"></div>
@@ -67,10 +67,45 @@
    <script type="text/javascript">
 
       var myDraggable = document.querySelector('.draggable');
+      var myDropzones = document.querySelectorAll('.dropzone');
 
-      document.addEventListener("click", function(e){
-         console.log(e.target);
+      myDraggable.addEventListener('dragstart', function(e){
+         this.style.opacity = '0.5'
+         e.dataTransfer.effectAllowed = 'move';
+         e.dataTransfer.setData("text/html", e.target.id)
+         dragSrcEl = this;
       }, false)
+
+      myDraggable.addEventListener('dragend', function(e){
+         this.style.opacity = '1'
+      }, false)
+
+
+      myDropzones.forEach( function(dropzone){
+
+         dropzone.addEventListener('dragover', function(e){
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+         }, false);
+
+         dropzone.addEventListener('drop', function(e){
+            e.preventDefault();
+            if (e.stopPropagation) {
+               e.stopPropagation();
+            }
+            var data = e.dataTransfer.getData("text/html");
+
+            if(data !== e.target.id){
+               console.log(`You dropped the`, dragSrcEl.id, `on the`, e.target);
+               e.target.appendChild(dragSrcEl);
+               dragSrcEl.style.backgroundColor = e.target.classList[1];
+            }
+
+
+         }, false)
+
+
+      })
 
    </script>
 
