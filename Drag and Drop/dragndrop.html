@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Drag and Drop</title>
+
+
+      <style media="screen">
+         .container{
+            display: flex;
+            flex-wrap: wrap;
+         }
+         .dropzone{
+            margin: 20px;
+            height: 200px;
+            width: 200px;
+            border: 5px solid black;
+         }
+         .draggable{
+            height: 150px;
+            width: 150px;
+            margin: 25px;
+            background-color: red;
+            border-radius: 50%;
+         }
+         .yellow{
+            border-color: yellow;
+         }
+         .orange{
+            border-color: orange;
+         }
+         .red{
+            border-color: red;
+         }
+         .blue{
+            border-color: blue;
+         }
+         .green{
+            border-color: green;
+         }
+         .purple{
+            border-color: purple;
+         }
+      </style>
+
+
+   </head>
+   <body>
+
+      <h3>Drag and Drop using Drag and Drop Events</h3>
+
+      <div class="container">
+
+         <div class="dropzone yellow">
+            <div class="draggable" draggable="true"></div>
+         </div>
+         <div class="dropzone orange"></div>
+         <div class="dropzone red"></div>
+         <div class="dropzone purple"></div>
+         <div class="dropzone blue"></div>
+         <div class="dropzone green"></div>
+
+      </div>
+
+   </body>
+
+   <script type="text/javascript">
+
+      var myDraggable = document.querySelector('.draggable');
+
+      document.addEventListener("click", function(e){
+         console.log(e.target);
+      }, false)
+
+   </script>
+
+
+</html>
