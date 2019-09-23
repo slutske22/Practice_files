@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title>Esri Terrain Testing</title>
+
+      <!-- Load Leaflet from CDN -->
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin=""/>
+      <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+      integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+      crossorigin=""></script>
+
+      <!-- Load Esri Leaflet from CDN.   -->
+      <script src="https://unpkg.com/esri-leaflet@2.3.0/dist/esri-leaflet.js"
+      integrity="sha512-1tScwpjXwwnm6tTva0l0/ZgM3rYNbdyMj5q6RSQMbNX6EUMhYDE3pMRGZaT41zHEvLoWEK7qFEJmZDOoDMU7/Q=="
+      crossorigin=""></script>
+
+      <!-- leaflet color picker -->
+      <script src="scripts/leaflet-tilelayer-colorpicker.js"></script>
+
+      <!-- leaflet activearea plugin -->
+      <script src="scripts/leaflet.activearea.js"></script>
+
+      <!-- leaflet mousePosition plugin -->
+      <script src="scripts/leaflet-mouse-coordinates.js"></script>
+
+      <!-- PopupMod Script and CSS -->
+      <link rel="stylesheet" href="css/popupMod.css">
+      <script src="scripts/popupMod.js" type="text/javascript" defer></script>
+
+      <!-- Personal style and script file links -->
+      <link rel="stylesheet" href="css/styles.css">
+      <script src="scripts/script.js" type="text/javascript" defer></script>
+
+   </head>
+   <body>
+
+      <div id="leafletMapid" class="mapdiv"></div>
+
+      <div class="activeArea"></div>
+
+      <div class="controlButtons">
+         <button type="button" name="button" id="randomMarker">Create a Random Maker</button>
+         <br>
+         <button type="button" name="button" id="clearRandomMarkers">Clear Random markers</button>
+      </div>
+
+
+   </body>
+</html>
