@@ -138,12 +138,10 @@ query.run(function (error, featureCollection, response) {
 //                GRID DERIVATION METHOD
 //------------------------------------------------------------------------//
 
-(function elevationGrid(){
 
    var coords = leafletMap.getCenter();
    let coordsArray = [coords.lat, coords.lng]
    console.log('coordsArray:', coordsArray);
-   return coordsArray;
 
    var testMarkerPopup =
       `<div class="mainGrid">
@@ -190,7 +188,6 @@ query.run(function (error, featureCollection, response) {
 
 
 
-})();
 
 
 
