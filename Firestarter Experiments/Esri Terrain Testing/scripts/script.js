@@ -39,6 +39,9 @@ var baseLayer =  new L.tileLayer('https://api.mapbox.com/v4/mapbox.terrain-rgb/{
 
 baseLayer.addTo(leafletMap)
 
+L.control.mousePosition().addTo(leafletMap);
+
+
 
 
 
@@ -94,12 +97,17 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
 
 
 
-L.control.mousePosition().addTo(leafletMap);
-
 
 
 
 var esriUSATerrainLayer =  L.esri.basemapLayer('Terrain').addTo(leafletMap);
+
+
+
+
+
+
+
 
 
 var southWest = L.latLng(45.51, -122.70);
@@ -108,7 +116,7 @@ var bounds = L.latLngBounds(southWest, northEast);
 
 var query = L.esri.query({
   url: 'https://elevation.arcgis.com/arcgis/rest/services/WorldElevation/Terrain/ImageServer',
-  token: ''
+  token: 'gAE5pl5gFeWN4nyR'
 });
 
 query.within(bounds);
