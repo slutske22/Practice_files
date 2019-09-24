@@ -24,7 +24,7 @@ var mapOptions = {
 var leafletMap = L.map('leafletMapid', mapOptions);
 
 // use only active activearea
-leafletMap.setActiveArea('activeArea')
+// leafletMap.setActiveArea('activeArea')
 
 //add a baseLayer
 var baseLayer =  new L.tileLayer('https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token={accessToken}', {
@@ -105,11 +105,6 @@ var esriUSATerrainLayer =  L.esri.basemapLayer('Terrain').addTo(leafletMap);
 
 
 
-
-
-
-
-
 var southWest = L.latLng(45.51, -122.70);
 var northEast = L.latLng(45.52, -122.64);
 var bounds = L.latLngBounds(southWest, northEast);
@@ -130,6 +125,78 @@ query.run(function (error, featureCollection, response) {
   console.log(featureCollection.features);
 
 });
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------------------//
+//                GRID DERIVATION METHOD
+//------------------------------------------------------------------------//
+
+(function elevationGrid(){
+
+   var coords = leafletMap.getCenter();
+   let coordsArray = [coords.lat, coords.lng]
+   console.log('coordsArray:', coordsArray);
+   return coordsArray;
+
+   var testMarkerPopup =
+      `<div class="mainGrid">
+         <div class="box one">
+            1: (n-1, m-1)
+         </div>
+         <div class="box two">
+            2: (n, m-1)
+         </div>
+         <div class="box three">
+            3: (n+1, m-1)
+         </div>
+         <div class="box four">
+            4: (n-1, m)
+         </div>
+         <div class="box five">
+            5: (n,m) <br><br>
+            Latitude: ${coords.lat} <br>
+            Longitude: ${coords.lng}
+            Elevation:
+         </div>
+         <div class="box six">
+            6: (n+1, m)
+         </div>
+         <div class="box seven">
+            7: (n-1, m+1)
+         </div>
+         <div class="box eight">
+            8: (n, m+1)
+         </div>
+         <div class="box nine">
+            9: (n+1, m+1)
+         </div>
+      </div>`;
+
+
+
+
+   var testMarker = L.marker( coords )
+      .bindPopup( testMarkerPopup , {maxWidth: 2000, removable: true})
+      .addTo(leafletMap)
+      .openPopup();
+
+
+
+
+})();
+
+
+
+
+
+
 
 
 
@@ -177,6 +244,7 @@ query.run(function (error, featureCollection, response) {
       let randomLat = randomNumber(mapBoundTop, mapBoundBottom);
 
       let position = [randomLat, randomLng];
+      console.log('position:', position);
       let elevation = getElevation( position );
 
       // Create a random marker
@@ -212,6 +280,7 @@ query.run(function (error, featureCollection, response) {
 
 
 })();
+
 
 //------------------------------------------------------------------------//
 //                MAP CENTERING ON POPUP OPEN
