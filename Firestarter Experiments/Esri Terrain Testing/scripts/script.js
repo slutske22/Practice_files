@@ -80,7 +80,11 @@ function getElevation(location){
    let B = color[2];
 
    let height = -10000 + ((R * 256 * 256 + G * 256 + B) * 0.1)
-   let heightRounded = Math.round( height * 10) / 10 + ' meters';
+   return height;
+}
+
+function writeElevation(elevation){
+   let heightRounded = Math.round( elevation * 10) / 10 + ' meters';
    return heightRounded;
 }
 
@@ -140,8 +144,9 @@ query.run(function (error, featureCollection, response) {
 
 
    var coords = leafletMap.getCenter();
-   let coordsArray = [coords.lat, coords.lng]
+   var coordsArray = [coords.lat, coords.lng];
    console.log('coordsArray:', coordsArray);
+   // getElevation( coordsArray );
 
    var testMarkerPopup =
       `<div class="mainGrid">
@@ -250,7 +255,7 @@ query.run(function (error, featureCollection, response) {
             <br>
             Latitude: ${randomLat}<br>
             Longitude: ${randomLng}<br>
-            Elevation: ${elevation}` , {removable: true, editable: true});
+            Elevation: ${writeElevation(elevation)}` , {removable: true, editable: true});
 
       // leafletMap.panTo(position)
 
