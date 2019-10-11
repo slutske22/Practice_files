@@ -100,3 +100,18 @@ clearMarkersButton.addEventListener("click", function(){
    // Empty the array to truly refresh the random marker layer
    randomMarkerArray = [];
 }, false);
+
+
+
+
+
+
+
+var geoSearch = L.esri.Geocoding.geosearch( {
+  position: 'bottomright',
+   expanded: true,
+   collapseAfterResult: false,
+   providers: [L.esri.Geocoding.geocodeServiceProvider()]
+} )
+
+geoSearch.addTo(map);
