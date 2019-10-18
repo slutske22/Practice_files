@@ -19,6 +19,10 @@ main,
    margin: 0px;
 }
 
+main{
+   top: 50px;
+}
+
 header{
    position: absolute;
    top: 0px;
@@ -36,6 +40,24 @@ header:hover{
 h1{
    margin: 0px;
    padding: 10px;
+}
+
+header + main #sidebar{
+   top: 10px;
+   transition: top, 500ms;
+}
+header:hover + main #sidebar{
+   top: 20px;
+}
+
+.leaflet-left .leaflet-control{
+   margin: 0px;
+   left: 60px;
+   top: 60px;
+   transition: top, 500ms;
+}
+header:hover + #leafletMapid .leaflet-left .leaflet-control{
+   top: 20px;
 }
 
 
