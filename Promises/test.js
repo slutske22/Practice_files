@@ -25,29 +25,60 @@ function get(url) {
 
 
 
+function myAsyncFunction(url) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = () => resolve(xhr.reponse);
+    xhr.onload = function(){
+      resolve(xhr.response)
+   }
+    xhr.onerror = () => reject(xhr.statusText);
+    xhr.send();
+  });
+}
 
 
-// const apiKey = 'd126cacbbfebf7c84ad878e9deffc0e1';
-const apiKey = '';
 
-const url =
+
+const apiKey = 'd126cacbbfebf7c84ad878e9deffc0e1';
+// const apiKey = '';
+
+const losAngelesUrl =
   'https://api.openweathermap.org/data/2.5/weather?q=los+angeles&APPID=' +
   apiKey;
+const sanDiegoUrl =
+ 'https://api.openweathermap.org/data/2.5/weather?q=san+diego&APPID=' +
+ apiKey;
 
 
-get(url)
+ myAsyncFunction(sanDiegoUrl)
+    .then( function(data){
+      return JSON.parse(data)
+   })
+   .then( function(dataObj){
+      console.log("San Diego Weather:", dataObj);
+   })
+   .catch( () => {
+      console.log('Could not get SD weather');
+   })
+   .finally( () => {
+      console.log(`End of "myAsyncFunction" promise.`);
+   })
+
+
+
+
+get(losAngelesUrl)
    .then( function(data){
       return dataObject = JSON.parse(data);
    })
    .then( function(){
-      console.log(dataObject);
-   })
-   .then( function(){
-      console.log(dataObject.weather);
+      console.log("Los Angeles Weather:", dataObject);
    })
    .catch( () => {
-      console.log('Could not get weather');
+      console.log('Could not get LA weather');
    })
    .finally( () => {
-      console.log('Weather report complete');
+      console.log(`End of "get" promise.`);
    })
