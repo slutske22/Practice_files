@@ -21,7 +21,7 @@ function roundNumber(number, tensplace = 10){
 
 var mapOptions = {
   center: [33.270, -116.650],
-  zoom: 8
+  zoom: 10
 }
 
 
@@ -123,18 +123,12 @@ function getSlope(point){
       top = leafletMap.containerPointToLatLng(topxy),
       bottom = leafletMap.containerPointToLatLng(bottomxy);
 
-   // console.log('xy', xy, 'rightxy', rightxy, 'leftxy', leftxy, 'topxy', topxy, 'bottomxy', bottomxy);
-
    // get the elevation of those points and get the difference
    let dzdx = getElevation(right) - getElevation(left);
    let dzdy = getElevation(top) - getElevation(bottom);
 
-   // console.log('dzdx', dzdx, 'dzdy', dzdy);
-
    // Get the angle of slope based on those differences
    let slopeAngle = Math.atan( Math.sqrt(dzdx ** 2 + dzdy ** 2)) * (180 / Math.PI);
-
-   // console.log(dzdx, dzdy);
 
    return slopeAngle;
 
@@ -170,29 +164,18 @@ function getSlopeTest(point){
    slopeTest.topElevation = getElevation( slopeTest.top );
    slopeTest.bottomElevation = getElevation( slopeTest.bottom );
 
-   // console.log('xy', xy, 'rightxy', rightxy, 'leftxy', leftxy, 'topxy', topxy, 'bottomxy', bottomxy);
-
-
+   // Get the distance between the points
    slopeTest.dx = L.GeometryUtil.distance(leafletMap, slopeTest.right, slopeTest.left)
    slopeTest.dy = L.GeometryUtil.distance(leafletMap, slopeTest.top, slopeTest.bottom)
-
-   console.log(slopeTest.right, slopeTest.left);
-   console.log(slopeTest.dy);
-
 
    // get the elevation of those points and get the difference
    slopeTest.dzdx = ( slopeTest.rightElevation - slopeTest.leftElevation) / slopeTest.dx;
    slopeTest.dzdy = ( slopeTest.topElevation - slopeTest.bottomElevation ) / slopeTest.dy;
 
-   // console.log('dzdx', dzdx, 'dzdy', dzdy);
-
    // Get the angle of slope based on those differences
    slopeTest.slopeAngle = Math.atan( Math.sqrt(slopeTest.dzdx ** 2 + slopeTest.dzdy ** 2)) * (180 / Math.PI);
    slopeTest.slopeAspect = Math.atan2( slopeTest.dzdy, slopeTest.dzdx ) * (180 / Math.PI);
 
-
-
-   // console.log(dzdx, dzdy);
 
    return slopeTest;
 
@@ -284,6 +267,26 @@ makeInfoMarker.addEventListener('click', function(){
             Aspect of Point: ${roundNumber(slopeObject.slopeAspect)}
          </div>
       </div>` , {removable: true, editable: true, maxWidth: 600, autoPan: false})
+      .openPopup();
+
+})
+
+
+
+makeMarker.addEventListener('click', function(){
+
+   let markerPosition = leafletMap.getCenter();
+   let slopeObject = getSlopeTest(markerPosition);
+
+   let marker = L.marker( markerPosition )
+      .addTo(leafletMap)
+      .bindPopup(`
+      Latitude: ${markerPosition.lat}<br>
+      Longitude: ${markerPosition.lng}<br>
+      Elevation: ${roundNumber( getElevation(markerPosition), 10)} m<br>
+      <br>
+      Slope at Point: ${roundNumber(slopeObject.slopeAngle)}<br>
+      Aspect at Point: ${roundNumber(slopeObject.slopeAspect)}` , {removable: true, editable: true, maxWidth: 600, autoPan: false})
       .openPopup();
 
 })
