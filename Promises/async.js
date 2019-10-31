@@ -64,3 +64,50 @@ async function fromAsync(){
 } // fromAsync()
 
 fromAsync();
+
+
+
+//------------------------------------------------//
+//
+//    METHOD THREE: AWAIT WITHOUT XHR
+//    This does not work
+//
+//------------------------------------------------//
+
+// async function noXHR(){
+//    let logSomething = function(){
+//       console.log("Delayed Response");
+//    }
+//    let delay = await setTimeout( logSomething , 1000)
+//    console.log("Done Logging");
+// }
+//
+// noXHR();
+
+
+
+
+//------------------------------------------------//
+//
+//    METHOD FOUR: AWAIT A PROMISE NO XHR
+//
+//------------------------------------------------//
+
+
+
+function makePromise(){
+   return new Promise( (resolve) => {
+      setTimeout( () => { resolve('Resolution Complete') }, 2000)
+   })
+};
+
+async function keepPromise(){
+   var loggedStatement = await makePromise()
+   console.log(loggedStatement);
+};
+
+keepPromise()
+
+makePromise().then( (statment) => {
+   console.log(statment);
+})
