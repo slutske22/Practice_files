@@ -1,0 +1,17 @@
+.week{
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.day{
+   width: 200px;
+   height: 330px;
+   border: 1px solid black;
+   margin: 10px;
+}
+
+
+
+h2{
+   text-align: center;
+}
