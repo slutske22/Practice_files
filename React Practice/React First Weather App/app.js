@@ -82,8 +82,8 @@ class Locator extends React.Component{
       return(
          <form className="locator">
             <h2>Choose your Location</h2>
-            <Input placeholder="Search by City Name" />
-            <Input placeholder="Search by Zip" />
+            <Input name="city" placeholder="Search by City Name" />
+            <Input name="zip" placeholder="Search by Zip" />
          </form>
       )
    }
@@ -94,16 +94,25 @@ class Input extends React.Component{
    constructor(props){
       super(props);
       this.state = {value: ''}
-      this.checkInput = this.checkInput.bind(this);
+      this.changeHandler = this.changeHandler.bind(this);
+      this.zipHandler = this.zipHandler.bind(this);
+      this.cityHandler = this.cityHandler.bind(this);
    }
 
-   checkInput(e){
+   changeHandler(e){
       this.setState({value: e.target.value})
-      console.log(this.state.value);
+   }
+
+   zipHandler(e){
+      console.log(`You're in the ${this.props.name} field`);
+   }
+
+   cityHandler(e){
+      console.log(`You're in the ${this.props.name} field`);
    }
 
    render() {
-      return <input type="text" placeholder={this.props.placeholder} value={this.state.value} onChange={this.checkInput} onKeyPress={this.checkInput}></input>
+      return <input type="text" placeholder={this.props.placeholder} value={this.state.value} onChange={this.changeHandler} onKeyDown={this.zipHandler}></input>
    }
 }
 
