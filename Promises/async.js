@@ -30,10 +30,21 @@ function fromPromise(){
 
 } // fromPromise()
 
+try {
+   fromPromise().poom( (data) => {
+      console.log(JSON.parse(data));
+  })
+}
+catch(e){
+   console.log(e);
+}
 
- fromPromise().then( (data) => {
-    console.log(JSON.parse(data));
-})
+
+
+
+
+
+
 
 
 //------------------------------------------------//
@@ -63,7 +74,13 @@ async function fromAsync(){
    console.log(JSON.parse(data));
 } // fromAsync()
 
-fromAsync();
+
+async function superWait(){
+   let longWait = await fromAsync();
+   console.log('Superwaited');
+}
+
+superWait();
 
 
 
@@ -95,19 +112,19 @@ fromAsync();
 
 
 
-function makePromise(){
-   return new Promise( (resolve) => {
-      setTimeout( () => { resolve('Resolution Complete') }, 2000)
-   })
-};
-
-async function keepPromise(){
-   var loggedStatement = await makePromise()
-   console.log(loggedStatement);
-};
-
-keepPromise()
-
-makePromise().then( (statment) => {
-   console.log(statment);
-})
+// function makePromise(){
+//    return new Promise( (resolve) => {
+//       setTimeout( () => { resolve('Resolution Complete') }, 2000)
+//    })
+// };
+//
+// async function keepPromise(){
+//    var loggedStatement = await makePromise()
+//    console.log(loggedStatement);
+// };
+//
+// keepPromise()
+//
+// makePromise().then( (statment) => {
+//    console.log(statment);
+// })
