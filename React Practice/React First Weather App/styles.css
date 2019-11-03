@@ -19,13 +19,13 @@ form.locator h2{
    margin: 5px;
 }
 
-input[type='text']{
+input{
    width: 55%;
    margin-bottom: 20px;
    padding: 0.5em;
    font-size: 1.2em;
 }
-input[type='text']:last-of-type{
+input:last-of-type{
    width: 35%;
    margin-left: 10%
 }

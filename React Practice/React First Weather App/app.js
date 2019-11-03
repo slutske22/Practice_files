@@ -28,9 +28,12 @@ var date = new Date();
 //----------------------------------------------------------------//
 
 var openWeatherMapsApiKey = 'ae9a514eab7934500eeb71f723b38277';
-var cityName = 'san+diego';
+var cityName = 'los%20angeles';
+var zipCode = 92109;
 // Endpoint for a 7 day forecast.  can also use `?zip=${zip}` instead of `q=${cityName},us` to get as a function of zip code
-var url = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+var urlCity = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+
+var urlZip = `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
 
 
 function getWeather(url){
@@ -48,7 +51,13 @@ function getWeather(url){
    })
 }
 
-getWeather(url).then( (data) => {
+getWeather(urlCity).then( (data) => {
+   console.log(JSON.parse(data));
+}).catch( (error) => {
+   console.log(error);
+})
+
+getWeather(urlZip).then( (data) => {
    console.log(JSON.parse(data));
 }).catch( (error) => {
    console.log(error);
@@ -82,8 +91,8 @@ class Locator extends React.Component{
       return(
          <form className="locator">
             <h2>Choose your Location</h2>
-            <Input name="city" placeholder="Search by City Name" />
-            <Input name="zip" placeholder="Search by Zip" />
+            <Input name="city" type="text" placeholder="Search by City Name" />
+            <Input name="zip" type="number" max="99999" placeholder="Search by Zip" />
          </form>
       )
    }
@@ -95,24 +104,41 @@ class Input extends React.Component{
       super(props);
       this.state = {value: ''}
       this.changeHandler = this.changeHandler.bind(this);
-      this.zipHandler = this.zipHandler.bind(this);
-      this.cityHandler = this.cityHandler.bind(this);
+      this.inputHandler = this.inputHandler.bind(this);
    }
 
    changeHandler(e){
       this.setState({value: e.target.value})
    }
 
-   zipHandler(e){
-      console.log(`You're in the ${this.props.name} field`);
-   }
+   inputHandler(e){
+      if (this.props.name === "zip"){
 
-   cityHandler(e){
-      console.log(`You're in the ${this.props.name} field`);
+         // Code to limit the length of the zip Code
+         // TODO: Make it work properly
+         // if (this.state.value.length > 4){
+         //    console.log("Value is too long");
+         //    e.target.value = this.state.value.slice(0,5);
+         // }
+
+         // Once user presses enter
+         if (e.keyCode === 13){
+            let zipCode = this.state.value;
+            console.log(zipCode);
+         }
+
+      } else if (this.props.name === "city"){
+
+         if (e.keyCode === 13){
+            let cityName = encodeURIComponent(this.state.value);
+            console.log(cityName);
+         }
+
+      }
    }
 
    render() {
-      return <input type="text" placeholder={this.props.placeholder} value={this.state.value} onChange={this.changeHandler} onKeyDown={this.zipHandler}></input>
+      return <input type={this.props.type} placeholder={this.props.placeholder} value={this.state.value} onChange={this.changeHandler} onKeyUp={this.inputHandler}></input>
    }
 }
 
