@@ -72,7 +72,7 @@ const checkCompletion = function() {
       }
 }
 // createRequest(smartyUrl);
-createRequest(parksUrl, parksUpdateUISuccess, parksUpdateUIError);
+// createRequest(parksUrl, parksUpdateUISuccess, parksUpdateUIError);
 
 addressField.addEventListener('blur', checkCompletion);
 cityField.addEventListener('blur', checkCompletion);
