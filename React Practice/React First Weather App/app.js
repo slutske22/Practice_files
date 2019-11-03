@@ -28,11 +28,11 @@ var date = new Date();
 //----------------------------------------------------------------//
 
 var openWeatherMapsApiKey = 'ae9a514eab7934500eeb71f723b38277';
-var cityName = 'los%20angeles';
-var zipCode = 92109;
+// var cityName = 'los%20angeles';
+// var zipCode = 92109;
 // Endpoint for a 7 day forecast.  can also use `?zip=${zip}` instead of `q=${cityName},us` to get as a function of zip code
-var urlCity = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
-var urlZip = `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+// var urlCity = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+// var urlZip = `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
 
 
 function makeCityURL(cityName){
@@ -58,17 +58,17 @@ function getWeather(url){
    })
 }
 
-getWeather(urlCity).then( (data) => {
-   console.log(JSON.parse(data));
-}).catch( (error) => {
-   console.log(error);
-})
-
-getWeather(urlZip).then( (data) => {
-   console.log(JSON.parse(data));
-}).catch( (error) => {
-   console.log(error);
-})
+// getWeather(urlCity).then( (data) => {
+//    console.log(JSON.parse(data));
+// }).catch( (error) => {
+//    console.log(error);
+// })
+//
+// getWeather(urlZip).then( (data) => {
+//    console.log(JSON.parse(data));
+// }).catch( (error) => {
+//    console.log(error);
+// })
 
 
 
