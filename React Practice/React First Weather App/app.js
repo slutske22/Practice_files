@@ -15,7 +15,7 @@ function modulus(i, n){
    return (i % n + n) % n;
 }
 
-// First, some definitions for the dates
+// Some definitions for the calendar
 var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 var daysInAMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
@@ -82,8 +82,13 @@ function getWeather(url){
 class App extends React.Component {
    constructor(props){
       super(props)
-      this.state = {dataReady: false}
+      this.state = {
+         dataReady: false,
+         data: ''
+      }
    }
+
+
    render() {
       return (
          <div className="app">
