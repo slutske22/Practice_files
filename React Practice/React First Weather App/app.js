@@ -32,8 +32,15 @@ var cityName = 'los%20angeles';
 var zipCode = 92109;
 // Endpoint for a 7 day forecast.  can also use `?zip=${zip}` instead of `q=${cityName},us` to get as a function of zip code
 var urlCity = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
-
 var urlZip = `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+
+
+function makeCityURL(cityName){
+   return `https://api.openweathermap.org/data/2.5/forecast?q=${cityName},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+}
+function makeZipURL(zipCode){
+   return `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+}
 
 
 function getWeather(url){
@@ -112,8 +119,8 @@ class Input extends React.Component{
    }
 
    inputHandler(e){
+      // -------- If you're in the zip search field: ------------------------
       if (this.props.name === "zip"){
-
          // Code to limit the length of the zip Code
          // TODO: Make it work properly
          // if (this.state.value.length > 4){
@@ -124,16 +131,24 @@ class Input extends React.Component{
          // Once user presses enter
          if (e.keyCode === 13){
             let zipCode = this.state.value;
-            console.log(zipCode);
+            let zipUrl = makeZipURL(zipCode);
+            getWeather(zipUrl).then( (data) => {
+               console.log(JSON.parse(data));
+            }).catch( (error) => {
+               console.log(error);
+            })
          }
-
+      // -------- If you're in the City Search field: ----------------------
       } else if (this.props.name === "city"){
-
          if (e.keyCode === 13){
             let cityName = encodeURIComponent(this.state.value);
-            console.log(cityName);
+            let cityUrl = makeCityURL(cityName);
+            getWeather(cityUrl).then( (data) => {
+               console.log(JSON.parse(data));
+            }).catch( (error) => {
+               console.log(error);
+            })
          }
-
       }
    }
 
