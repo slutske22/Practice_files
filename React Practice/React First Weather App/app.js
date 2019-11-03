@@ -80,6 +80,10 @@ function getWeather(url){
 //----------------------------------------------------------------//
 
 class App extends React.Component {
+   constructor(props){
+      super(props)
+      this.state = {dataReady: false}
+   }
    render() {
       return (
          <div className="app">
@@ -99,7 +103,7 @@ class Locator extends React.Component{
          <form className="locator">
             <h2>Choose your Location</h2>
             <Input name="city" type="text" placeholder="Search by City Name" />
-            <Input name="zip" type="number" max="99999" placeholder="Search by Zip" />
+            <Input name="zip" type="number" placeholder="Search by Zip" />
          </form>
       )
    }
@@ -109,7 +113,10 @@ class Locator extends React.Component{
 class Input extends React.Component{
    constructor(props){
       super(props);
-      this.state = {value: ''}
+      this.state = {
+         value: '',
+         dataReady: false
+      }
       this.changeHandler = this.changeHandler.bind(this);
       this.inputHandler = this.inputHandler.bind(this);
    }
@@ -132,22 +139,32 @@ class Input extends React.Component{
          if (e.keyCode === 13){
             let zipCode = this.state.value;
             let zipUrl = makeZipURL(zipCode);
-            getWeather(zipUrl).then( (data) => {
-               console.log(JSON.parse(data));
-            }).catch( (error) => {
-               console.log(error);
-            })
+            getWeather(zipUrl)
+               .then( (data) => {
+                  console.log(JSON.parse(data));
+               })
+               .then( this.setState({dataReady: true}) )
+               .then( console.log(this.state) )
+               .catch( (error) => {
+                  this.setState({dataReady: false})
+                  console.log(error);
+               })
          }
       // -------- If you're in the City Search field: ----------------------
       } else if (this.props.name === "city"){
          if (e.keyCode === 13){
             let cityName = encodeURIComponent(this.state.value);
             let cityUrl = makeCityURL(cityName);
-            getWeather(cityUrl).then( (data) => {
-               console.log(JSON.parse(data));
-            }).catch( (error) => {
-               console.log(error);
-            })
+            getWeather(cityUrl).
+               then( (data) => {
+                  console.log(JSON.parse(data));
+               })
+               .then( this.setState({dataReady: true}) )
+               .then( console.log(this.state) )
+               .catch( (error) => {
+                  this.setState({dataReady: false})
+                  console.log(error);
+               })
          }
       }
    }
