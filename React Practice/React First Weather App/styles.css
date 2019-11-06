@@ -39,10 +39,14 @@ input:last-of-type{
 }
 
 .day{
-   width: calc(1/8 * 100%);
+   width: calc(1/6 * 100%);
    height: 300px;
    border: 1px solid black;
    margin: 0px;
+
+   display: flex;
+   flex-direction: column;
+   align-items: center;
 }
 
 
@@ -52,5 +56,5 @@ h2{
 }
 
 .weatherIcon{
-   margin: auto;
+   text-align: center;
 }

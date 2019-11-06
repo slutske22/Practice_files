@@ -180,6 +180,10 @@ class Body extends React.Component{
       super(props)
    }
 
+   componentDidUpdate(){
+      console.log("The body component just updated");
+   }
+
    render(){
       if (this.props.dataReady){
          return <Week data={this.props.data} />
@@ -228,7 +232,7 @@ class Day extends React.Component {
 
             <h2>{ days[ modulus(date.getDay() + this.props.number, 5) ] }</h2>
             <h2>{ months[date.getMonth()] } { modulus( date.getDate() + this.props.number, daysInAMonth[date.getMonth()] ) }</h2>
-            <img clasName="weatherIcon" src={iconPath} />
+            <img className="weatherIcon" src={iconPath} />
          </div>
       )
    }
