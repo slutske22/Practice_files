@@ -30,10 +30,10 @@ var date = new Date();
 var openWeatherMapsApiKey = 'ae9a514eab7934500eeb71f723b38277';
 
 function makeCityURL(cityName){
-   return `https://api.openweathermap.org/data/2.5/forecast?q=${cityName},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+   return `https://api.openweathermap.org/data/2.5/forecast?q=${cityName},us&cnt=56&mode=json&APPID=${openWeatherMapsApiKey}`
 }
 function makeZipURL(zipCode){
-   return `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
+   return `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=56&mode=json&APPID=${openWeatherMapsApiKey}`
 }
 
 //
@@ -148,10 +148,13 @@ class App extends React.Component {
    }
 
    renderDay(i) {
-      return <Day number={i} data={this.state.data}/>
+      return <Day number={i} data={this.state.weatherData}/>
    }
 
    render() {
+
+
+
       return (
          <div className="app">
             <div className="body">
@@ -163,15 +166,7 @@ class App extends React.Component {
                      placeholder="Search by Zip" value={this.state.zipValue} onChange={this.zipHandler}
                      onKeyDown={this.zipHandler} />
                </form>
-               <div className="week">
-                  { this.renderDay(0) }
-                  { this.renderDay(1) }
-                  { this.renderDay(2) }
-                  { this.renderDay(3) }
-                  { this.renderDay(4) }
-                  { this.renderDay(5) }
-                  { this.renderDay(6) }
-               </div> // week
+               <Body dataReady={this.state.dataReady} data={this.state.weatherData} />
             </div>
          </div>
       )
@@ -179,15 +174,61 @@ class App extends React.Component {
 } // App
 
 
+// Body will hold either an empty div for before anything is loaded, an error message for a bad request, or the weather cards themselves
+class Body extends React.Component{
+   constructor(props){
+      super(props)
+   }
+
+   render(){
+      if (this.props.dataReady){
+         return <Week data={this.props.data} />
+      } else {
+         return  <Empty />
+      }
+   }
+
+}
+
+function Empty(){
+   return <div className="empty"></div>
+}
+
+class Week extends React.Component {
+   renderDay(i) {
+      return <Day number={i} data={this.props.data}/>
+   }
+
+   render (){
+      return(
+         <div>
+            <h3>Weather for {this.props.data.city.name}</h3>
+            <div className="week">
+               { this.renderDay(0) }
+               { this.renderDay(1) }
+               { this.renderDay(2) }
+               { this.renderDay(3) }
+               { this.renderDay(4) }
+            </div>
+         </div>
+      )
+   }
+}
+
 
 class Day extends React.Component {
    render(){
+
+      let icon = this.props.data.list[this.props.number*8].weather[0].icon
+      let iconPath = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+
       return (
          <div className="day">
             <div className="cardIndex">{ this.props.number + 1 }</div>
 
-            <h2>{ days[ modulus(date.getDay() + this.props.number, 7) ] }</h2>
+            <h2>{ days[ modulus(date.getDay() + this.props.number, 5) ] }</h2>
             <h2>{ months[date.getMonth()] } { modulus( date.getDate() + this.props.number, daysInAMonth[date.getMonth()] ) }</h2>
+            <img clasName="weatherIcon" src={iconPath} />
          </div>
       )
    }

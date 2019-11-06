@@ -50,3 +50,7 @@ input:last-of-type{
 h2{
    text-align: center;
 }
+
+.weatherIcon{
+   margin: auto;
+}
