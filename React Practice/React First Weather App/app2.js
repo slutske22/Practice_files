@@ -148,7 +148,7 @@ class App extends React.Component {
    }
 
    renderDay(i) {
-      return <Day number={i}/>
+      return <Day number={i} data={this.state.data}/>
    }
 
    render() {
