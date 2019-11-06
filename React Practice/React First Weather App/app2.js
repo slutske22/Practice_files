@@ -42,35 +42,39 @@ function makeZipURL(zipCode){
    return `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=7&mode=json&APPID=${openWeatherMapsApiKey}`
 }
 
-
-function getWeather(url){
-   return new Promise( (resolve, reject) => {
-      var weatherRequest = new XMLHttpRequest()
-      weatherRequest.open('GET', url);
-      weatherRequest.onload = function(){
-         if (weatherRequest.status === 200) {
-           resolve(weatherRequest.response)
-         } else {
-           reject(weatherRequest.statusText)
-         }
-      } // .onload
-      weatherRequest.send()
-   })
-}
-
-// getWeather(urlCity).then( (data) => {
-//    console.log(JSON.parse(data));
-// }).catch( (error) => {
-//    console.log(error);
-// })
 //
-// getWeather(urlZip).then( (data) => {
-//    console.log(JSON.parse(data));
-// }).catch( (error) => {
-//    console.log(error);
-// })
-
-
+// function getWeather(url){
+//    (function(){
+//       return new Promise( (resolve, reject) => {
+//          var weatherRequest = new XMLHttpRequest()
+//          weatherRequest.open('GET', url);
+//          weatherRequest.onload = function(){
+//             if (weatherRequest.status === 200) {
+//               resolve(weatherRequest.response)
+//             } else {
+//               reject(weatherRequest.statusText)
+//             }
+//          } // .onload
+//          weatherRequest.send()
+//       })
+//    })()
+//    .then( (data) => {
+//       return JSON.parse(data)
+//    })
+//    .then( (parsedData) => {
+//       this.setState( {dataReady: true, weatherData: parsedData} )
+//    })
+//    .then( () => {
+//       if (this.state.dataReady){
+//          console.log(this.state)
+//       }
+//    })
+//    .catch( (error) => {
+//       this.setState({dataReady: false})
+//       console.log(error);
+//    })
+// }
+//
 
 
 
@@ -89,7 +93,43 @@ class App extends React.Component {
          weatherData: ''
       }
       this.renderDay = this.renderDay.bind(this)
+      this.getWeather = this.getWeather.bind(this)
    }
+
+   // There's gotta be a better way to write this:
+   getWeather(url){
+      (function(){
+         return new Promise( (resolve, reject) => {
+            var weatherRequest = new XMLHttpRequest()
+            weatherRequest.open('GET', url);
+            weatherRequest.onload = function(){
+               if (weatherRequest.status === 200) {
+                 resolve(weatherRequest.response)
+               } else {
+                 reject(weatherRequest.statusText)
+               }
+            } // .onload
+            weatherRequest.send()
+         })
+      })()
+      .then( (data) => {
+         return JSON.parse(data)
+      })
+      .then( (parsedData) => {
+         this.setState( {dataReady: true, weatherData: parsedData} )
+      })
+      .then( () => {
+         if (this.state.dataReady){
+            console.log(this.state)
+         }
+      })
+      .catch( (error) => {
+         this.setState({dataReady: false})
+         console.log(error)
+         console.log(this.state)
+      })
+   }
+
 
    zipHandler = (e) => {
       this.setState({zipValue: e.target.value})
@@ -97,22 +137,8 @@ class App extends React.Component {
       if (e.keyCode === 13){
          let zipCode = this.state.zipValue;
          let zipUrl = makeZipURL(zipCode);
-         getWeather(zipUrl)
-            .then( (data) => {
-               return JSON.parse(data)
-            })
-            .then( (parsedData) => {
-               this.setState( {dataReady: true, weatherData: parsedData} )
-            })
-            .then( () => {
-               if (this.state.dataReady){
-                  console.log(this.state)
-               }
-            })
-            .catch( (error) => {
-               this.setState({dataReady: false})
-               console.log(error);
-            })
+         this.getWeather(zipUrl)
+
       }
    }
 
@@ -122,22 +148,8 @@ class App extends React.Component {
       if (e.keyCode === 13){
          let cityName = encodeURIComponent(this.state.cityValue);
          let cityUrl = makeCityURL(cityName);
-         getWeather(cityUrl)
-            .then( (data) => {
-               return JSON.parse(data)
-            })
-            .then( (parsedData) => {
-               this.setState( {dataReady: true, weatherData: parsedData} )
-            })
-            .then( () => {
-               if (this.state.dataReady){
-                  console.log(this.state)
-               }
-            })
-            .catch( (error) => {
-               this.setState({dataReady: false})
-               console.log(error);
-            })
+         this.getWeather(cityUrl)
+
       }
    }
 
