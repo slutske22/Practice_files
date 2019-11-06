@@ -21,6 +21,15 @@ var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OC
 var daysInAMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
 var date = new Date();
 
+// Some conversions for weather data
+function kelvinToFahrenheit(degreeKelvin){
+   return (degreeKelvin - 273.15) * 9/5 + 32;
+}
+
+function kelvinToCelcius(degreeKelvin){
+   return (degreeKelvin - 273.15);
+}
+
 
 
 //----------------------------------------------------------------//
@@ -35,40 +44,6 @@ function makeCityURL(cityName){
 function makeZipURL(zipCode){
    return `https://api.openweathermap.org/data/2.5/forecast?zip=${zipCode},us&cnt=56&mode=json&APPID=${openWeatherMapsApiKey}`
 }
-
-//
-// function getWeather(url){
-//    (function(){
-//       return new Promise( (resolve, reject) => {
-//          var weatherRequest = new XMLHttpRequest()
-//          weatherRequest.open('GET', url);
-//          weatherRequest.onload = function(){
-//             if (weatherRequest.status === 200) {
-//               resolve(weatherRequest.response)
-//             } else {
-//               reject(weatherRequest.statusText)
-//             }
-//          } // .onload
-//          weatherRequest.send()
-//       })
-//    })()
-//    .then( (data) => {
-//       return JSON.parse(data)
-//    })
-//    .then( (parsedData) => {
-//       this.setState( {dataReady: true, weatherData: parsedData} )
-//    })
-//    .then( () => {
-//       if (this.state.dataReady){
-//          console.log(this.state)
-//       }
-//    })
-//    .catch( (error) => {
-//       this.setState({dataReady: false})
-//       console.log(error);
-//    })
-// }
-//
 
 
 
@@ -132,7 +107,6 @@ class App extends React.Component {
          let zipCode = this.state.zipValue;
          let zipUrl = makeZipURL(zipCode);
          this.getWeather(zipUrl)
-
       }
    }
 
@@ -143,7 +117,6 @@ class App extends React.Component {
          let cityName = encodeURIComponent(this.state.cityValue);
          let cityUrl = makeCityURL(cityName);
          this.getWeather(cityUrl)
-
       }
    }
 
@@ -180,10 +153,6 @@ class Body extends React.Component{
       super(props)
    }
 
-   componentDidUpdate(){
-      console.log("The body component just updated");
-   }
-
    render(){
       if (this.props.dataReady){
          return <Week data={this.props.data} />
@@ -199,8 +168,9 @@ function Empty(){
 }
 
 class Week extends React.Component {
+
    renderDay(i) {
-      return <Day number={i} data={this.props.data}/>
+      return <Day number={i} data={this.props.data} units="F"/>
    }
 
    render (){
@@ -223,8 +193,16 @@ class Week extends React.Component {
 class Day extends React.Component {
    render(){
 
-      let icon = this.props.data.list[this.props.number*8].weather[0].icon
+      let onceDailyIndex = 5 + this.props.number*8
+      let icon = this.props.data.list[onceDailyIndex].weather[0].icon
+      let description = this.props.data.list[onceDailyIndex].weather[0].description
+      let time = this.props.data.list[onceDailyIndex].dt_txt
       let iconPath = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+      let tempKelvin = this.props.data.list[onceDailyIndex].main.temp
+      let temp = {
+         'C': Math.floor( kelvinToCelcius(tempKelvin) ),
+         'F': Math.floor( kelvinToFahrenheit(tempKelvin) )
+      }
 
       return (
          <div className="day">
@@ -233,6 +211,9 @@ class Day extends React.Component {
             <h2>{ days[ modulus(date.getDay() + this.props.number, 5) ] }</h2>
             <h2>{ months[date.getMonth()] } { modulus( date.getDate() + this.props.number, daysInAMonth[date.getMonth()] ) }</h2>
             <img className="weatherIcon" src={iconPath} />
+            <p>Time: {time}</p>
+            <p>Temp: {temp[this.props.units]} °{this.props.units}</p>
+            <p style={{'textTransform': 'capitalize'}}>{description}</p>
          </div>
       )
    }

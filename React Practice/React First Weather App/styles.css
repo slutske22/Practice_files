@@ -7,7 +7,7 @@ html {
 
 
 .body{
-   padding: 75px 125px;
+   padding: 30px 125px;
 }
 
 form.locator{
@@ -40,7 +40,7 @@ input:last-of-type{
 
 .day{
    width: calc(1/6 * 100%);
-   height: 300px;
+   /* height: 350px; */
    border: 1px solid black;
    margin: 0px;
 
