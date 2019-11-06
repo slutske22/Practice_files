@@ -83,16 +83,67 @@ class App extends React.Component {
    constructor(props){
       super(props)
       this.state = {
+         zipValue: '',
+         cityValue: '',
          dataReady: false,
-         data: ''
+         weatherData: ''
       }
       this.renderDay = this.renderDay.bind(this)
+   }
+
+   zipHandler = (e) => {
+      this.setState({zipValue: e.target.value})
+
+      if (e.keyCode === 13){
+         let zipCode = this.state.zipValue;
+         let zipUrl = makeZipURL(zipCode);
+         getWeather(zipUrl)
+            .then( (data) => {
+               return JSON.parse(data)
+            })
+            .then( (parsedData) => {
+               this.setState( {dataReady: true, weatherData: parsedData} )
+            })
+            .then( () => {
+               if (this.state.dataReady){
+                  console.log(this.state)
+               }
+            })
+            .catch( (error) => {
+               this.setState({dataReady: false})
+               console.log(error);
+            })
+      }
+   }
+
+   cityHandler = (e) => {
+      this.setState({cityValue: e.target.value})
+
+      if (e.keyCode === 13){
+         let cityName = encodeURIComponent(this.state.cityValue);
+         let cityUrl = makeCityURL(cityName);
+         getWeather(cityUrl)
+            .then( (data) => {
+               return JSON.parse(data)
+            })
+            .then( (parsedData) => {
+               this.setState( {dataReady: true, weatherData: parsedData} )
+            })
+            .then( () => {
+               if (this.state.dataReady){
+                  console.log(this.state)
+               }
+            })
+            .catch( (error) => {
+               this.setState({dataReady: false})
+               console.log(error);
+            })
+      }
    }
 
    renderDay(i) {
       return <Day number={i}/>
    }
-
 
    render() {
       return (
@@ -100,8 +151,11 @@ class App extends React.Component {
             <div className="body">
                <form className="locator">
                   <h2>Choose your Location</h2>
-                  <Input name="city" type="text" placeholder="Search by City Name" />
-                  <Input name="zip" type="number" placeholder="Search by Zip" />
+                  <input name="city" type="text"
+                     placeholder="Search by City Name" value={this.state.cityValue} onChange={this.cityHandler} onKeyDown={this.cityHandler} />
+                  <input name="zip" type="number"
+                     placeholder="Search by Zip" value={this.state.zipValue} onChange={this.zipHandler}
+                     onKeyDown={this.zipHandler} />
                </form>
                <div className="week">
                   { this.renderDay(0) }
@@ -116,73 +170,7 @@ class App extends React.Component {
          </div>
       )
    }
-}
-
-
-
-class Input extends React.Component{
-   constructor(props){
-      super(props);
-      this.state = {
-         value: '',
-         dataReady: false
-      }
-      this.changeHandler = this.changeHandler.bind(this);
-      this.inputHandler = this.inputHandler.bind(this);
-   }
-
-   changeHandler(e){
-      this.setState({value: e.target.value})
-   }
-
-   inputHandler(e){
-      // -------- If you're in the zip search field: ------------------------
-      if (this.props.name === "zip"){
-         // Code to limit the length of the zip Code
-         // TODO: Make it work properly
-         // if (this.state.value.length > 4){
-         //    console.log("Value is too long");
-         //    e.target.value = this.state.value.slice(0,5);
-         // }
-
-         // Once user presses enter
-         if (e.keyCode === 13){
-            let zipCode = this.state.value;
-            let zipUrl = makeZipURL(zipCode);
-            getWeather(zipUrl)
-               .then( (data) => {
-                  console.log(JSON.parse(data));
-               })
-               .then( this.setState({dataReady: true}) )
-               .then( console.log(this.state) )
-               .catch( (error) => {
-                  this.setState({dataReady: false})
-                  console.log(error);
-               })
-         }
-      // -------- If you're in the City Search field: ----------------------
-      } else if (this.props.name === "city"){
-         if (e.keyCode === 13){
-            let cityName = encodeURIComponent(this.state.value);
-            let cityUrl = makeCityURL(cityName);
-            getWeather(cityUrl).
-               then( (data) => {
-                  console.log(JSON.parse(data));
-               })
-               .then( this.setState({dataReady: true}) )
-               .then( console.log(this.state) )
-               .catch( (error) => {
-                  this.setState({dataReady: false})
-                  console.log(error);
-               })
-         }
-      }
-   }
-
-   render() {
-      return <input type={this.props.type} placeholder={this.props.placeholder} value={this.state.value} onChange={this.changeHandler} onKeyUp={this.inputHandler}></input>
-   }
-}
+} // App
 
 
 
