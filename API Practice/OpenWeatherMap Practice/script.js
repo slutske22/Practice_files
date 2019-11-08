@@ -48,7 +48,10 @@ getWeather(url)
       console.log(data);
       data.list.forEach( (hour) => {
 
-         sampleData.push( [hour.dt_txt, hour.weather[0].icon] )
+         let hourStamp = hour.dt_txt.slice(11,13)
+         let formattedHourStamp = (hourStamp < 12) ? `${hourStamp} am` : `${hourStamp-12} pm`;
+
+         sampleData.push( [hour.dt_txt, formattedHourStamp, hour.weather[0].icon] )
       })
       console.log(sampleData);
    })
