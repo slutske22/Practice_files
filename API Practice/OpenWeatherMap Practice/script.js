@@ -52,3 +52,10 @@ getWeather(url)
       })
       console.log(sampleData);
    })
+
+
+// https://stackoverflow.com/questions/1091372/getting-the-clients-timezone-offset-in-javascript
+var offset = new Date().getTimezoneOffset();
+console.log(offset);
+
+console.log(offset/60)
