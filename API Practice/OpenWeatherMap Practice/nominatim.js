@@ -56,6 +56,8 @@ apiCaller(openSearchURL)
          let lat = locationData[0].lat
          let lon = locationData[0].lon
          let url = `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${dsAPIKey}/${lat},${lon}`
+         
+         //  Feed the lat lng into the weather caller
          apiCaller(url)
             .then( (weatherData) => {
                console.log('Weather for:', locationData[0].display_name);
