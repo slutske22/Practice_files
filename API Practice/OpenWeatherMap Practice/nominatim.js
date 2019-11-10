@@ -30,16 +30,16 @@ var zipURL = `https://nominatim.openstreetmap.org/search?postalcode=${zipCode}&c
 
 function apiCaller(url){
    return new Promise( (resolve, reject) => {
-      var weatherRequest = new XMLHttpRequest()
-      weatherRequest.open('GET', url);
-      weatherRequest.onload = function(){
-         if (weatherRequest.status === 200) {
-           resolve(weatherRequest.response)
+      var request = new XMLHttpRequest()
+      request.open('GET', url);
+      request.onload = function(){
+         if (request.status === 200) {
+           resolve(request.response)
          } else {
-           reject(weatherRequest.statusText)
+           reject(request.statusText)
          }
       } // .onload
-      weatherRequest.send()
+      request.send()
    })
 }
 
@@ -56,7 +56,7 @@ apiCaller(openSearchURL)
          let lat = locationData[0].lat
          let lon = locationData[0].lon
          let url = `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${dsAPIKey}/${lat},${lon}`
-         
+
          //  Feed the lat lng into the weather caller
          apiCaller(url)
             .then( (weatherData) => {
