@@ -10,8 +10,8 @@
 
 //https://nominatim.org/release-docs/develop/api/Search/
 
-var searchTerm = encodeURIComponent('san diego california');
-var cityName = encodeURIComponent('santa cruz');
+var searchTerm = encodeURIComponent('portland oregon');
+var cityName = encodeURIComponent('new york');
 var stateName = encodeURIComponent('');
 var zipCode = 92109;
 
@@ -37,9 +37,31 @@ function apiCaller(url){
    })
 }
 
-apiCaller(cityURL)
+//  Build search call to Nominatim to get array of potential lcations
+apiCaller(openSearchURL)
    .then( (data) => {
       console.log(JSON.parse(data));
+      return locationData = JSON.parse(data)
+   })
+   .then( function(locationData){
+      //  If any results are returned, pick the first one and call darksky based on the lat lng that is returned
+      if (locationData.length > 0){
+
+         let lat = locationData[0].lat
+         let lon = locationData[0].lon
+         let url = `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${dsAPIKey}/${lat},${lon}`
+         apiCaller(url)
+            .then( (weatherData) => {
+               console.log('Weather for:', locationData[0].display_name);
+               console.log(JSON.parse(weatherData));
+            })
+
+      // If no results are returned, array has 0 length, give error message
+      } else {
+         console.log('Search did not return any results.  Try something else.');
+      }
+
+
    })
 
 
@@ -56,10 +78,10 @@ var dsUrl = `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecas
 
 // var dsUrl = `https://cors-anywhere.herokuapp.com/https://slutskereactweatherapp.herokuapp.com/darksky/forecast/37.8267,-122.4233`
 
-apiCaller(dsUrl)
-   .then( (data) => {
-      console.log(JSON.parse(data));
-   })
+// apiCaller(dsUrl)
+//    .then( (data) => {
+//       console.log(JSON.parse(data));
+//    })
 
 
 
