@@ -10,17 +10,23 @@
 
 //https://nominatim.org/release-docs/develop/api/Search/
 
+// Open search ranks results by importance, results[0] usually makes most sense.
 var searchTerm = encodeURIComponent('portland oregon');
-var cityName = encodeURIComponent('new york');
-var stateName = encodeURIComponent('');
-var zipCode = 92109;
-
 var openSearchURL = `https://nominatim.openstreetmap.org/search?q=${searchTerm}&format=json`;
 
-// Zip assumes country is USA, but that can be changed
+// Search by city name - oddly specific, gives unexpected places.  Open search better
+var cityName = encodeURIComponent('new york');
+var stateName = encodeURIComponent('');
+var cityURL = `https://nominatim.openstreetmap.org/search?city=${cityName}&state=${stateName}&country=USA&format=json`;
+
+var zipCode = 92109;
+// Building zipUrl assuming that the  country is USA, but that can be changed
 var zipURL = `https://nominatim.openstreetmap.org/search?postalcode=${zipCode}&country=USA&format=json`;
 
-var cityURL = `https://nominatim.openstreetmap.org/search?city=${cityName}&state=${stateName}&country=USA&format=json`;
+
+
+
+
 
 function apiCaller(url){
    return new Promise( (resolve, reject) => {
