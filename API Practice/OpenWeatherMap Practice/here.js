@@ -12,12 +12,14 @@
 
 let hereAppID = 'doeviQxmkTQwZOw4f8Cl'
 let hereAppCode = 'rkMIWlTcEk-J5oZmYmfxBw'
-let cityName = encodeURIComponent('san diego')
+let cityName = encodeURIComponent('la jolla')
 let zipCode = 90036
 
-var cityUrl = `https://weather.cit.api.here.com/weather/1.0/report.json?product=forecast_7days_simple&name=${cityName}&app_id=${hereAppID}&app_code=${hereAppCode}`
+var cityUrl = `https://cors-anywhere.herokuapp.com/https://weather.cit.api.here.com/weather/1.0/report.json?product=forecast_7days_simple&name=${cityName}&app_id=${hereAppID}&app_code=${hereAppCode}`
 
-var zipUrl = `https://weather.cit.api.here.com/weather/1.0/report.json?product=forecast_7days_simple&zip=${zipCode}&app_id=${hereAppID}&app_code=${hereAppCode}`
+var zipUrl = `https://cors-anywhere.herokuapp.com/https://weather.cit.api.here.com/weather/1.0/report.json?product=forecast_7days_simple&zip=${zipCode}&app_id=${hereAppID}&app_code=${hereAppCode}`
+
+// var cityUrl = `https://slutskereactweatherapp.herokuapp.com/here/weather/1.0/report.json?product=forecast_7days_simple&name=${cityName}`
 
 function getWeather(url){
    return new Promise( (resolve, reject) => {
