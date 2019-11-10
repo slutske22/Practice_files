@@ -1,11 +1,15 @@
+// -------------------------------------------------------- //
+//
+//    NOMATIM API AND CALLER
+//
+// -------------------------------------------------------- //
+
+
 // Apparently Nominatim can return a lat lng based on a zip, cityname, or whatever address.  If this works I can feed it into Dark Sky API and get better weather data than OWM gives
 
-// another option for 7-day forecast using zip or city name:
-// https://developer.here.com/api-explorer/rest/auto_weather/weather-forecast-7days-simple
+// No API Key required
 
 //https://nominatim.org/release-docs/develop/api/Search/
-
-var url = 'https://nominatim.openstreetmap.org/90036?format=json';
 
 var searchTerm = encodeURIComponent('san diego california');
 var cityName = encodeURIComponent('santa cruz');
@@ -35,6 +39,23 @@ function getLocationInfo(url){
 }
 
 getLocationInfo(cityURL)
+   .then( (data) => {
+      console.log(JSON.parse(data));
+   })
+
+
+
+// -------------------------------------------------------- //
+//
+//    DARK SKY API AND CALLER
+//
+// -------------------------------------------------------- //
+
+
+var dsAPIKey = '8bc745aa5c2da5e2367d048fdb76ca8a'
+var dsUrl = `https://api.darksky.net/forecast/${dsAPIKey}/37.8267,-122.4233`
+
+getLocationInfo(dsUrl)
    .then( (data) => {
       console.log(JSON.parse(data));
    })
