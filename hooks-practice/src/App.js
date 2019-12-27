@@ -31,8 +31,8 @@ const App = () => {
                }
             >update count</button>
 
-            <input name="email" value={emvalues.email} onChange={handleChange} />
-            <input type="password" name="password" value={value.password} onChange={handleChange} />
+            <input name="email" value={values.email} onChange={handleChange} />
+            <input type="password" name="password" value={values.password} onChange={handleChange} />
 
          </div>
 }
