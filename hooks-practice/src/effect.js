@@ -4,11 +4,11 @@ const App = () => {
 
    const [user, getUser] = useState('');
 
-    useEffect( () => {
-      fetch('https://jsonplaceholder.typicode.com/users/')
-      .then(response => response.json())
-      .then(json => console.log(json))
-   } ) // useEffect
+   //  useEffect( () => {
+   //    fetch('https://jsonplaceholder.typicode.com/users/')
+   //    .then(response => response.json())
+   //    .then(json => console.log(json))
+   // } ) // useEffect
 
    // use effect runs with every render.  that means at componentDidMount, and every componentDidUpdate
 
@@ -16,9 +16,8 @@ const App = () => {
       fetch('https://jsonplaceholder.typicode.com/users/')
       .then(response => response.json())
       .then(json => {
-         console.log(json)
-         getUser(json[0])
-         console.log
+         getUser(json[ Math.floor(Math.random() * 10 ) ].name)
+         console.log(user)
       })
    }
 
@@ -26,7 +25,7 @@ const App = () => {
       <div>
          <p>Testing effects ova heah</p>
          <p>The user is {user}</p>
-         <button onClick={ () => getUser( count + 1)}>Update Count</button>
+         <button onClick={fetchUser}>Update Count</button>
       </div>
    )
 }
