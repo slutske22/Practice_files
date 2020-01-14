@@ -30,4 +30,9 @@ var searchOptions = {
   providers: [L.esri.Geocoding.arcgisOnlineProvider()]
 }
 
-L.esri.Geocoding.geosearch(searchOptions).addTo(map)
+const geoCoder = L.esri.Geocoding.geosearch(searchOptions)
+geoCoder.addTo(map)
+
+geoCoder.addEventListener('results', function(e){
+   console.log(e)
+})
