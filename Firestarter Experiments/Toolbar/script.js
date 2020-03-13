@@ -34,3 +34,16 @@ L.esri.Geocoding.geosearch(searchOptions).addTo(map)
 
 
 var sidebar = L.control.sidebar('sidebar').addTo(map);
+
+
+
+// Define an Esri-Leaflet imageLayer
+var EsriGroundCoverImageLayer = L.esri.imageMapLayer({
+  url: 'https://landscape6.arcgis.com/arcgis/rest/services/World_Land_Cover_30m_BaseVue_2013/ImageServer',
+  opacity: 0.75,
+  useCors: false,
+  format: 'jpegpng',
+  f: 'image'
+})
+
+EsriGroundCoverImageLayer.addTo(map)
