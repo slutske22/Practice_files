@@ -25,14 +25,11 @@ function getTodos() {
 
     console.log('POST Request');
 
-    axios({
-      method: 'post',
-      url: 'https://jsonplaceholder.typicode.com/todos',
-      data: {
+    axios
+      .post('https://jsonplaceholder.typicode.com/todos', {
         title: 'new todo',
         completed: false
-      }
-    })
+      })
       .then(res => showOutput(res))
       .catch(err => console.error(err))
 
@@ -40,17 +37,46 @@ function getTodos() {
   
   // PUT/PATCH REQUEST
   function updateTodo() {
+
     console.log('PUT/PATCH Request');
+
+    axios
+      .patch('https://jsonplaceholder.typicode.com/todos/1', {
+        title: 'updated todo',
+        completed: true
+      })
+      .then(res => showOutput(res))
+      .catch(err => console.error(err))
+
   }
   
   // DELETE REQUEST
   function removeTodo() {
+    
     console.log('DELETE Request');
-  }
   
+    axios
+      .delete('https://jsonplaceholder.typicode.com/todos/1')
+      .then(res => showOutput(res))
+      .catch(err => console.error(err))
+  
+  }
+
   // SIMULTANEOUS DATA
   function getData() {
+
     console.log('Simultaneous Request');
+
+    axios.all([
+      axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10'),
+      axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10')
+    ])
+      .then(axios.spread( (todos, posts) => {
+        showOutput(posts)
+      } ))
+      .catch(err => console.error(err))
+
+
   }
   
   // CUSTOM HEADERS
