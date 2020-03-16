@@ -69,17 +69,20 @@ myLayer.addTo(map)
 // Instructions on turning clientid and clientsecret
 // https://developers.arcgis.com/labs/rest/get-an-access-token/
 
-function getEsriSecureLayer(authservice, serviceurl, client_id, client_secret, callback, expiration) {
+function getEsriSecureLayer(layerType, authservice, serviceurl, client_id, client_secret, callback, expiration) {
 
   const url = `${authservice}?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials&expiration=${expiration}`
 
   fetch(url, {
-    method: 'POST'
+    method: 'POST',
   })
-    .then(res => res.json())
+    .then(res => {
+      console.log(res)
+      return res.json()
+    })
     .then(res => { 
       console.log(res)
-      callback(res.access_token, serviceurl)
+      callback(layerType, res.access_token, serviceurl)
     })
     .catch(err => console.error(err))
 
@@ -101,12 +104,12 @@ function getEsriSecureLayer(authservice, serviceurl, client_id, client_secret, c
 
 let EsriGroundCoverImageLayer
 
-function defineEsriLayer (token, serviceurl) {
+function defineEsriLayer (layerType, token, serviceurl) {
 
   console.log('in here')
 
   // Define an Esri-Leaflet imageLayer
-  EsriGroundCoverImageLayer = L.esri.imageMapLayer({
+  EsriGroundCoverImageLayer = L.esri[layerType]({
     url: serviceurl,
     opacity: 0.75,
     // useCors: false,
@@ -128,8 +131,11 @@ const client_id = 'z5qFAApXsxo674A8'
 const client_secret = '5c4d804cedb845fda5b3828f92bc8998'
 
 const World_Land_Cover_Layer_URL = 'https://landscape6.arcgis.com/arcgis/rest/services/World_Land_Cover_30m_BaseVue_2013/ImageServer'
+const LANDFIRE_Ground_Cover_URL = 'https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_200/MapServer/15'
 
-getEsriSecureLayer( authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
+getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
+
+// getEsriSecureLayer('tiledMapLayer', 'https://landfire.cr.usgs.gov/arcgis', LANDFIRE_Ground_Cover_URL, client_id, client_secret, defineEsriLayer, 100000 )
 
 
 
