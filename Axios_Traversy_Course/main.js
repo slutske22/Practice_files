@@ -15,7 +15,9 @@ function getTodos() {
     //     .catch(err => console.error(err))
 
   axios
-    .get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+    .get('https://jsonplaceholder.typicode.com/todos?_limit=5', {
+      timeout: 5000
+    })
     .then(res => showOutput(res))
     .catch(err => console.error(err))
 
@@ -125,16 +127,53 @@ function getTodos() {
     console.log('Error Handling');
 
     axios
-      .get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+      .get('https://jsonplaceholder.typicode.com/todoss', {
+        validateStatus: function(status) {
+          return status < 500 // reject only if status >= 500
+        }
+      })
       .then(res => showOutput(res))
-      .catch(err => console.error(err))
+      .catch(err => {
+        if (err.response) {
+          console.log(err.response.data)
+          console.log(err.response.status)
+          console.log(err.response.headers)
+
+          if (err.response.status === 404){
+            alert('Error page not found')
+          }
+
+        } else if (err.request) {
+          // request was made but no response
+          console.log(err.request)
+        } else {
+          console.log(err.message)
+        }
+      })
     
 
   }
   
   // CANCEL TOKEN
   function cancelToken() {
-    console.log('Cancel Token');
+
+    const source = axios.CancelToken.source()
+
+    axios
+      .get('https://jsonplaceholder.typicode.com/todos?_limit=5', {
+        cancelToken: source.token
+      })
+      .then(res => showOutput(res))
+      .catch(thrown => {
+        if (axios.isCancel(thrown)) {
+          console.log('Request cancelled', thrown.message)
+        }
+      })
+
+    if (true) {
+      source.cancel('request cancelled')
+    }
+
   }
   
   // INTERCEPTING REQUESTS & RESPONSES
@@ -148,6 +187,12 @@ function getTodos() {
   })
   
   // AXIOS INSTANCES
+
+  const axiosInstance = axios.create({
+    baseURL: 'https://jsonplaceholder.typicode.com'
+  })
+
+  // axiosInstance.get('/comments').then( res => showOutput(res) )
   
   // Show output in browser
   function showOutput(res) {

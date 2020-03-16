@@ -227,6 +227,9 @@ getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, cli
 
 
 
+// Plugin for grabbing the legend data for an esri mapservice
+// https://github.com/w8r/esri-leaflet-legend
+
 var groundCoverTypes = [
   {
     "name": "Deciduous Forest",
