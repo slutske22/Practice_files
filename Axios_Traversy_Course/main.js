@@ -1,3 +1,6 @@
+// Axios Globals
+axios.defaults.headers.common['X-Auth-Token'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+
 // GET REQUEST
 function getTodos() {
 
@@ -118,7 +121,15 @@ function getTodos() {
   
   // ERROR HANDLING
   function errorHandling() {
+
     console.log('Error Handling');
+
+    axios
+      .get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+      .then(res => showOutput(res))
+      .catch(err => console.error(err))
+    
+
   }
   
   // CANCEL TOKEN
