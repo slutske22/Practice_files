@@ -1,8 +1,6 @@
 // GET REQUEST
 function getTodos() {
 
-    console.log('GET Request');
-
     // axios({
     //     method: 'get',
     //     url: 'https://jsonplaceholder.typicode.com/todos',
@@ -23,8 +21,6 @@ function getTodos() {
   // POST REQUEST
   function addTodo() {
 
-    console.log('POST Request');
-
     axios
       .post('https://jsonplaceholder.typicode.com/todos', {
         title: 'new todo',
@@ -37,8 +33,6 @@ function getTodos() {
   
   // PUT/PATCH REQUEST
   function updateTodo() {
-
-    console.log('PUT/PATCH Request');
 
     axios
       .patch('https://jsonplaceholder.typicode.com/todos/1', {
@@ -53,8 +47,6 @@ function getTodos() {
   // DELETE REQUEST
   function removeTodo() {
     
-    console.log('DELETE Request');
-  
     axios
       .delete('https://jsonplaceholder.typicode.com/todos/1')
       .then(res => showOutput(res))
@@ -64,8 +56,6 @@ function getTodos() {
 
   // SIMULTANEOUS DATA
   function getData() {
-
-    console.log('Simultaneous Request');
 
     axios.all([
       axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10'),
@@ -81,12 +71,49 @@ function getTodos() {
   
   // CUSTOM HEADERS
   function customHeaders() {
+
     console.log('Custom Headers');
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'sometoken'
+      }
+    }
+
+
+    axios
+      .post('https://jsonplaceholder.typicode.com/todos', {
+        title: 'new todo',
+        completed: false
+      }, config)
+      .then(res => showOutput(res))
+      .catch(err => console.error(err))
+  
+    
+
   }
   
   // TRANSFORMING REQUESTS & RESPONSES
   function transformResponse() {
+
     console.log('Transform Response');
+
+    const options = {
+      method: 'post',
+      url: 'https://jsonplaceholder.typicode.com/todos',
+      data: {
+        title: 'hello world',
+      },
+      transformResponse: axios.defaults.transformResponse.concat(data => {
+        data.title = data.title.toUpperCase()
+        return data
+      })
+    }
+
+    axios(options)
+      .then(res => showOutput(res))
+
   }
   
   // ERROR HANDLING
@@ -100,6 +127,14 @@ function getTodos() {
   }
   
   // INTERCEPTING REQUESTS & RESPONSES
+
+  axios.interceptors.request.use(config => {
+    console.log(`${config.method.toUpperCase()} request sent to ${config.url} at ${new Date().getTime()}`)
+
+    return config
+  }, error => {
+    return Promise.reject(error)
+  })
   
   // AXIOS INSTANCES
   
