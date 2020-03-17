@@ -99,9 +99,9 @@ function reverseGeocode(coords) {
 // Instructions on turning clientid and clientsecret
 // https://developers.arcgis.com/labs/rest/get-an-access-token/
 
-function getEsriSecureLayer(layerType, authservice, serviceurl, client_id, client_secret, callback, expiration) {
+function getEsriSecureLayer(layerType, getTokenUrl, layerUrl, client_id, client_secret, callback, expiration = 7200) {
 
-  const url = `${authservice}?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials&expiration=${expiration}`
+  const url = `${getTokenUrl}?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials&expiration=${expiration}`
 
   fetch(url, {
     method: 'POST',
@@ -112,7 +112,7 @@ function getEsriSecureLayer(layerType, authservice, serviceurl, client_id, clien
     })
     .then(res => { 
       console.log(res)
-      callback(layerType, res.access_token, serviceurl)
+      callback(layerType, res.access_token, layerUrl)
     })
     .catch(err => console.error(err))
 
@@ -133,11 +133,11 @@ function getEsriSecureLayer(layerType, authservice, serviceurl, client_id, clien
 // ----------------------------------------------------------------
 
 
-function defineEsriLayer (layerType, token, serviceurl) {
+function defineEsriLayer (layerType, token, layerUrl) {
 
   // Define an Esri-Leaflet imageLayer
   var EsriGroundCoverImageLayer = L.esri[layerType]({
-    url: serviceurl,
+    url: layerUrl,
     opacity: 0.75,
     // useCors: false,
     token: token
