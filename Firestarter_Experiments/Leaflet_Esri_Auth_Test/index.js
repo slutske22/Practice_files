@@ -82,9 +82,8 @@ function reverseGeocode(coords) {
 
 }
 
-
 // ----------------------------------------------------------------
-//              ESRI REVERSE GEOCODER -- BEGIN 
+//              ESRI REVERSE GEOCODER -- END 
 // ----------------------------------------------------------------
 
 
@@ -132,7 +131,6 @@ function getEsriSecureLayer(layerType, getTokenUrl, layerUrl, client_id, client_
 //               DEFINE LAYER -- BEGIN 
 // ----------------------------------------------------------------
 
-
 function defineEsriLayer (layerType, token, layerUrl) {
 
   // Define an Esri-Leaflet imageLayer
@@ -179,10 +177,8 @@ function defineEsriLayer (layerType, token, layerUrl) {
 
   })
 
-
-
-
 }
+
 // ----------------------------------------------------------------
 //                END --- DEFINE LAYER 
 // ----------------------------------------------------------------

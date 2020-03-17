@@ -85,3 +85,84 @@ clearMarkersButton.addEventListener("click", function(){
    // Empty the array to truly refresh the random marker layer
    randomMarkerArray = [];
 }, false);
+
+
+
+
+
+
+// ----------------------------------------------------------------
+//              ESRI TOKEN GETTER -- BEGIN 
+// ----------------------------------------------------------------
+
+// Instructions on turning clientid and clientsecret
+// https://developers.arcgis.com/labs/rest/get-an-access-token/
+
+function getEsriSecureLayer(layerType, getTokenUrl, layerUrl, client_id, client_secret, callback, expiration = 7200) {
+
+   const url = `${getTokenUrl}?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials&expiration=${expiration}`
+ 
+   fetch(url, {
+     method: 'POST',
+   })
+     .then(res => {
+       console.log(res)
+       return res.json()
+     })
+     .then(res => { 
+       console.log(res)
+       callback(layerType, res.access_token, layerUrl)
+     })
+     .catch(err => console.error(err))
+ 
+ }
+ // ----------------------------------------------------------------
+ //            END -- ESRI TOKEN GETTER  
+ // ----------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+// ----------------------------------------------------------------
+//               DEFINE LAYER -- BEGIN 
+// ----------------------------------------------------------------
+
+function defineEsriLayer (layerType, token, layerUrl) {
+
+   // Define an Esri-Leaflet imageLayer
+   var EsriGroundCoverImageLayer = L.esri[layerType]({
+     url: layerUrl,
+     opacity: 0.75,
+     pane: 'shadowPane',
+     token: token
+   })
+ 
+   EsriGroundCoverImageLayer.addTo(map)
+ 
+ 
+ }
+ 
+ // ----------------------------------------------------------------
+ //                END --- DEFINE LAYER 
+ // ----------------------------------------------------------------
+
+
+
+// Add the layer:
+
+// Auth constants
+const authservice = 'https://www.arcgis.com/sharing/rest/oauth2/token'
+const client_id = 'z5qFAApXsxo674A8'
+const client_secret = '5c4d804cedb845fda5b3828f92bc8998'
+
+// Layer URLs
+const World_Land_Cover_Layer_URL = 'https://landscape6.arcgis.com/arcgis/rest/services/World_Land_Cover_30m_BaseVue_2013/ImageServer'
+const LANDFIRE_Ground_Cover_URL = 'https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_200/MapServer/15'
+
+// Run the add layer function
+getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
