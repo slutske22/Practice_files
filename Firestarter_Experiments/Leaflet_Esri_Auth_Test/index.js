@@ -132,12 +132,11 @@ function getEsriSecureLayer(layerType, authservice, serviceurl, client_id, clien
 //               DEFINE LAYER -- BEGIN 
 // ----------------------------------------------------------------
 
-let EsriGroundCoverImageLayer
 
 function defineEsriLayer (layerType, token, serviceurl) {
 
   // Define an Esri-Leaflet imageLayer
-  EsriGroundCoverImageLayer = L.esri[layerType]({
+  var EsriGroundCoverImageLayer = L.esri[layerType]({
     url: serviceurl,
     opacity: 0.75,
     // useCors: false,
