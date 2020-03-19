@@ -146,7 +146,7 @@ function defineEsriLayer (layerType, token, layerUrl) {
   map.on('click', e => {
 
     L.esri.identifyImage({
-      url: serviceurl
+      url: layerUrl
     })
       .token(token)
       .at(e.latlng)
