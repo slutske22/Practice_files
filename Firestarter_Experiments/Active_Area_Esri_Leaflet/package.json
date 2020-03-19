@@ -1,0 +1,19 @@
+{
+  "name": "actice_area_esri_leaflet",
+  "version": "1.0.0",
+  "description": "Esri Leaflet Active Area Patch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "author": "Seth Lutske",
+  "license": "ISC",
+  "dependencies": {
+    "esri-leaflet": "^2.3.3",
+    "leaflet": "^1.6.0",
+    "leaflet-active-area": "^1.1.1",
+    "parcel-bundler": "^1.12.4"
+  }
+}

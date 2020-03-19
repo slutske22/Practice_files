@@ -1,0 +1,40 @@
+body{
+   position: relative;
+}
+
+html,
+body,
+#mapid{
+  height:100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#mapid{
+   z-index: 0;
+}
+
+.activearea{
+   position: absolute;
+   top: 20%;
+   left: 30%;
+   height: 50%;
+   width: 50%;
+   border: 1px solid black;
+   z-index: 1;
+   pointer-events: none;
+}
+
+.controlButtons{
+   position: absolute;
+   bottom: 50px;
+   right: 50px;
+   z-index: 10;
+}
+
+#randomMarker,
+#clearRandomMarkers{
+   width: 100%;
+   margin-bottom: 10px;
+}
