@@ -23,7 +23,8 @@ var mapOptions = {
        accessToken: 'pk.eyJ1Ijoic2x1dHNrZTIyIiwiYSI6ImNqeGw1Y3BibDAybG4zeHFyaXl3OXVwZXUifQ.fZ_5Raq5z-DUpo2AK-bQHA'
     }).addTo(map);
  
- 
+
+    L.control.scale().addTo(map);
    //  L.control.mousePosition().addTo(map);
  
  
