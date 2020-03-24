@@ -68,12 +68,31 @@ function roundNumber(number, tensplace = 10){
       .openPopup();
  
  })
+
+
+
+
+//------------------------------------------------------------------------//
+//                 LONE POPUPs
+//------------------------------------------------------------------------//
+
+
+let popup = L.popup({editable: true, removable: true})
+  .setLatLng({lat: leafletMap.getCenter().lat - 1, lng: leafletMap.getCenter().lng + 1})
+  .setContent('<p>A popup with no source</p>')
+  .addTo(leafletMap)
+
+let popup2 = L.popup({editable: true, removable: true, nametag: "lone popup"})
+  .setLatLng({lat: leafletMap.getCenter().lat - 1.3, lng: leafletMap.getCenter().lng - 0.3})
+  .setContent('<p>A lone popup, all by itself down here</p>')
+  .addTo(leafletMap)
+
  
  
  
- //------------------------------------------------------------------------//
- //                HARDCODED MARKERS
- //------------------------------------------------------------------------//
+//------------------------------------------------------------------------//
+//                HARDCODED MARKERS
+//------------------------------------------------------------------------//
  
  
  let marker1 = L.marker( [33.270, -116.650] );
