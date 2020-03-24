@@ -18,41 +18,6 @@ const myLayer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.p
 myLayer.addTo(map)
 
 
-// Esri Token Getting function
-
-// function serverAuth (server, username, password, callback) {
-//   L.esri.post(server, {
-//     username: username,
-//     password: password,
-//     f: 'json',
-//     expiration: 86400,
-//     referer: window.location.origin
-//   }, callback);
-// }
-
-// const server = 'https://landfire.cr.usgs.gov/arcgis/tokens/'
-// const username = 'slutske22'
-// const password = 'Vardina1!'
-// const LANDFIRE_data = 'https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_200/MapServer/15' 
-
-
-// serverAuth(server, username, password, (err, res) => {
-//   if (err) {
-//     console.error(err)
-//   }
-//   console.log(res)
-// })
-
-// fetch('https://www.arcgis.com/sharing/rest/oauth2/token?client_id=z5qFAApXsxo674A8&grant_type=authorization_code&client_secret=5c4d804cedb845fda5b3828f92bc8998&redirect_url=urn:ietf:wg:oauth:2.0:oob', {
-//   "method": "POST",
-//   "body": "client_id=z5qFAApXsxo674A8&client_secret=5c4d804cedb845fda5b3828f92bc8998&grant_type=authorization_code&code=CODE_OBTAINED_IN_THE_PREVIOUS_STEP"
-// })
-//   .then(res => res.json())
-//   .then(data => console.log(data))
-
-
-
-
 
 // ----------------------------------------------------------------
 //              ESRI REVERSE GEOCODER -- BEGIN 
@@ -191,11 +156,19 @@ const client_id = 'z5qFAApXsxo674A8'
 const client_secret = '5c4d804cedb845fda5b3828f92bc8998'
 
 const World_Land_Cover_Layer_URL = 'https://landscape6.arcgis.com/arcgis/rest/services/World_Land_Cover_30m_BaseVue_2013/ImageServer'
+
 const LANDFIRE_Ground_Cover_URL = 'https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_200/MapServer/15'
 
-getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
+const USForestService_Wildland_Urban_Interface_2010_URL = 'https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_WUI_2010_01/MapServer'
 
-// getEsriSecureLayer('tiledMapLayer', 'https://landfire.cr.usgs.gov/arcgis', LANDFIRE_Ground_Cover_URL, client_id, client_secret, defineEsriLayer, 100000 )
+const USForestService_Wildfire_Suppression_Difficulty_Index = 'https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WildfireSuppressionDifficultyIndex/ImageServer'
+
+const UWB_Esri_URL = 'https://services1.arcgis.com/pf6KDbd8NVL1IUHa/arcgis/rest/services/Wildland_Urban_Interface_vector/FeatureServer/1'
+
+
+// getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
+
+getEsriSecureLayer('imageMapLayer', authservice, USDA_Wildland_Urban_Interface_2010_URL, client_id, client_secret, defineEsriLayer, 100000 )
 
 
 
@@ -208,14 +181,8 @@ getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, cli
 // From the ArcGIS servers: https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_200/MapServer
 // Various layers with gobs of data
 
-// var LFGroundCoverLayer = L.esri.featureLayer({
-//   url: 'https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_200/MapServer/15',
-//   opacity: 0.75,
-//   useCors: false,
-//   token: 'jTy03oNz2-dDK0rysd6slz3cYXF5-eO5JSXf1-Qzm01JBQq8q2ezSI2JHIBbDEiS7Yl5iICGOKWgHVb-gxaiiMLx-LFoDThMqu9VyRkzHv4QipgkFNjU4xRSuVR-aydJbDQs--s_3NePSF7WAFQirw..'
-// })
 
-// LFGroundCoverLayer.addTo(map)
+
 
 
 
