@@ -4,8 +4,24 @@ import data from './data/data.json'
 const app = express();
 const PORT = 3000;
 
-app.get('/', (request, response) => {
-   response.send(`A get request with / route on port ${PORT}`)
+app.use(express.static('public'))
+
+// To load resources out of the images folder when using '/images' path
+app.use('/images', express.static('images'))
+
+app.get('/', (request, response) => 
+
+   // get data
+   response.json(data)
+
+)
+
+app.get('/item/:id', (req,res) => {
+   console.log(req.params.id)
+   let user = Number(req.params.id)
+   console.log(user)
+   console.log(data[user])
+   res.send(data[user])
 })
 
 app.post('/newitem', (request, response) => {
