@@ -1,9 +1,9 @@
 var mapOptions = {
-  center:   [
-      36.02556114475524,
-      -119.78169059753418
-    ],
-  zoom: 7,
+  center:   {
+    "lat": 32.82158745209222,
+    "lng": -116.83418154716493
+  },
+  zoom: 10,
   zoomDelta: 0.5,
   zoomSnap: 0,
   wheelPxPerZoomLevel: 100
@@ -168,8 +168,10 @@ const UWB_Esri_URL = 'https://services1.arcgis.com/pf6KDbd8NVL1IUHa/arcgis/rest/
 
 // getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
 
-getEsriSecureLayer('imageMapLayer', authservice, USDA_Wildland_Urban_Interface_2010_URL, client_id, client_secret, defineEsriLayer, 100000 )
+// getEsriSecureLayer('featureLayer', authservice, UWB_Esri_URL, client_id, client_secret, defineEsriLayer, 100000 )
 
+
+L.esri.featureLayer({url: UWB_Esri_URL}).addTo(map)
 
 
 // EsriGroundCoverImageLayer.addTo(map)
