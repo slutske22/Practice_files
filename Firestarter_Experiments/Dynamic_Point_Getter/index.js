@@ -70,8 +70,12 @@ function applyFireStations(){
          let popupContent = `
                <h3>${station.properties.name}</h3>
                <p>
-                  ${station.properties['addr:housenumber']} ${station.properties['addr:street']} <br>
-                  ${station.properties['addr:city']} ${station.properties['addr:state']}, ${station.properties['addr:postcode']}
+                  ${station.properties['addr:housenumber'] || ''}
+                  ${station.properties['addr:street'] || ''} <br>
+                  ${station.properties['addr:city'] || ''}
+                  ${station.properties['gnis:county_name'] || ''},
+                  ${station.properties['addr:state'] || ''},
+                  ${station.properties['addr:postcode'] || ''}
                </p>
             `
 
