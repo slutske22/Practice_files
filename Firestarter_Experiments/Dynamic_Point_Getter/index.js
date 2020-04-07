@@ -18,6 +18,7 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
    }).addTo(map);
 
 var CAFireStations;
+var AllFireStations;
 var firestationsLayer;
 
 fetch('./CA.json')
@@ -25,6 +26,17 @@ fetch('./CA.json')
    .then(res => {
       CAFireStations = res.data
       window.CAFireStations = CAFireStations
+      applyFireStations()
+   })
+   .catch( error => console.log(error) )
+
+
+fetch('./FireStations_Global.json')
+   .then(res => res.json())
+   .then(res => {
+      AllFireStations = res.features
+      window.AllFireStations = AllFireStations
+      console.log(AllFireStations[3])
       applyFireStations()
    })
    .catch( error => console.log(error) )
@@ -45,9 +57,9 @@ var fireHouseIcon = L.icon({
 
 function applyFireStations(){
 
-   if (CAFireStations){
+   if (AllFireStations){
 
-      const stationsInExtent = CAFireStations.filter( station => {
+      const stationsInExtent = AllFireStations.filter( station => {
          let stationCoords = {
             lat: station.geometry.coordinates[1],
             lng: station.geometry.coordinates[0]
@@ -80,7 +92,7 @@ function applyFireStations(){
             `
 
          let marker =  map.getZoom() < 13
-            ? L.circleMarker(stationCoords, {radius: 5, fillColor: 'darkred', color: 'darkred', weight: 1, fillOpacity: 0.5}).bindPopup(popupContent)
+            ? L.circleMarker(stationCoords, {radius: map.getZoom() < 9 ? 2 : 5, fillColor: 'darkred', color: 'darkred', weight: 1, fillOpacity: 0.5}).bindPopup(popupContent)
             : L.marker(stationCoords, {icon: fireHouseIcon}).bindPopup(popupContent)
 
          marker.on('click', () => {console.log(index)})
@@ -95,7 +107,7 @@ function applyFireStations(){
 
       firestationsLayer = L.layerGroup(stationsOnMap)
 
-      if (map.getZoom() > 8){
+      if (map.getZoom() > 6){
          firestationsLayer.addTo(map)
       }
 
