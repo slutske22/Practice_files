@@ -4,7 +4,11 @@ import data from './data/data.json'
 const app = express();
 const PORT = 3000;
 
+// This is for the public folder on path '/'
 app.use(express.static('public'))
+
+// Method to use JSON
+app.use(express.json())
 
 // To load resources out of the images folder when using '/images' path
 app.use('/images', express.static('images'))
@@ -15,6 +19,15 @@ app.get('/', (request, response) =>
    response.json(data)
 
 )
+
+
+app.post('/newItem', (req, res) => {
+   console.log(req.body)
+   res.send(req.body)
+})
+
+
+
 
 app.get('/item/:id', (req, res, next) => {
 
@@ -57,16 +70,14 @@ app.post('/newitem', (request, response) => {
 //    response.send(`A delete request with /item route on port ${PORT}`)
 // })
 
-app.listen(PORT, () => {
-   console.log(`Your server is running on port ${PORT}`)
-   // console.log(data)
-})
+
 
 
 
 
 app.route('/item')
    .get( (request, response) => {
+      throw new Error()
       response.send(`A get request with /item route on port ${PORT}`)
    })
    .put( (request, response) => {
@@ -75,3 +86,26 @@ app.route('/item')
    .delete( (request, response) => {
       response.send(`A delete request with /item route on port ${PORT}`)
    })
+
+
+
+
+// Error Handling Function
+app.use((err, req, res, next) => {
+   console.error(err.stack)
+   res.status(500).send(`
+      <body style="font-family: helvetica">
+         <h2 style="color: red">Red Alert!  Red Alert!</h2>
+         ${err.stack}
+      </body>
+   `)
+})
+
+
+
+
+
+app.listen(PORT, () => {
+   console.log(`Your server is running on port ${PORT}`)
+   // console.log(data)
+})
