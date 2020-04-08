@@ -13,6 +13,9 @@ app.use(express.json())
 // To load resources out of the images folder when using '/images' path
 app.use('/images', express.static('images'))
 
+// This is for proxies
+app.set('')
+
 app.get('/', (request, response) => 
 
    // get data
