@@ -1,0 +1,21 @@
+html,
+body,
+#map{
+   height:100%;
+   width: 100%;
+   padding: 0px;
+   margin: 0px;
+}
+
+
+.leaflet-container {
+   background-color:#538fcc;
+}
+
+
+.mario-icon{
+   width: 20px; 
+   height:20px;
+   background-image:url("images/mario-front.gif");
+   background-size: 20px 20px;
+}
