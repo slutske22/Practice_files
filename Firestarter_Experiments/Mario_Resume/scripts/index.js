@@ -1,5 +1,5 @@
 import './animatemario.js'
-import { directions } from './paths.js'
+import { directions, paths } from './paths.js'
 
 // Mario Graphics:
 
@@ -19,8 +19,8 @@ var maxBounds = [
    [bounds[1][0] + buffer, bounds[1][1] + buffer]
 ]
 
-var map = L.map('map', {
-   center: [210, 264],
+export var map = L.map('map', {
+   center: [205, 274],
    zoom: 2,
    crs: L.CRS.Simple,
    minZoom: 0,
@@ -51,36 +51,26 @@ map.on('click', (e) => {
 var sp = [156, 272] // starting point in (y,x) coordinates
 var size = 15
 
-var Mario = L.imageOverlay('images/characters/mario-front.gif', [[sp[0] - size / 2, sp[1] - size / 2],[sp[0] + size / 2, sp[1] + size / 2]])
+export var Mario = L.imageOverlay('images/characters/mario-front.gif', [[sp[0] - size / 2, sp[1] - size / 2],[sp[0] + size / 2, sp[1] + size / 2]])
 Mario.addTo(map);
 window.Mario = Mario
 
 
 // ----------------------------------------------------------
 //
-//             Mario's Path
+//             Mario's Paths
 //
 // ----------------------------------------------------------
+
 
 var position = "starting point"
 window.position = position
 
-const MariosPathLatLngs = [
-   L.latLng(155, 271), // moving right
-   L.latLng(155, 235),
-   L.latLng(200, 235), // moving up
-   L.latLng(216, 241),
-   L.latLng(245, 240),
-   L.latLng(260, 218),
-   L.latLng(312, 218)
-]
-
 
 // VISUALIZE MARIO'S PATH ON MAP :
-// L.polyline(MariosPathLatLngs).addTo(map)
-// MariosPathLatLngs.forEach( (point, index) => {
-//    L.circle(point, {radius: 5}).bindPopup(`<pre>${JSON.stringify(point)}, ${index}</pre>`).addTo(map)
-// })
+// L.polyline(paths.path1).addTo(map)
+// L.polyline(paths.path2).addTo(map)
+
 
 map.on('keydown', e => {
 
@@ -92,14 +82,14 @@ map.on('keydown', e => {
       var { latlngs } = directions[position][key]
 
       var options = {
-         distance: 100000, 
-         interval: 20, 
          onEnd: () =>  {
-            // position = directions[position][key].destination
             var newPosition = directions[position][key].destination
             position = newPosition
             window.position = position
             console.log(position)
+            if (directions[position].trigger){
+               directions[position].trigger()
+            }
          }
       }
 
@@ -110,6 +100,21 @@ map.on('keydown', e => {
    }
 
 })
+
+
+// ----------------------------------------------------------
+//
+//             Overlays, Triggers, and Toggles
+//
+// ----------------------------------------------------------
+
+map.createPane('variable-overlays')
+map.getPane('variable-overlays').style.zIndex = 350
+
+var tube1 = L.imageOverlay('./images/overlays/tube1.png', [[368.5,242],[316.1, 279.7]], {pane: 'variable-overlays'})
+tube1.addTo(map)
+
+
 
 
 document.addEventListener('DOMContentLoaded', () => {

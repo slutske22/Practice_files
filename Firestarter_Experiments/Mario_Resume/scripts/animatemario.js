@@ -1,7 +1,13 @@
 L.ImageOverlay.include({
 
 
-   animate: function(latlngs, options){
+   animate: function(latlngs, initOptions){
+
+      var options = {
+         ...initOptions,
+         distance: 100000, 
+         interval: 20
+      }
 
       if (!this._pathHasBeenInterpolated) {
          this.setLine(latlngs, options);
@@ -57,7 +63,6 @@ L.ImageOverlay.include({
    },
 
    _chunk: function (latlngs, options) {
-      console.log('chunking', latlngs)
       var i,
          len = latlngs.length,
          chunkedLatLngs = [];
