@@ -58,6 +58,7 @@ export const directions = {
          map.panTo(L.latLng(444, 345), {duration: 5, easeLinearity: 1})
          Mario.animate(paths.path3, {onEnd: () => {
             setTimeout( () => {
+               map.getPane('variable-overlays').style.zIndex = 410
                Mario.animate(paths.path4, {onEnd: () => {
                   Mario.animate(paths.path5)
                }})

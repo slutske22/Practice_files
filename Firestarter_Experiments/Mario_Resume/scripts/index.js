@@ -20,8 +20,8 @@ var maxBounds = [
 ]
 
 export var map = L.map('map', {
-   center: [205, 274],
-   zoom: 2,
+   center: [437, 317],
+   zoom: 3,
    crs: L.CRS.Simple,
    minZoom: 0,
    maxZoom: 3,
@@ -109,11 +109,13 @@ map.on('keydown', e => {
 // ----------------------------------------------------------
 
 map.createPane('variable-overlays')
-map.getPane('variable-overlays').style.zIndex = 350
+map.getPane('variable-overlays').style.zIndex = 410
 
 var tube1 = L.imageOverlay('./images/overlays/tube1.png', [[368.5,242],[316.1, 279.7]], {pane: 'variable-overlays'})
 tube1.addTo(map)
 
+var tube2 = L.imageOverlay('./images/overlays/tube2.png', [[454,305.2],[416.5, 328.2]], {pane: 'variable-overlays'})
+tube2.addTo(map)
 
 
 
