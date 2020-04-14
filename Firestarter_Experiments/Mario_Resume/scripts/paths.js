@@ -23,6 +23,14 @@ export const paths = {
    path3: [
       L.latLng(371, 260.5),
       L.latLng(351, 260.5),
+   ],
+   path4: [
+      L.latLng(433, 317),
+      L.latLng(455, 317)
+   ],
+   path5: [
+      L.latLng(444, 317),
+      L.latLng(444, 345)
    ]
 }
 
@@ -47,8 +55,20 @@ export const directions = {
       trigger: () => {
          console.log('at tube 1')
          map.getPane('variable-overlays').style.zIndex = 450
-         Mario._i = 0
-         Mario.animate(paths.path3)
+         map.panTo(L.latLng(444, 345), {duration: 5, easeLinearity: 1})
+         Mario.animate(paths.path3, {onEnd: () => {
+            setTimeout( () => {
+               Mario.animate(paths.path4, {onEnd: () => {
+                  Mario.animate(paths.path5)
+               }})
+            }, 1000)
+         }})
+      }
+   },
+   "first tube underground": {
+      trigger: () => {
+         console.log('at tube 1 underground')
+         Mario.animate(paths.path4)
       }
    }
 }

@@ -52,9 +52,11 @@ L.ImageOverlay.include({
       // Queue up the animation to the next next vertex
       this._tid = setTimeout(function () {
          if (self._i === len) {
-               options.onEnd()
                self._pathHasBeenInterpolated = false
                self._i = 0
+               if (options.onEnd){
+                  options.onEnd()
+               }
          } else {
             self.animate(latlngs, options);
          }
