@@ -1,4 +1,5 @@
 import './animatemario.js'
+import { directions } from './paths.js'
 
 // Mario Graphics:
 
@@ -31,7 +32,7 @@ var map = L.map('map', {
 });
 
 
-L.imageOverlay('mario_map.png', bounds).addTo(map);
+L.imageOverlay('images/mario_map.png', bounds).addTo(map);
 
 // map.fitBounds(bounds);
 
@@ -50,7 +51,7 @@ map.on('click', (e) => {
 var sp = [156, 272] // starting point in (y,x) coordinates
 var size = 15
 
-var Mario = L.imageOverlay('images/mario-front.gif', [[sp[0] - size / 2, sp[1] - size / 2],[sp[0] + size / 2, sp[1] + size / 2]])
+var Mario = L.imageOverlay('images/characters/mario-front.gif', [[sp[0] - size / 2, sp[1] - size / 2],[sp[0] + size / 2, sp[1] + size / 2]])
 Mario.addTo(map);
 window.Mario = Mario
 
@@ -60,6 +61,9 @@ window.Mario = Mario
 //             Mario's Path
 //
 // ----------------------------------------------------------
+
+var position = "starting point"
+window.position = position
 
 const MariosPathLatLngs = [
    L.latLng(155, 271), // moving right
@@ -78,12 +82,33 @@ const MariosPathLatLngs = [
 //    L.circle(point, {radius: 5}).bindPopup(`<pre>${JSON.stringify(point)}, ${index}</pre>`).addTo(map)
 // })
 
+map.on('keydown', e => {
 
+   const { key } = e.originalEvent
+   console.log("Key pressed:", key, "Current Position:", position, 'latlngs:', directions[position][key].latlngs)
 
-map.once('keydown', e => {
-   console.log(e.originalEvent)
-   Mario.animate(MariosPathLatLngs)
-   map.panTo(MariosPathLatLngs[MariosPathLatLngs.length-1], {duration: 5, easeLinearity: 1})
+   if (directions[position][key]){
+
+      var { latlngs } = directions[position][key]
+
+      var options = {
+         distance: 100000, 
+         interval: 20, 
+         onEnd: () =>  {
+            // position = directions[position][key].destination
+            var newPosition = directions[position][key].destination
+            position = newPosition
+            window.position = position
+            console.log(position)
+         }
+      }
+
+      Mario.animate(latlngs, options)
+      
+      map.panTo(latlngs[latlngs.length-1], {duration: 5, easeLinearity: 1})
+
+   }
+
 })
 
 

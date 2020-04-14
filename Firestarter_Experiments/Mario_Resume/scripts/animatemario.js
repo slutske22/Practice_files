@@ -1,7 +1,7 @@
 L.ImageOverlay.include({
 
 
-   animate: function(latlngs, options = {distance: 100000, interval: 20, onEnd: () =>  console.log('end of the line')}){
+   animate: function(latlngs, options){
 
       if (!this._pathHasBeenInterpolated) {
          this.setLine(latlngs, options);
@@ -46,12 +46,11 @@ L.ImageOverlay.include({
       // Queue up the animation to the next next vertex
       this._tid = setTimeout(function () {
          if (self._i === len) {
-               options.onEnd.apply(
-               self,
-               Array.prototype.slice.call(arguments)
-            );
+               options.onEnd()
+               self._pathHasBeenInterpolated = false
+               self._i = 0
          } else {
-            self.animate();
+            self.animate(latlngs, options);
          }
       }, speed);
 
