@@ -4,7 +4,7 @@
 import './tools/leaflet.tilelayer.colorpicker.js'
 
 var mapOptions = {
-  center: [33.270, -116.650],
+  center: {lat: 61.09569262408175, lng: -142.06970214843753},
   zoom: 8
 };
 
@@ -14,6 +14,7 @@ var mapboxAccessToken = 'pk.eyJ1Ijoic2x1dHNrZTIyIiwiYSI6ImNqeGw1Y3BibDAybG4zeHFy
 
 // CREATE MAP
 var map = L.map('mapid', mapOptions);
+window.map = map
 
 // ADDBASELAYER
 var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
@@ -48,25 +49,9 @@ map.on("mousemove", function(event) {
  });
 
 
-// CREATE ELEVATION LAYER
+var searchControl = L.esri.Geocoding.geosearch({position: 'topright'})
+searchControl.addTo(map);
 
-
-
-
-// REDRAW TILES ON VIEW RESET
-map.on('viewreset', () => {
-   console.log('view')
-})
-
-
-function updateTile(e){
-   var ctx = contexts[e.data.id]
-   var imgData = ctx.createImageData(256,256)
-
-   var shades = new Uint8ClampedArray(e.data.shades)
-   imgData.data.set(shades)
-   ctx.putImageData(imgData, 0, 0)
-}
 
 
 
