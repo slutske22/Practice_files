@@ -2,9 +2,7 @@ importScripts('rainbowvis.js')
 
 function raster2dem(data){
 
-   // console.log('raster2dem data', data)
-
-   const dem = new Uint16Array(256 * 256)
+   const dem = new Int16Array(256 * 256)
 
    var x, y, dx, dy, i, j
 
@@ -25,32 +23,42 @@ function raster2dem(data){
 
 }
 
+
+
+
+var color0 = '#164A5B',
+   color1 = '#75CFEC',
+   color2 = 'beige',
+   color3 = 'gold',
+   color4 = 'lightgreen',
+   color5 = 'darkgreen',
+   color6 = 'white'
+
+
+
+
+
 function shading(dem){
 
-   const colors = new Array(256 * 256)
-   const px = new Uint8ClampedArray( 256 * 256 * 4 )
+   var px = new Uint8ClampedArray( 256 * 256 * 4 )
 
    var maxElev = 8850
    var minElev = -750
 
    var gradient = new Rainbow()
    gradient.setNumberRange(minElev, maxElev)
-   gradient.setSpectrum('darkblue', 'yellow', 'green', 'white')
-
-   for (let i = 0; i < colors.length; i++) {
-
-      var hex = `#${gradient.colorAt(dem[i])}`
-      var rgb = hexToRgb(hex)
-      colors[i] = rgb
-      
-   }
-
+   gradient.setSpectrum(color0, color1, color2, color2, color3, color3, color3, color4, color4, color5, color5, color5, color6,color6)
 
    for (let i = 0; i < dem.length; i++){
 
-      px[4*i + 0] = colors[i].r
-      px[4*i + 1] = colors[i].g
-      px[4*i + 2] = colors[i].b
+      // Might be faster:
+      var hex = `#${hypsotint(dem[i])}`
+      // var hex = `#${gradient.colorAt(dem[i])}`
+      var rgb = hexToRgb(hex)
+
+      px[4*i + 0] = rgb.r
+      px[4*i + 1] = rgb.g
+      px[4*i + 2] = rgb.b
       px[4*i + 3] = 255
 
    }
@@ -63,7 +71,6 @@ function shading(dem){
 
 // from https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRgb(hex) {
-   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
      return r + r + g + g + b + b;
@@ -77,51 +84,33 @@ function hexToRgb(hex) {
    } : null;
 }
 
+
+
+var colorsArray =      ['#164A5B', '#75CFEC', '#FCFFA0', 'lightgreen', 'darkgreen', 'white']
+var breakpointsArray = [       -850,        0,        800,         4500,         9000]
+
+var brackets = []
+
+for (let i = 0; i < breakpointsArray.length - 2; i++){
+   brackets[i] = i === 0 
+      ? {
+            breakpoints: [ breakpointsArray[i], breakpointsArray[i + 1] ],
+            colors: [ colorsArray[i], colorsArray[i + 1] ]
+         }
+      : {
+            breakpoints: [ breakpointsArray[i], breakpointsArray[i + 1] ],
+            colors: [ colorsArray[i + 1], colorsArray[i + 2] ]
+         }
+}
+
+
 function hypsotint(elevation){
 
-   var min = -1000
-   var breakpoint1 = 0
-   var breakpoint2 = 1200
-   var breakpoint3 = 4500
-   var max = 9000
-
-   var color0 = 'darkblue'
-   var color1 = 'lightblue'
-   var color2 = 'beige'
-   var color3 = 'lightgreen'
-   var color4 = 'darkgreen'
-   var color5 = 'white'
-
-   var brackets = [
-      {
-         breakpoints: [min, breakpoint1],
-         colors: [color0, color1]
-      },
-      {
-         breakpoints: [breakpoint1, breakpoint2],
-         colors: [color2, color3]
-      },
-      {
-         breakpoints: [breakpoint2, breakpoint3],
-         colors: [color3, color4]
-      },
-      {
-         breakpoints: [breakpoint3, max],
-         colors: [color4, color5]
-      }
-   ]
-
-
-
    var chosenBracket = brackets.filter( bracket => {
-      if ( elevation >= bracket.breakpoints[0] && elevation < bracket.breakpoints[1] ){
+      if ( elevation > bracket.breakpoints[0] && elevation <= bracket.breakpoints[1] ){
          return true
       }
    })
-
-   // console.log(elevation, chosenBracket)
-
-   
 
    if (chosenBracket.length === 1){
       var gradient = new Rainbow()
@@ -131,10 +120,7 @@ function hypsotint(elevation){
       return gradient.colorAt(elevation)
    }
 
-
-   return {r: 255, g: 255, b: 255}
-
+   // fallback case: paint it black if there are errors in the hypsotint algorithm
+   return '000000'
 
 }
-
-// hypsotint(200)

@@ -1,9 +1,11 @@
 // http://www.liedman.net/tiled-maps/
 
 
+import './tools/leaflet.tilelayer.colorpicker.js'
+
 var mapOptions = {
   center: [33.270, -116.650],
-  zoom: 12
+  zoom: 8
 };
 
 
@@ -22,10 +24,28 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
       opacity: 0.5
    })
    
-// mapBoxOutdoors.addTo(map);
+mapBoxOutdoors.addTo(map);
 
 
+// ADD COLORPICKER FOR TESTING PURPOSES
+var MAPBOX_TERRAIN_RGB = "https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token=" + mapboxAccessToken;
 
+const colorpicker = L.tileLayer.colorPicker(MAPBOX_TERRAIN_RGB, {
+   attribution: "© <a href='https://www.mapbox.com/map-feedback/'>Mapbox</a>" +
+        " © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>" +
+        " <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+   opacity: 0
+})
+
+colorpicker.addTo(map)
+
+map.on("mousemove", function(event) {
+   var a = colorpicker.getColor(event.latlng);
+   var h = NaN;
+   if (a !== null)
+     h = -10000 + ((a[0] * 256 * 256 + a[1] * 256 + a[2]) * 0.1);
+   map.attributionControl.setPrefix(isNaN(h) ? "N/A" : h.toFixed(1) + "m");
+ });
 
 
 // CREATE ELEVATION LAYER
@@ -200,7 +220,7 @@ elevationLayer.updateTile = function(e){
    imgData.data.set(shades)
    ctx.putImageData(imgData, 0, 0)
 
-   console.log(e.data)
+   // console.log(e.data)
 
 }
 
