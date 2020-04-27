@@ -90,6 +90,7 @@ var gradients = (() => {
       rainbow.setNumberRange( breakpoints[i], breakpoints[i + 1] )
       rainbow._numberRange = [ breakpoints[i], breakpoints[i + 1] ]
 
+      // discontinuous use of colors between negative and position values
       if (i === 0){
          rainbow.setSpectrum( colors[i], colors[i + 1] )
          rainbow._spectrum = [ colors[i], colors[i + 1] ]
@@ -105,7 +106,6 @@ var gradients = (() => {
    return collection
 
 })()
-
 
 
 /**
