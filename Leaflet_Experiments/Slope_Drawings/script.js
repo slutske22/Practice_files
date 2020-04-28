@@ -150,6 +150,7 @@ var elevationLayer = L.gridLayer()
 // Add Variables and methods to the new GridLayer
 elevationLayer.contexts = {}
 elevationLayer.workers = []
+elevationLayer.alreadyRenderedTiles = {}
 
 // createTile method required - runs when onAdd runs (I think)
 elevationLayer.createTile = function(coords){
@@ -168,8 +169,11 @@ elevationLayer.createTile = function(coords){
 
    // Define a new image element and its attributes
    var demImg = new Image()
+   var {x, y, z} = coords
+   var locationId = `${z}/${x}/${y}`
+   this.alreadyRenderedTiles[locationId] = locationId
    demImg.crossOrigin = "*"
-   demImg.src = `https://api.mapbox.com/v4/mapbox.terrain-rgb/${coords.z}/${coords.x}/${coords.y}.pngraw?access_token=${mapboxAccessToken}`
+   demImg.src = `https://api.mapbox.com/v4/mapbox.terrain-rgb/${z}/${x}/${y}.pngraw?access_token=${mapboxAccessToken}`
    demImg.onload = function(){
       var c = document.createElement('canvas')
       c.width = c.height = 256
@@ -205,13 +209,13 @@ elevationLayer.updateTile = function(e){
    imgData.data.set(shades)
    ctx.putImageData(imgData, 0, 0)
 
-   // console.log(e.data)
+   // console.log('elevationLayer.already', elevationLayer.contexts)
 
 }
 
 for (let i = 0; i < 16; i++){
    var name = i < 9 ? `0${i+1}` : i +1
-   elevationLayer.workers[i] = new Worker('worker.dem.js', { name: `Worker.dem ${name}` })
+   elevationLayer.workers[i] = new Worker('worker.slope.js', { name: `Worker.dem ${name}` })
    elevationLayer.workers[i].onmessage = elevationLayer.updateTile
 }
 

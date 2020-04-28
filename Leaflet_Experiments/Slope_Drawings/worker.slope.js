@@ -1,12 +1,12 @@
 importScripts('shading.slope.js')
 
-self.dems = {}
+self.slopeshades = {}
 
 onmessage = function (e) {
 
    if (e.data === 'clear') {
 
-      self.dems = {}
+      self.slopeshades = {}
       return
       
    }
@@ -14,15 +14,15 @@ onmessage = function (e) {
    if (e.data.raster) {
 
       const { data } = e.data.raster
-      self.dems[e.data.id] = raster2dem(data)
-      self.shades = shading(self.dems[e.data.id])
+      self.slopeshades[e.data.id] = raster2slopes(data)
+      self.shades = shading(self.slopeshades[e.data.id])
 
    }
 
    postMessage({
       id: e.data.id,
       message: 'from worker',
-      ele: self.dems[e.data.id],
+      ele: self.slopeshades[e.data.id],
       shades: self.shades
    })
 

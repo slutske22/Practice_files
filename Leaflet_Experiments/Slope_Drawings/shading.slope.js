@@ -2,14 +2,14 @@ importScripts('rainbowvis.js')
 
 
 /**
- * Transforms ImageData() array of rgb encoded elevation values into slope values (in degrees)
+ * Transforms ImageData() array of rgb encoded elevation values into elevation values in meters
  * @param {ImageData() Uint8ClampedArray} data 
  */
-function raster2slopemap(data){
+function raster2dem(data){
 
-   const slopemap = new Int16Array(256 * 256)
+   const dem = new Int16Array(256 * 256)
 
-   var x, y, dx, dy, i, j
+   var x, y, i, j
 
    // from https://docs.mapbox.com/help/troubleshooting/access-elevation-data/#decode-data
    function height (R, G, B) {
@@ -20,26 +20,64 @@ function raster2slopemap(data){
       for (y = 0; y < 256; y++){
          i = x + y * 256
          j = i * 4
-         slopemap[i] = height( data[j], data[j + 1], data[j + 2] )
+         dem[i] = height( data[j], data[j + 1], data[j + 2] )
       }
    }
 
-   return slopemap
+   return dem
+
+}
+
+
+/**
+ * Transforms dem array of elevation values into slope values in degrees
+ * @param {Int16Array} dem 
+ */
+function raster2slopes(demarray){
+
+   const dem = raster2dem(demarray)
+
+   const slopes = new Float32Array( 256 * 256 )
+
+   var x, y, dx, dy, i, j
+
+   for (x = 1; x < 255; x++){
+      for (y = 1; y < 255; y++){
+
+         i = y * 256 + x
+
+         dx = ((dem[i - 255] + 2 * dem[i + 1]   + dem[i + 257]) -
+            (dem[i - 257] + 2 * dem[i - 1]   + dem[i + 255])) / 8;
+         dy = ((dem[i + 255] + 2 * dem[i + 256] + dem[i + 257]) -
+            (dem[i - 257] + 2 * dem[i - 256] + dem[i - 255])) / 8;
+
+         slopes[i] = Math.atan( Math.sqrt( dx * dx + dy * dy ) )
+
+      }
+   }
+
+   console.log('slopes from inside shading.slope.js', slopes)
+
+   return slopes
 
 }
 
 
 /**
  * Transforms Int16Array of elevation data into Uint8ClampedArray of rgba values
- * @param {Int16Array} slopemap 
+ * @param {Int16Array} dem 
  */
-function shading(slopemap){
+function shading(slopes){
 
    var px = new Uint8ClampedArray( 256 * 256 * 4 )
 
-   for (let i = 0; i < slopemap.length; i++){
+   var gradient = new Rainbow()
+   gradient.setNumberRange( 0, Math.PI/2)
+   gradient.setSpectrum('black', 'white')
 
-      var hex = `#${hypsotint(slopemap[i])}`
+   for (let i = 0; i < slopes.length; i++){
+
+      var hex = `#${gradient.colorAt(slopes[i])}`
       var rgb = hexToRgb(hex)
 
       px[4*i + 0] = rgb.r
