@@ -77,8 +77,9 @@ function hexToRgb(hex) {
 /**
  * Creates array of Rainbow gradient objects with specified value ranges and color spectrums
  */
-var colors =      ['#164A5B', '#75CFEC', '#FCFFA0', 'lightgreen', 'darkgreen', 'white']
-var breakpoints = [       -850,        0,        800,         4000,         8700      ]
+//
+var colors =      ['#164A5B', '#75CFEC', '#FCFFA0', 'green', '#B3C04C', 'darkgreen', '#493829', 'white']
+var breakpoints = [       -850,        0,        300,    800,      1500,         2400,       8700      ]
 
 var gradients = (() => {
 

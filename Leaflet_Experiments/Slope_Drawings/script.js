@@ -49,7 +49,7 @@ map.on("mousemove", function(event) {
  });
 
 
-var searchControl = L.esri.Geocoding.geosearch({position: 'topright'})
+var searchControl = L.esri.Geocoding.geosearch({position: 'topright', useMapBounds: false})
 searchControl.addTo(map);
 
 
@@ -211,7 +211,7 @@ elevationLayer.updateTile = function(e){
 
 for (let i = 0; i < 16; i++){
    var name = i < 9 ? `0${i+1}` : i +1
-   elevationLayer.workers[i] = new Worker('worker.js', { name: `Worker ${name}` })
+   elevationLayer.workers[i] = new Worker('worker.dem.js', { name: `Worker.dem ${name}` })
    elevationLayer.workers[i].onmessage = elevationLayer.updateTile
 }
 
