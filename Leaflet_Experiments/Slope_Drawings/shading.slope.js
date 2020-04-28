@@ -56,8 +56,6 @@ function raster2slopes(demarray){
       }
    }
 
-   console.log('slopes from inside shading.slope.js', slopes)
-
    return slopes
 
 }
