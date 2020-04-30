@@ -54,10 +54,134 @@ function reverseGeocode(coords) {
 
 
 
+// ----------------------------------------------------------------
+//              ESRI TOKEN GETTER -- BEGIN 
+// ----------------------------------------------------------------
+
+async function getEsriToken(){
+
+  let token
+
+  const url = `https://www.arcgis.com/sharing/rest/oauth2/token?client_id=z5qFAApXsxo674A8&client_secret=5c4d804cedb845fda5b3828f92bc8998&grant_type=client_credentials&expiration=7200`
+
+  await fetch(url, {
+    method: 'POST',
+  })
+    .then(res => {
+      return res.json()
+    })
+    .then(res => { 
+      token =  res.access_token
+    })
+    .catch(err => console.error(err))
+
+    return token
+
+}
+
+// ----------------------------------------------------------------
+//            END -- ESRI TOKEN GETTER  
+// ----------------------------------------------------------------
+
+// ----------------------------------------------------------------
+//            ESRI - DEFINE LAYER BEGIN  
+// ----------------------------------------------------------------
+
+async function createEsriLayer(layerType, options){
+
+  let token = await getEsriToken()
+
+  var esriLayer = L.esri[layerType]({
+    ...options,
+    token
+  })
+
+  esriLayer.addTo(map)
+
+  return esriLayer
+
+}
+
+
+
+// var EsriSlopeDegreesMapLayer
+// (async () => {
+//   EsriSlopeDegreesMapLayer = await createEsriLayer('imageMapLayer', {
+//     url: 'https://elevation.arcgis.com/arcgis/rest/services/WorldElevation/Terrain/ImageServer',
+//     opacity: 1,
+//     renderingRule: {rasterFunction: "Slope_Degrees_Map"}
+//   })
+// })()
+
+
+
+var EsriSlopeDegreesLayer
+(async () => {
+  EsriSlopeDegreesMapLayer = await createEsriLayer('imageMapLayer', {
+    url: 'https://elevation.arcgis.com/arcgis/rest/services/WorldElevation/Terrain/ImageServer',
+    opacity: 1,
+    renderingRule: {rasterFunction: "Slope_Degrees"}
+  })
+})()
+
+// ----------------------------------------------------------------
+//            END -- ESRI DEFINE LAYER  
+// ----------------------------------------------------------------
 
 
 // ----------------------------------------------------------------
-//              ESRI TOKEN GETTER -- BEGIN 
+//            Get Value on Click  
+// ----------------------------------------------------------------
+
+map.on('click', e => {
+
+  EsriSlopeDegreesMapLayer.identify().at(e.latlng).run(function (error, results) {
+
+    if (error) {
+      return;
+    }
+
+    let identifiedPixel = results.pixel;
+    console.log(identifiedPixel)
+
+  });
+  
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// OLD WAY:
+
+
+// ----------------------------------------------------------------
+//              ESRI COMPLETE ADD -- BEGIN 
 // ----------------------------------------------------------------
 
 // Instructions on turning clientid and clientsecret
@@ -71,11 +195,11 @@ function getEsriSecureLayer(layerType, getTokenUrl, layerUrl, client_id, client_
     method: 'POST',
   })
     .then(res => {
-      console.log(res)
+      // console.log(res)
       return res.json()
     })
     .then(res => { 
-      console.log(res)
+      // console.log(res)
       callback(layerType, res.access_token, layerUrl)
     })
     .catch(err => console.error(err))
@@ -83,55 +207,30 @@ function getEsriSecureLayer(layerType, getTokenUrl, layerUrl, client_id, client_
 }
 
 
-var esriToken
-
-function getEsriToken(getTokenUrl, client_id, client_secret, expiration){
-
-  const url = `${getTokenUrl}?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials&expiration=${expiration}`
-
-  fetch(url, {
-    method: 'POST',
-  })
-    .then(res => {
-      console.log(res)
-      return res.json()
-    })
-    .then(res => { 
-      console.log(res)
-      esriToken =  res.access_token
-    })
-    .catch(err => console.error(err))
-
-}
-
-
-
 // ----------------------------------------------------------------
-//            END -- ESRI TOKEN GETTER  
+//              ESRI COMPLETE ADD -- END 
 // ----------------------------------------------------------------
-
-
-
-
-
-
 
 
 // ----------------------------------------------------------------
 //               DEFINE LAYER -- BEGIN 
 // ----------------------------------------------------------------
 
+const renderingRule = {
+  rasterFunction: "Slope_Degrees"
+}
+
 function defineEsriLayer (layerType, token, layerUrl) {
 
   // Define an Esri-Leaflet imageLayer
-  var EsriGroundCoverImageLayer = L.esri[layerType]({
+  var esriLayer = L.esri[layerType]({
     url: layerUrl,
-    opacity: 0.75,
-    // useCors: false,
-    token: token
+    // opacity: 0.75,
+    token,
+    renderingRule
   })
 
-  EsriGroundCoverImageLayer.addTo(map)
+  esriLayer.addTo(map)
 
   map.on('click', e => {
 
@@ -151,7 +250,7 @@ function defineEsriLayer (layerType, token, layerUrl) {
           return;
         }
         const typeIndex = identifyImageResponse.pixel.properties.value - 1
-        console.log(identifyImageResponse);
+        console.log(rawResponse);
 
         // L.marker(e.latlng).addTo(map)
         //   .bindPopup(`
@@ -167,6 +266,8 @@ function defineEsriLayer (layerType, token, layerUrl) {
 
   })
 
+  return esriLayer
+
 }
 
 // ----------------------------------------------------------------
@@ -176,24 +277,19 @@ function defineEsriLayer (layerType, token, layerUrl) {
 
 
 
-const authservice = 'https://www.arcgis.com/sharing/rest/oauth2/token'
-const client_id = 'z5qFAApXsxo674A8'
-const client_secret = '5c4d804cedb845fda5b3828f92bc8998'
+var authservice = 'https://www.arcgis.com/sharing/rest/oauth2/token'
+var client_id = 'z5qFAApXsxo674A8'
+var client_secret = '5c4d804cedb845fda5b3828f92bc8998'
 
-const World_Land_Cover_Layer_URL = 'https://landscape6.arcgis.com/arcgis/rest/services/World_Land_Cover_30m_BaseVue_2013/ImageServer'
-const UWB_Esri_URL = 'https://services1.arcgis.com/pf6KDbd8NVL1IUHa/arcgis/rest/services/Wildland_Urban_Interface_vector/FeatureServer/1'
-const Terrain_URL = 'https://elevation.arcgis.com/arcgis/rest/services/WorldElevation/Terrain/ImageServer'
-const Ground_Surface_Elevation_30M_URL = 'https://elevation.arcgis.com/arcgis/rest/services/NED30m/ImageServer'
+var Terrain_URL = 'https://elevation.arcgis.com/arcgis/rest/services/WorldElevation/Terrain/ImageServer'
+var Ground_Surface_Elevation_30M_URL = 'https://elevation.arcgis.com/arcgis/rest/services/NED30m/ImageServer'
 
 
 
-// getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
-getEsriSecureLayer('imageMapLayer', authservice, Terrain_URL, client_id, client_secret, defineEsriLayer, 100000 )
 
-// getEsriSecureLayer('featureLayer', authservice, UWB_Esri_URL, client_id, client_secret, defineEsriLayer, 100000 )
+// getEsriSecureLayer('imageMapLayer', authservice, Terrain_URL, client_id, client_secret, defineEsriLayer, 100000 )
 
-// URBAN WILDLAND BOUNDARY FEATURELAYER
-// L.esri.featureLayer({url: UWB_Esri_URL}).addTo(map)
+
 
 
 
@@ -209,116 +305,4 @@ getEsriSecureLayer('imageMapLayer', authservice, Terrain_URL, client_id, client_
 
 
 
-
-
-
-// Plugin for grabbing the legend data for an esri mapservice
-// https://github.com/w8r/esri-leaflet-legend
-
-var groundCoverTypes = [
-  {
-    "name": "Deciduous Forest",
-    "description": "  Trees > 3 meters in height, canopy closure >35% (<25% inter-mixture with evergreen species) that seasonally lose their leaves, except Larch."
-  },
-  {
-    "name": "Evergreen Forest",
-    "description": "  Trees >3 meters in height, canopy closure >35% (<25% inter-mixture with deciduous species), of species that do not lose leaves. (will include coniferous Larch regardless of deciduous nature)."
-  },
-  {
-    "name": "Shrub/Scrub",
-    "description": "  Woody vegetation <3 meters in height, > 10% ground cover. Only collect >30% ground cover."
-  },
-  {
-    "name": "Grassland",
-    "description": "  Herbaceous grasses, > 10% cover, including pasture lands. Only collect >30% cover."
-  },
-  {
-    "name": "Barren or Minimal Vegetation",
-    "description": "  Land with minimal vegetation (<10%) including rock, sand, clay, beaches, quarries, strip mines, and gravel pits. Salt flats, playas, and non-tidal mud flats are also included when not inundated with water."
-  },
-  {
-    "name": "Not Used (in other MDA products 6 represents urban areas or built up areas, which have been split here in into values 20 and 21)."
-  },
-  {
-    "name": "Agriculture, General",
-    "description": "  Cultivated crop lands"
-  },
-  {
-    "name": "Agriculture, Paddy",
-    "description": "  Crop lands characterized by inundation for a substantial portion of the growing season"
-  },
-  {
-    "name": "Wetland",
-    "description": "  Areas where the water table is at or near the surface for a substantial portion of the growing season, including herbaceous and woody species (except mangrove species)"
-  },
-  {
-    "name": "Mangrove",
-    "description": "  Coastal (tropical wetlands) dominated by Mangrove species"
-  },
-  {
-    "name": "Water",
-    "description": "  All water bodies greater than 0.08 hectares (1 LS pixel) including oceans, lakes, ponds, rivers, and streams"
-  },
-  {
-    "name": "Ice / Snow",
-    "description": "  Land areas covered permanently or nearly permanent with ice or snow"
-  },
-  {
-    "name": "Clouds",
-    "description": "  Areas where no land cover interpretation is possible due to obstruction from clouds, cloud shadows, smoke, haze, or satellite malfunction"
-  },
-  {
-    "name": "Woody Wetlands",
-    "description": "  Areas where forest or shrubland vegetation accounts for greater than 20% of vegetative cover and the soil or substrate periodically is saturated with, or covered by water. Only used within the continental U.S."
-  },
-  {
-    "name": "Mixed Forest",
-    "description": "  Areas dominated by trees generally greater than 5 meters tall, and greater than 20% of total vegetation cover. Neither deciduous nor evergreen species are greater than 75% of total tree cover. Only used within the continental U.S."
-  },
-  {
-    "name": "Not Used"
-  },
-  {
-    "name": "Not Used"
-  },
-  {
-    "name": "Not Used"
-  },
-  {
-    "name": "Not Used"
-  },
-  {
-    "name": "High Density Urban",
-    "description": "  Areas with over 70% of constructed materials that are a minimum of 60 meters wide (asphalt, concrete, buildings, etc.). Includes residential areas with a mixture of constructed materials and vegetation where constructed materials account for >60%. Commercial, industrial, and transportation i.e., Train stations, airports, etc."
-  },
-  {
-    "name": "Medium-Low Density Urban",
-    "description": "  Areas with 30%-70% of constructed materials that are a minimum of 60 meters wide (asphalt, concrete, buildings, etc.). Includes residential areas with a mixture of constructed materials and vegetation, where constructed materials account for greater than 40%. Commercial, industrial, and transportation i.e., Train stations, airports, etc."
-  }
-]
-
-
-var groundCoverSourceText = [
-  "Deciduous Forest:  Trees > 3 meters in height, canopy closure >35% (<25% inter-mixture with evergreen species) that seasonally lose their leaves, except Larch.",
-  "Evergreen Forest:  Trees >3 meters in height, canopy closure >35% (<25% inter-mixture with deciduous species), of species that do not lose leaves. (will include coniferous Larch regardless of deciduous nature).",
-  "Shrub/Scrub:  Woody vegetation <3 meters in height, > 10% ground cover. Only collect >30% ground cover.",
-  "Grassland:  Herbaceous grasses, > 10% cover, including pasture lands. Only collect >30% cover.",
-  "Barren or Minimal Vegetation:  Land with minimal vegetation (<10%) including rock, sand, clay, beaches, quarries, strip mines, and gravel pits. Salt flats, playas, and non-tidal mud flats are also included when not inundated with water.", 
-  "Not Used (in other MDA products 6 represents urban areas or built up areas, which have been split here in into values 20 and 21).",
-  "Agriculture, General:  Cultivated crop lands",
-  "Agriculture, Paddy:  Crop lands characterized by inundation for a substantial portion of the growing season",
-  "Wetland:  Areas where the water table is at or near the surface for a substantial portion of the growing season, including herbaceous and woody species (except mangrove species)",
-  "Mangrove:  Coastal (tropical wetlands) dominated by Mangrove species",
-  "Water:  All water bodies greater than 0.08 hectares (1 LS pixel) including oceans, lakes, ponds, rivers, and streams",
-  "Ice / Snow:  Land areas covered permanently or nearly permanent with ice or snow",
-  "Clouds:  Areas where no land cover interpretation is possible due to obstruction from clouds, cloud shadows, smoke, haze, or satellite malfunction",
-  "Woody Wetlands:  Areas where forest or shrubland vegetation accounts for greater than 20% of vegetative cover and the soil or substrate periodically is saturated with, or covered by water. Only used within the continental U.S.",
-  "Mixed Forest:  Areas dominated by trees generally greater than 5 meters tall, and greater than 20% of total vegetation cover. Neither deciduous nor evergreen species are greater than 75% of total tree cover. Only used within the continental U.S.",
-  "Not Used",
-  "Not Used",
-  "Not Used",
-  "Not Used",
-  "High Density Urban:  Areas with over 70% of constructed materials that are a minimum of 60 meters wide (asphalt, concrete, buildings, etc.). Includes residential areas with a mixture of constructed materials and vegetation where constructed materials account for >60%. Commercial, industrial, and transportation i.e., Train stations, airports, etc.",
-  "Medium-Low Density Urban:  Areas with 30%-70% of constructed materials that are a minimum of 60 meters wide (asphalt, concrete, buildings, etc.). Includes residential areas with a mixture of constructed materials and vegetation, where constructed materials account for greater than 40%. Commercial, industrial, and transportation i.e., Train stations, airports, etc."
-]
 
