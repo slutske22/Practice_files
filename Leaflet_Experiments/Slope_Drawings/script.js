@@ -208,8 +208,7 @@ elevationLayer.updateTile = function(e){
    var shades = e.data.shades
    imgData.data.set(shades)
    ctx.putImageData(imgData, 0, 0)
-
-   // console.log('elevationLayer.already', elevationLayer.contexts)
+   ctx.filter = 'blur(20px)'
 
 }
 
