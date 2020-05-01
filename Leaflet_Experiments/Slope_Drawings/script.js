@@ -215,7 +215,7 @@ elevationLayer.updateTile = function(e){
 
 for (let i = 0; i < 16; i++){
    var name = i < 9 ? `0${i+1}` : i +1
-   elevationLayer.workers[i] = new Worker('worker.slope.js', { name: `Worker.dem ${name}` })
+   elevationLayer.workers[i] = new Worker('worker.aspect.js', { name: `Worker.dem ${name}` })
    elevationLayer.workers[i].onmessage = elevationLayer.updateTile
 }
 

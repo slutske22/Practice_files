@@ -120,7 +120,7 @@ var EsriSlopeDegreesLayer
   EsriSlopeDegreesMapLayer = await createEsriLayer('imageMapLayer', {
     url: 'https://elevation.arcgis.com/arcgis/rest/services/WorldElevation/Terrain/ImageServer',
     opacity: 1,
-    renderingRule: {rasterFunction: "Slope_Degrees"}
+    renderingRule: {rasterFunction: "Aspect"}
   })
 })()
 

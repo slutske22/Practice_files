@@ -2,14 +2,14 @@ importScripts('rainbowvis.js')
 
 
 /**
- * Transforms ImageData() array of rgb encoded elevation values into elevation values in meters
+ * Transforms ImageData() array of rgb encoded elevation values into elevation values (in meters)
  * @param {ImageData() Uint8ClampedArray} data 
  */
 function raster2dem(data){
 
    const dem = new Int16Array(256 * 256)
 
-   var x, y, i, j
+   var x, y, dx, dy, i, j
 
    // from https://docs.mapbox.com/help/troubleshooting/access-elevation-data/#decode-data
    function height (R, G, B) {
@@ -30,14 +30,14 @@ function raster2dem(data){
 
 
 /**
- * Transforms dem array of elevation values into slope values in degrees
+ * Transforms raster array into aspect values in degrees
  * @param {Int16Array} dem 
  */
-function raster2slopes(raster){
+function raster2aspect(raster){
 
    const dem = raster2dem(raster)
 
-   const slopes = new Float32Array( 256 * 256 )
+   const aspects = new Float32Array( 256 * 256 )
 
    var x, y, dx, dy, i, j
 
@@ -51,12 +51,14 @@ function raster2slopes(raster){
          dy = ((dem[i + 255] + 2 * dem[i + 256] + dem[i + 257]) -
             (dem[i - 257] + 2 * dem[i - 256] + dem[i - 255])) / 8;
 
-         slopes[i] = Math.atan( Math.sqrt( dx * dx + dy * dy ) )
+         aspects[i] = dx !== 0
+            ? 90 - Math.atan2( dy, -dx ) * (180 / Math.PI)
+            : 90 - 90 * (dy > 0 ? 1 : -1)
 
       }
    }
 
-   return slopes
+   return aspects
 
 }
 
@@ -65,17 +67,13 @@ function raster2slopes(raster){
  * Transforms Int16Array of elevation data into Uint8ClampedArray of rgba values
  * @param {Int16Array} dem 
  */
-function shading(slopes){
+function shading(aspects){
 
    var px = new Uint8ClampedArray( 256 * 256 * 4 )
 
-   var gradient = new Rainbow()
-   gradient.setNumberRange( 0, Math.PI/2)
-   gradient.setSpectrum('black', 'white')
+   for (let i = 0; i < aspects.length; i++){
 
-   for (let i = 0; i < slopes.length; i++){
-
-      var hex = `#${gradient.colorAt(slopes[i])}`
+      var hex = `#${hypsotint(aspects[i])}`
       var rgb = hexToRgb(hex)
 
       px[4*i + 0] = rgb.r
@@ -110,5 +108,56 @@ function hexToRgb(hex) {
 }
 
 
+/**
+ * Creates array of Rainbow gradient objects with specified value ranges and color spectrums
+ */
+//
+var colors =      [  '9afb0c',  '00ad43', '0068c0', '6c00a3', 'ca009c',  'ff5568', 'ffab47', 'f4fa00', '9afb0c']
+var breakpoints = [ 0,      22.5,      67.5,     112.5,   157.5,   202.5,      247.5,     292.5,    337.5,     360]
+
+// var gradients = (() => {
+
+//    var collection = []
+
+//    for (let i = 1; i < breakpoints.length - 2; i++){
+
+//       var rainbow = new Rainbow()
+//       rainbow.setNumberRange( breakpoints[i], breakpoints[i + 1] )
+//       rainbow._numberRange = [ breakpoints[i], breakpoints[i + 1] ]
+
+//       rainbow.setSpectrum( colors[i], colors[i + 1] )
+
+//       collection.push(rainbow)
+
+//    }
+
+//    return collection
+
+// })()
 
 
+/**
+ * Takes in an elevation value and outputs a hex color value based on the gradients map
+ * @param {Number} elevation 
+ */
+function hypsotint(aspect){
+
+   let correctedAspect = aspect < 0
+      ? 360 + aspect % 360
+      : aspect > 360 
+         ? aspect % 360 
+         : aspect
+
+   for (let i = 0; i < breakpoints.length - 1; i++){
+
+      if (breakpoints[i] < correctedAspect && correctedAspect <= breakpoints[i + 1]){
+
+         return colors[i]
+
+      }
+
+   }
+
+   return '000000'
+
+}
