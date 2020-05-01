@@ -9,7 +9,7 @@ function raster2dem(data){
 
    const dem = new Int16Array(256 * 256)
 
-   var x, y, dx, dy, i, j
+   var x, y, i, j
 
    // from https://docs.mapbox.com/help/troubleshooting/access-elevation-data/#decode-data
    function height (R, G, B) {
@@ -39,7 +39,7 @@ function raster2aspect(raster){
 
    const aspects = new Float32Array( 256 * 256 )
 
-   var x, y, dx, dy, i, j
+   var x, y, dx, dy, i
 
    for (x = 1; x < 255; x++){
       for (y = 1; y < 255; y++){

@@ -39,7 +39,7 @@ function raster2slopes(raster){
 
    const slopes = new Float32Array( 256 * 256 )
 
-   var x, y, dx, dy, i, j
+   var x, y, dx, dy, i
 
    for (x = 1; x < 255; x++){
       for (y = 1; y < 255; y++){

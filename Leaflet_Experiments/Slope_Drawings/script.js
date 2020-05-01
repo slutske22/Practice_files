@@ -4,8 +4,8 @@
 import './tools/leaflet.tilelayer.colorpicker.js'
 
 var mapOptions = {
-  center: {lat: 61.09569262408175, lng: -142.06970214843753},
-  zoom: 8
+  center: {lat: 42.93669471266819, lng: -122.13191986083986},
+  zoom: 12
 };
 
 
@@ -215,7 +215,7 @@ elevationLayer.updateTile = function(e){
 
 for (let i = 0; i < 16; i++){
    var name = i < 9 ? `0${i+1}` : i +1
-   elevationLayer.workers[i] = new Worker('worker.aspect.js', { name: `Worker.dem ${name}` })
+   elevationLayer.workers[i] = new Worker('worker.slopeaspect.js', { name: `Worker.dem ${name}` })
    elevationLayer.workers[i].onmessage = elevationLayer.updateTile
 }
 

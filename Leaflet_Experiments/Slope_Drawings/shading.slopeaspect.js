@@ -9,7 +9,7 @@ function raster2dem(data){
 
    const dem = new Int16Array(256 * 256)
 
-   var x, y, dx, dy, i, j
+   var x, y, i, j
 
    // from https://docs.mapbox.com/help/troubleshooting/access-elevation-data/#decode-data
    function height (R, G, B) {
@@ -33,13 +33,14 @@ function raster2dem(data){
  * Transforms raster array into aspect values in degrees
  * @param {Int16Array} dem 
  */
-function raster2aspect(raster){
+function raster2slopeaspect(raster){
 
    const dem = raster2dem(raster)
 
    const aspects = new Float32Array( 256 * 256 )
+   const slopes = new Float32Array( 256 * 256 )
 
-   var x, y, dx, dy, i, j
+   var x, y, dx, dy, i
 
    for (x = 1; x < 255; x++){
       for (y = 1; y < 255; y++){
@@ -55,10 +56,12 @@ function raster2aspect(raster){
             ? 90 - Math.atan2( dy, -dx ) * (180 / Math.PI)
             : 90 - 90 * (dy > 0 ? 1 : -1)
 
+         slopes[i] = Math.atan( Math.sqrt( dx * dx + dy * dy ) ) * 180 / Math.PI
+
       }
    }
 
-   return aspects
+   return {slopes, aspects}
 
 }
 
@@ -67,13 +70,13 @@ function raster2aspect(raster){
  * Transforms Int16Array of elevation data into Uint8ClampedArray of rgba values
  * @param {Int16Array} dem 
  */
-function shading(aspects){
+function shading(slopes, aspects){
 
    var px = new Uint8ClampedArray( 256 * 256 * 4 )
 
    for (let i = 0; i < aspects.length; i++){
 
-      var hex = `#${hypsotint(aspects[i])}`
+      var hex = hypsotint(slopes[i], aspects[i])
       var rgb = hexToRgb(hex)
 
       px[4*i + 0] = rgb.r
@@ -112,35 +115,22 @@ function hexToRgb(hex) {
  * Creates array of Rainbow gradient objects with specified value ranges and color spectrums
  */
 //
-var colors =      [  '9afb0c',  '00ad43', '0068c0', '6c00a3', 'ca009c',  'ff5568', 'ffab47', 'f4fa00', '9afb0c']
+var colors =      [  '#9afb0c',  '#00ad43', '#0068c0', '#6c00a3', '#ca009c',  '#ff5568', '#ffab47', '#f4fa00', '#9afb0c']
 var breakpoints = [ 0,      22.5,      67.5,     112.5,   157.5,   202.5,      247.5,     292.5,    337.5,     360]
+var gradients = colors.map( color => {
+   let rainbow = new Rainbow()
+   rainbow.setNumberRange(0, 70)
+   rainbow.setSpectrum('#808080', color)
+   return rainbow
+})
 
-// var gradients = (() => {
-
-//    var collection = []
-
-//    for (let i = 1; i < breakpoints.length - 2; i++){
-
-//       var rainbow = new Rainbow()
-//       rainbow.setNumberRange( breakpoints[i], breakpoints[i + 1] )
-//       rainbow._numberRange = [ breakpoints[i], breakpoints[i + 1] ]
-
-//       rainbow.setSpectrum( colors[i], colors[i + 1] )
-
-//       collection.push(rainbow)
-
-//    }
-
-//    return collection
-
-// })()
-
+// console.log(gradients)
 
 /**
- * Takes in an elevation value and outputs a hex color value based on the gradients map
+ * Takes in an elevation value and outputs a hex color value based on the colors brackets
  * @param {Number} elevation 
  */
-function hypsotint(aspect){
+function hypsotint(slope, aspect){
 
    let correctedAspect = aspect < 0
       ? 360 + aspect % 360
@@ -152,12 +142,65 @@ function hypsotint(aspect){
 
       if (breakpoints[i] < correctedAspect && correctedAspect <= breakpoints[i + 1]){
 
+
+         if (slope < 70){
+
+            return gradients[i].colorAt(slope)
+
+         } 
+
          return colors[i]
+
 
       }
 
    }
 
-   return '000000'
+   return '#00ad43'
 
+}
+
+
+
+function ColorLuminance(hex, lum) {
+
+	// validate hex string
+	hex = String(hex).replace(/[^0-9a-f]/gi, '');
+	if (hex.length < 6) {
+		hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+	}
+	lum = lum || 0;
+
+	// convert to decimal and change luminosity
+	var rgb = "#", c, i;
+	for (i = 0; i < 3; i++) {
+		c = parseInt(hex.substr(i*2,2), 16);
+		c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+		rgb += ("00"+c).substr(c.length);
+	}
+
+	return rgb;
+}
+
+
+function desaturate(hexcolor, desaturation){
+   var col = hexToRgb(hexcolor);
+   var sat = desaturation/100;
+   var gray = col.r * 0.3086 + col.g * 0.6094 + col.b * 0.0820;
+
+   col.r = Math.round(col.r * sat + gray * (1-sat));
+   col.g = Math.round(col.g * sat + gray * (1-sat));
+   col.b = Math.round(col.b * sat + gray * (1-sat));
+
+   return rgbToHex(col.r,col.g,col.b);
+
+}
+
+function componentToHex(c) {
+   var hex = c.toString(16);
+   return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }

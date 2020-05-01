@@ -1,28 +1,21 @@
-importScripts('shading.aspect.js')
+importScripts('shading.slopeaspect.js')
 
-self.aspects = {}
+self.slopeaspects = {}
 
 onmessage = function (e) {
-
-   if (e.data === 'clear') {
-
-      self.dems = {}
-      return
-      
-   }
 
    if (e.data.raster) {
 
       const { data } = e.data.raster
-      self.aspects[e.data.id] = raster2aspect(data)
-      self.shades = shading(self.aspects[e.data.id])
+      self.slopeaspects[e.data.id] = raster2slopeaspect(data)
+      self.shades = shading(self.slopeaspects[e.data.id].slopes, self.slopeaspects[e.data.id].aspects)
 
    }
 
    postMessage({
       id: e.data.id,
       message: 'from worker',
-      ele: self.aspects[e.data.id],
+      ele: self.slopeaspects[e.data.id],
       shades: self.shades
    })
 
