@@ -126,7 +126,7 @@ function defineEsriLayer (layerType, token, layerUrl) {
           return;
         }
         const typeIndex = identifyImageResponse.pixel.properties.value - 1
-        // console.log(typeIndex);
+        console.log(identifyImageResponse);
 
         L.marker(e.latlng).addTo(map)
           .bindPopup(`
@@ -157,6 +157,8 @@ const client_secret = '5c4d804cedb845fda5b3828f92bc8998'
 
 const World_Land_Cover_Layer_URL = 'https://landscape6.arcgis.com/arcgis/rest/services/World_Land_Cover_30m_BaseVue_2013/ImageServer'
 
+const ESRI_Terrain = 'https://elevation.arcgis.com/arcgis/rest/services/WorldElevation/Terrain/ImageServer'
+
 const LANDFIRE_Ground_Cover_URL = 'https://landfire.cr.usgs.gov/arcgis/rest/services/Landfire/US_200/MapServer/15'
 
 const USForestService_Wildland_Urban_Interface_2010_URL = 'https://apps.fs.usda.gov/arcx/rest/services/EDW/EDW_WUI_2010_01/MapServer'
@@ -166,12 +168,16 @@ const USForestService_Wildfire_Suppression_Difficulty_Index = 'https://apps.fs.u
 const UWB_Esri_URL = 'https://services1.arcgis.com/pf6KDbd8NVL1IUHa/arcgis/rest/services/Wildland_Urban_Interface_vector/FeatureServer/1'
 
 
-// getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
+getEsriSecureLayer('imageMapLayer', authservice, World_Land_Cover_Layer_URL, client_id, client_secret, defineEsriLayer, 100000 )
+
+// getEsriSecureLayer('imageMapLayer', authservice, ESRI_Terrain, client_id, client_secret, defineEsriLayer, 100000 )
+
+
 
 // getEsriSecureLayer('featureLayer', authservice, UWB_Esri_URL, client_id, client_secret, defineEsriLayer, 100000 )
 
 
-L.esri.featureLayer({url: UWB_Esri_URL}).addTo(map)
+// L.esri.featureLayer({url: UWB_Esri_URL}).addTo(map)
 
 
 // EsriGroundCoverImageLayer.addTo(map)
