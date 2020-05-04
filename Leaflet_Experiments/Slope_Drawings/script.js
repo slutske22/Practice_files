@@ -162,7 +162,6 @@ elevationLayer.createTile = function(coords){
 
    var ctx = tile.getContext('2d')
    var demCtx
-   var renderedZFactor
    var id = uniqueId()
 
    this.contexts[id] = ctx
