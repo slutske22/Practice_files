@@ -197,7 +197,11 @@ const layers = {
    "DEM": demLayer,
    "Slope": slopeLayer,
    "Apect": aspectLayer,
-   "Aspect and Slope": slopeaspectLayer
+   "Aspect and Slope": slopeaspectLayer,
+   "Raw RGB": L.tileLayer(MAPBOX_TERRAIN_RGB, {
+      attribution: "© <a href='https://www.mapbox.com/map-feedback/'>Mapbox</a>" +
+           " © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>" +
+           " <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>"})
 }
 
 L.control.layers(layers).addTo(map)
