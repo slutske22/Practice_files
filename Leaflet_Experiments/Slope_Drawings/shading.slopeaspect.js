@@ -61,6 +61,37 @@ function raster2slopeaspect(raster){
       }
    }
 
+   // Hacky as shit
+   for (x = 0; x < 256; x++){
+      for (y = 0; y < 256; y++){
+
+         i = y * 256 + x
+
+         if (x === 0){
+            j = y * 256 + x + 1
+            aspects[i] = aspects[j]
+            slopes[i] = slopes[j]
+         }
+         if (x === 255){
+            j = y * 256 + x - 1
+            aspects[i] = aspects[j]
+            slopes[i] = slopes[j]
+         }
+         if (y === 0){
+            j = (y + 1) * 256 + x
+            aspects[i] = aspects[j]
+            slopes[i] = slopes[j]
+         }
+         if (y === 255){
+            j = (y - 1) * 256 + x
+            aspects[i] = aspects[j]
+            slopes[i] = slopes[j]
+         }
+         
+
+      }
+   }
+
    return {slopes, aspects}
 
 }
