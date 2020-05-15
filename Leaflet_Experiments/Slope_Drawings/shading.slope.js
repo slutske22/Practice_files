@@ -39,7 +39,7 @@ function raster2slopes(raster){
 
    const slopes = new Float32Array( 256 * 256 )
 
-   var x, y, dx, dy, i
+   var x, y, dx, dy, i, j
 
    for (x = 1; x < 255; x++){
       for (y = 1; y < 255; y++){
@@ -52,6 +52,33 @@ function raster2slopes(raster){
             (dem[i - 257] + 2 * dem[i - 256] + dem[i - 255])) / 8;
 
          slopes[i] = Math.atan( Math.sqrt( dx * dx + dy * dy ) )
+
+      }
+   }
+
+   // Hacky as shit
+   for (x = 0; x < 256; x++){
+      for (y = 0; y < 256; y++){
+
+         i = y * 256 + x
+
+         if (x === 0){
+            j = y * 256 + x + 1
+            slopes[i] = slopes[j]
+         }
+         if (x === 255){
+            j = y * 256 + x - 1
+            slopes[i] = slopes[j]
+         }
+         if (y === 0){
+            j = (y + 1) * 256 + x
+            slopes[i] = slopes[j]
+         }
+         if (y === 255){
+            j = (y - 1) * 256 + x
+            slopes[i] = slopes[j]
+         }
+         
 
       }
    }
