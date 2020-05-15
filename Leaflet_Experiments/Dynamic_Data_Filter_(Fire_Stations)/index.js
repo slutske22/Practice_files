@@ -17,18 +17,19 @@ var mapBoxOutdoors = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{
       accessToken: 'pk.eyJ1Ijoic2x1dHNrZTIyIiwiYSI6ImNqeGw1Y3BibDAybG4zeHFyaXl3OXVwZXUifQ.fZ_5Raq5z-DUpo2AK-bQHA'
    }).addTo(map);
 
-var CAFireStations;
+// var CAFireStations;
 var AllFireStations;
+var USFireStations;
 var firestationsLayer;
 
-fetch('./CA.json')
-   .then(res => res.json())
-   .then(res => {
-      CAFireStations = res.data
-      window.CAFireStations = CAFireStations
-      applyFireStations()
-   })
-   .catch( error => console.log(error) )
+// fetch('./CA.json')
+//    .then(res => res.json())
+//    .then(res => {
+//       CAFireStations = res.data
+//       window.CAFireStations = CAFireStations
+//       applyFireStations()
+//    })
+//    .catch( error => console.log(error) )
 
 
 fetch('./FireStations_Global.json')
@@ -37,6 +38,16 @@ fetch('./FireStations_Global.json')
       AllFireStations = res.features
       window.AllFireStations = AllFireStations
       applyFireStations()
+   })
+   .catch( error => console.log(error) )
+
+
+fetch('./USFireStationsRegistryGeoCodedFiltered.json')
+   .then(res => res.json())
+   .then(res => {
+      USFireStations = res
+      window.USFireStations = USFireStations
+      applyUSFireStations()
    })
    .catch( error => console.log(error) )
 
@@ -115,6 +126,79 @@ function applyFireStations(){
 }
 
 
-applyFireStations()
 
-map.on('load moveend', applyFireStations)
+
+function applyUSFireStations(){
+
+   if (USFireStations){
+
+      const stationsInExtent = USFireStations.filter( station => {
+         let stationCoords = {
+            lat: station.lat,
+            lng: station.lng
+         }
+         if ( map.getBounds().contains(stationCoords) ) {
+            return true
+         }
+      })
+
+      window.stationsInExtent = stationsInExtent
+
+      // console.log(stationsInExtent)
+      var stationsOnMap = stationsInExtent.map( (station, index) => {
+
+         let stationCoords = {
+            lat: station.lat,
+            lng: station.lng
+         }
+
+         let website = station.Website
+
+         let popupContent = `
+               <h2>${station['Fire dept name']}</h2>
+               <p>
+                  ${station['HQ addr1'] || ''} <br>
+                  ${station['HQ city'] || ''} 
+                  ${station['HQ state'] || ''},
+                  ${station['HQ zip'] || ''} <br>
+                  ${station['HQ phone'] || ''} <br>
+                  ${website ? '<a href="' + website + '" target="_blank">' + website + '</a>'  : ''}
+               </p>
+            `
+
+         let marker =  map.getZoom() < 13
+            ? L.circleMarker(stationCoords, {radius: map.getZoom() < 10 ? 2 : 5, fillColor: 'darkred', color: 'darkred', weight: 1, fillOpacity: 0.5}).bindPopup(popupContent)
+            : L.marker(stationCoords, {icon: fireHouseIcon}).bindPopup(popupContent)
+
+         marker.on('click', () => {console.log(index)})
+
+         return marker
+
+      })
+
+      if (firestationsLayer){
+         firestationsLayer.remove()
+      }
+
+      firestationsLayer = L.layerGroup(stationsOnMap)
+
+      if (map.getZoom() > 5){
+         firestationsLayer.addTo(map)
+      }
+
+   }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+map.on('load moveend', applyUSFireStations)
