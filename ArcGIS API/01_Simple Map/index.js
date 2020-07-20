@@ -1,4 +1,7 @@
-require(["esri/Map", "esri/views/MapView"], function(Map, MapView){
+require([
+   "esri/Map", 
+   "esri/views/MapView"
+], function(Map, MapView){
 
    var map = new Map({
       basemap: "topo-vector"
