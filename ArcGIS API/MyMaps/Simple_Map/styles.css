@@ -18,3 +18,23 @@ html, body, #viewDiv {
 .case-group {
   color: darkslateblue;
 }
+
+#field-filter {
+  display: none;
+  width: 160px;
+}
+.field-item {
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  vertical-align: baseline;
+  cursor: pointer;
+  height: 40px;
+}
+.field-item:focus {
+  background-color: dimgrey;
+}
+.field-item:hover {
+  background-color: dimgrey;
+  color: white;
+}
