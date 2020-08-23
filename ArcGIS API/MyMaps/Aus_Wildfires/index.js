@@ -13,15 +13,27 @@ require([
    })
 
    var map = new Map({
-      basemap: "gray-vector",
+      basemap: "topo-vector",
       layers: [biodiversityHotspots, firesLayer]
    })
 
    var view = new MapView({
       container: "viewDiv",
       center: [135, -26],
-      zoom: 4,
+      zoom: 5,
       map: map
+   })
+
+   view.on('click', (e) => {
+      const screenpoint = {x: e.x, y: e.y}
+      view.hitTest(screenpoint)
+         .then( response => {
+            const graphic = response.results[0].graphic
+            console.log('click event', e)
+            console.log('screenpoint', screenpoint)
+            console.log('hittest response', response)
+            console.log('graphic', graphic)
+         })
    })
 
 })
