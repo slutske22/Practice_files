@@ -1,7 +1,11 @@
 require([
    "esri/Map", 
-   "esri/views/MapView"
-], function(Map, MapView){
+   "esri/views/MapView",
+   "esri/widgets/CoordinateConversion"
+], function(Map, MapView, CoordinateConversion){
+
+
+   // Set up map
 
    var map = new Map({
       basemap: "topo-vector"
@@ -13,6 +17,9 @@ require([
       zoom: 11,
       map: map
    })
+
+
+   // Custom made coordinate viewer
 
    var coordsWidget = document.createElement('div')
    coordsWidget.id = 'coordsWidget'
@@ -42,6 +49,18 @@ require([
 
 
 
+
+   // Premade coordinate converter
+
+   const coordConverter = new CoordinateConversion({
+      view
+   })
+
+   view.ui.add(coordConverter, 'top-right')
+
+
+
+   // Reset button
 
    var resetButton = document.createElement('button')
    resetButton.innerHTML = "Reset View"
