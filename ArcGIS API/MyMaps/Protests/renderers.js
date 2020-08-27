@@ -32,10 +32,44 @@ export const racialRenderer = {
 };
 
 
-export const nonRacialRenderer = {
-   type: "simple", // autocasts as new SimpleRenderer()
+export const covidRenderer = {
+   type: "simple", 
    symbol: {
-      type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
+      type: "simple-marker",
+      color: "rgba(255, 102, 0, 0.5)",
+      size: '3px',
+      outline: {
+         color: "rgb(255, 102, 0)",
+         width: 0.5
+      }
+   },
+   visualVariables: [
+      {
+         type: 'size',
+         field: 'Attendees',
+         stops: [
+            {
+              value: 1, 
+              size: 3 
+            },
+            {
+              value: 500, 
+              size: 10 
+            },
+            {
+               value: 100000, 
+               size: 30 
+             }
+         ]
+      }
+   ]
+};
+
+
+export const otherRenderer = {
+   type: "simple",
+   symbol: {
+      type: "simple-marker", 
       color: "rgba(124,185,232, 0.5)",
       size: '3px',
       outline: {
