@@ -4,8 +4,9 @@ require([
    "esri/Map", 
    "esri/views/MapView",
    "esri/layers/FeatureLayer",
+   "esri/widgets/Legend",
    "esri/smartMapping/renderers/location"
-], function(Map, MapView, FeatureLayer, locationRendererCreator){
+], function(Map, MapView, FeatureLayer, Legend, locationRendererCreator){
 
    var renderer = {
       type: "simple", // autocasts as new SimpleRenderer()
@@ -33,7 +34,7 @@ require([
                },
                {
                   value: 100000, 
-                  size: 50 
+                  size: 30 
                 }
             ]
          }
@@ -68,7 +69,24 @@ require([
       container: "viewDiv",
       center: [-100, 38],
       zoom: 4,
-      map: map
+      map: map,
+      highlightOptions: {
+         fillOpacity: 0,
+         color: [50, 50, 50]
+      }
    })
+
+   var legend = new Legend({
+      view: view,
+      label: "Number of Attendees",
+      layerInfos: [
+         {
+            title: "Protests 2020",
+            layer: protestsLayer,
+         }
+      ]
+   })
+
+   view.ui.add(legend, 'bottom-left')
 
 })

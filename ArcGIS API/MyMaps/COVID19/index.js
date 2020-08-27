@@ -57,7 +57,8 @@ require([
       view,
       content: fieldElement,
       expandIconClass: "esri-icon-filter",
-      group: "top-left"
+      group: "top-left",
+      expanded: true
    })
 
    var legend = new Legend({
