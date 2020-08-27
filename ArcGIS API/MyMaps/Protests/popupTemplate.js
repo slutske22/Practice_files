@@ -3,7 +3,8 @@ export const popupTemplate = {
    content: `
       <div class="protests-popup">
 			<p>Attendees: {Attendees}</p>
-			<p>Date: {Date}</p>
+         <p>Date: {Date}</p>
+         <p>Tags: {Tags}</p>
       </div>`,
    fieldInfos: [
       {
