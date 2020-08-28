@@ -2,12 +2,13 @@ import { popupTemplate } from './popupTemplate.js'
 import { racialRenderer, covidRenderer, otherRenderer } from './renderers.js'
 
 require([
+   "esri/Basemap",
    "esri/Map", 
    "esri/views/MapView",
    "esri/layers/FeatureLayer",
    "esri/widgets/LayerList",
    "esri/widgets/TimeSlider",
-], function(Map, MapView, FeatureLayer, LayerList, TimeSlider){
+], function(Basemap, Map, MapView, FeatureLayer, LayerList, TimeSlider){
 
    // define layers
    var racialProtestsLayer = new FeatureLayer({
@@ -41,10 +42,19 @@ require([
 
 
 
+   // define Basemap
+   var basemap = new Basemap({
+      portalItem: {
+        id: "4f2e99ba65e34bb8af49733d9778fb8e"  // WGS84 Streets Vector webmap
+      }
+   });
+
+
 
    // define map and view
    var map = new Map({
-      basemap: "dark-gray-vector",
+      // basemap: "dark-gray-vector",
+      basemap,
       layers
    })
 
