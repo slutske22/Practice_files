@@ -5,12 +5,13 @@ require([
    "esri/Map", 
    "esri/views/MapView",
    "esri/layers/FeatureLayer",
-   "esri/widgets/Legend",
+   "esri/widgets/LayerList",
    "esri/widgets/TimeSlider",
-], function(Map, MapView, FeatureLayer, Legend, TimeSlider){
+], function(Map, MapView, FeatureLayer, LayerList, TimeSlider){
 
    // define layers
    var racialProtestsLayer = new FeatureLayer({
+      id: 'racial',
       url: 'https://services8.arcgis.com/3Y7J7SmaNLGLT6ec/arcgis/rest/services/2020_Protests_with_Location/FeatureServer',
       outFields: ['*'],
       renderer: racialRenderer,
@@ -19,6 +20,7 @@ require([
    })
 
    var covidProtestsLayer = new FeatureLayer({
+      id: 'covid',
       url: 'https://services8.arcgis.com/3Y7J7SmaNLGLT6ec/arcgis/rest/services/2020_Protests_with_Location/FeatureServer',
       outFields: ['*'],
       renderer: covidRenderer,
@@ -27,6 +29,7 @@ require([
    })
 
    var otherProtestLayer = new FeatureLayer({
+      id: 'other',
       url: 'https://services8.arcgis.com/3Y7J7SmaNLGLT6ec/arcgis/rest/services/2020_Protests_with_Location/FeatureServer',
       outFields: ['*'],
       renderer: otherRenderer,
@@ -61,27 +64,43 @@ require([
    // save layerviews to apply filters in timeSlider.watch
    var layerViews = []
    layers.forEach(layer => {
+
       view.whenLayerView(layer)
          .then( layerView => {
             layerViews.push(layerView)
          })
-   })
-   
 
-   // legend
-   var legend = new Legend({
-      view: view,
-      label: "Number of Attendees",
-      layerInfos: [
-         {
-            title: "Protests 2020",
-            layer: racialProtestsLayer,
+      const customLegend = document.querySelector('.esri-component.esri-legend.esri-widget.esri-widget--panel')
+      const bottomLeft = document.querySelector('.esri-ui-bottom-left.esri-ui-corner')
+      bottomLeft.appendChild(customLegend)
+      customLegend.style.display = "flex"
+      
+   })
+
+
+
+   // Layer List
+   var layerList = new LayerList({
+      view,
+      listItemCreatedFunction: function (e) {
+         switch(e.item.layer.id){
+            case 'racial':
+               e.item.title = 'Race Related'
+               break
+            case 'covid':
+               e.item.title = 'Coronavirus Related'
+               break
+            case 'other':
+               e.item.title = 'Other'
+               break
          }
-      ]
+      }
    })
 
-   view.ui.add(legend, 'bottom-left')
+   view.ui.add(layerList, 'top-right')
    
+
+
 
    // timeslider
    var timeSlider = new TimeSlider({
