@@ -16,9 +16,10 @@ require([
 
    var covidLayer = new FeatureLayer({
       url: 'https://services8.arcgis.com/bc1qjUYAgNrEBXVh/arcgis/rest/services/COVID19_Time_Series_Combined/FeatureServer',
+      outFields: ['*'],
       renderer: {
          type: "heatmap",
-         field: "Deaths",
+         field: "Confirmed",
          colorStops: [
            { ratio: 0, color: "rgba(255, 255, 255, 0)" },
            { ratio: 0.5, color: "rgba(255, 140, 0, 1)" },
@@ -26,11 +27,46 @@ require([
          ],
          minPixelIntensity: 0,
          maxPixelIntensity: 5000000
+      },
+      // renderer: {
+      //    type: "simple", 
+      //    field: "Confirmed",
+      //    symbol: {
+      //       type: "simple-marker",
+      //       size: 6,
+      //       color: "black",
+      //       outline: {
+      //          width: 0.5,
+      //          color: "white"
+      //       }
+      //    },
+      //    visualVariables: [
+      //       {
+      //          type: 'size',
+      //          field: 'Confirmed',
+      //          stops: [
+      //             {
+      //               value: 1, 
+      //               size: 3 
+      //             },
+      //             {
+      //               value: 500, 
+      //               size: 10 
+      //             },
+      //             {
+      //                value: 100000, 
+      //                size: 30 
+      //              }
+      //          ]
+      //       }
+      //    ]
+      // },
+      popupTemplate: {
+         title: "{Date}"
       }
    })
 
    var map = new Map({
-      // basemap,
       layers: [fireflyLayer, covidLayer, referenceLayer]
    })
 
@@ -45,11 +81,9 @@ require([
    var timeSlider = new TimeSlider({
       container: "timeSliderDiv",
       view: view,
-      // show data within a given time range
-      // in this case data within one year
       mode: "time-window",
       fullTimeExtent: {
-         start: new Date(2020, 0, 1),
+         start: new Date(2020, 0, 21),
          end: new Date(2020, 11, 31) > new Date() ? new Date() : new Date(2020, 11, 31)
       },
       stops: {
@@ -75,13 +109,8 @@ require([
    view.whenLayerView(covidLayer)
       .then(layerView => {
 
-         console.log(covidLayer.timeInfo)
-
+         console.log('timeinfo', covidLayer.timeInfo)
          covidLayerView = layerView
-         const fullTimeExtent = covidLayer.timeInfo.fullTimeExtent
-         const start = fullTimeExtent.start
-         // timeSlider.fullTimeExtent = fullTimeExtent
-         // timeSlider.values = [start]
 
       })
 
@@ -90,10 +119,16 @@ require([
       // update layer view filter to reflect current timeExtent
 
       console.log(value)
+      const start = value.start.getTime()
+      const end = value.end.getTime()
 
-      covidLayerView.filter = {
-         timeExtent: value
-      }
+      covidLayerView.effect = {
+         filter: {
+            timeExtent: value
+            // where: `Date >= '${start}' AND Date <= '${end}'`
+         },
+         excludedEffect: "grayscale(20%) opacity(12%)"
+      }  
    })
 
 })

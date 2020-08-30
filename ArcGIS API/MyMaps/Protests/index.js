@@ -92,6 +92,7 @@ require([
    // Layer List
    var layerList = new LayerList({
       view,
+      statusIndicatorsVisible: false,
       listItemCreatedFunction: function (e) {
          switch(e.item.layer.id){
             case 'racial':
