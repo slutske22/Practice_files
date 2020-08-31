@@ -89,7 +89,7 @@ require([
          }
 
          const c = this.layer.color;
-         ctx.fillStyle = "rgba(" + c[0] + ", " + c[1] + ", " + c[2] + ", 1)";
+         ctx.fillStyle = "rgba(" + c[0] + ", " + c[1] + ", " + c[2] + ", 0.75)";
          ctx.fillRect(0, 0, width, height);
 
          const unmaskTerm = 3 / this.layer.distance;
