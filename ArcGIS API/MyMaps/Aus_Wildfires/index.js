@@ -11,6 +11,7 @@ require([
    "esri/geometry/projection",
    "esri/geometry/Polygon",
    "esri/core/watchUtils",
+   "esri/widgets/Slider",
 ], function (
    Map,
    Handles,
@@ -21,7 +22,8 @@ require([
    TileInfo,
    projection,
    Polygon,
-   watchUtils
+   watchUtils,
+   Slider
 ) {
 
    const MaskLayer = BaseLayerView2D.createSubclass({
@@ -89,7 +91,7 @@ require([
          }
 
          const c = this.layer.color;
-         ctx.fillStyle = "rgba(" + c[0] + ", " + c[1] + ", " + c[2] + ", 0.75)";
+         ctx.fillStyle = `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3] || 0.75})`
          ctx.fillRect(0, 0, width, height);
 
          const unmaskTerm = 3 / this.layer.distance;
@@ -320,7 +322,7 @@ require([
    }); // CustomLayer
 
    const mask = new CustomLayer({
-      color: [0, 0, 0, 0.8],
+      color: [0, 0, 0, 0.5],
    });
 
    const firesLayer = new FeatureLayer({
@@ -348,8 +350,6 @@ require([
          "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Countries_(Generalized)/FeatureServer/0",
    });
 
-   let running = true;
-
    const query = countries.createQuery();
    query.where = "ISO = 'AU'";
    countries.queryFeatures(query).then(function (result) {
@@ -361,6 +361,24 @@ require([
          }
       });
    });
+
+
+   const slider = new Slider({
+      container: "sliderDiv",
+      min: 0,
+      max: 100,
+      values: [50],
+      visibleElements: {
+        labels: true,
+        rangeLabels: true
+      }
+    });
+
+    slider.on("thumb-drag", function (event) {
+      mask.color = [0, 0, 0, event.value/100];
+    });
+
+    view.ui.add("controls", "top-right");
 
 
 });
