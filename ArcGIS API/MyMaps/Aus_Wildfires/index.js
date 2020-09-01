@@ -322,7 +322,7 @@ require([
    }); // CustomLayer
 
    const mask = new CustomLayer({
-      color: [0, 0, 0, 0.5],
+      color: [0, 0, 0, 0.7],
    });
 
    const firesLayer = new FeatureLayer({
@@ -344,6 +344,8 @@ require([
       map: map,
       zoom: 3,
    });
+
+   view.on('click', e => console.log(e.mapPoint))
 
    const countries = new FeatureLayer({
       url:
