@@ -13,6 +13,9 @@ html, body, #viewDiv {
   position: absolute;
   top: 15px;
   left: 300px;
+}
+
+.esri-component {
   border: 1px solid grey;
 }
 

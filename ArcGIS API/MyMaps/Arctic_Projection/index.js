@@ -65,7 +65,8 @@ require([
       container: "viewDiv",
       center: [-100, 38],
       zoom: 5,
-      map: map
+      map: map,
+      background: 'darkgrey'
    })
 
    const layerViews = []
