@@ -1,11 +1,13 @@
+import * as renderers from './renderers.js'
+
 require([
    "esri/Map", 
    "esri/views/MapView",
    "esri/layers/TileLayer",
    "esri/layers/FeatureLayer",
-   "esri/layers/MapImageLayer",
    "esri/geometry/SpatialReference",
-], function(Map, MapView, TileLayer, FeatureLayer, MapImageLayer, SpatialReference){
+   "esri/widgets/LayerList",
+], function(Map, MapView, TileLayer, FeatureLayer, SpatialReference, LayerList){
 
 
    const arcticReference = new TileLayer({
@@ -13,11 +15,21 @@ require([
    })
 
    const seaIceSummer = new FeatureLayer({
-      url: 'https://services5.arcgis.com/0cdFOdQ7VcrIdCxr/arcgis/rest/services/Arctic_Sea_Ice_Combo_1978_2019/FeatureServer/0'
+      id: 'seaIceSummer',
+      url: 'https://services5.arcgis.com/0cdFOdQ7VcrIdCxr/arcgis/rest/services/Arctic_Sea_Ice_Combo_1978_2019/FeatureServer/0',
+      maxScale: 0, // no max,
+      outFields: ["*"],
+      definitionExpression: "Rec_Month = 8", // get only August (other option is 9 for September)
+      renderer: renderers.summerIce
    })
 
    const seaIceWinter = new FeatureLayer({
-      url: 'https://services5.arcgis.com/0cdFOdQ7VcrIdCxr/arcgis/rest/services/Arctic_Sea_Ice_Combo_1978_2019/FeatureServer/1'
+      id: 'seaIceWinter',
+      url: 'https://services5.arcgis.com/0cdFOdQ7VcrIdCxr/arcgis/rest/services/Arctic_Sea_Ice_Combo_1978_2019/FeatureServer/1',
+      maxScale: 0, // no max
+      outFields: ["*"],
+      definitionExpression: "Rec_Month = 2", // get only February (other option is 3 for March)
+      renderer: renderers.winterIce
    })
 
    const graticule_ocean_5deg = new FeatureLayer({
@@ -29,8 +41,9 @@ require([
    })
 
    const graticule = [graticule_ocean_5deg, graticule_land_10deg]
+   const iceLayers = [seaIceWinter, seaIceSummer]
 
-   var map = new Map({
+   const map = new Map({
       spatialReference: new SpatialReference({
          wkid: 3031
       }),
@@ -40,14 +53,43 @@ require([
            id: "7ec08e5438304dbfa1e26181503e6fa8"
          }
        },
-      layers: [arcticReference, seaIceSummer, ...graticule]
+      layers: [arcticReference, ...graticule, ...iceLayers]
    })
 
-   var view = new MapView({
+   const view = new MapView({
       container: "viewDiv",
       center: [-100, 38],
       zoom: 5,
       map: map
    })
+
+   iceLayers.forEach(layer => {
+      view.whenLayerView(layer)
+      .then( layerView => {
+         layerView.filter = {
+            where: "Rec_Year = 1979"
+         }
+      })
+   })
+
+   // Layer List
+   const layerList = new LayerList({
+      view,
+      statusIndicatorsVisible: false,
+      listItemCreatedFunction: function (e) {
+         switch(e.item.layer.id){
+            case 'seaIceSummer':
+               e.item.title = 'Race Related'
+               break
+            case 'seaIceWinter':
+               e.item.title = 'Coronavirus Related'
+               break
+
+         }
+      }
+   })
+
+   view.ui.add(layerList, 'top-right')
+
 
 })
