@@ -4,3 +4,15 @@ html, body, #viewDiv {
   height: 100%;
   width: 100%;
 }
+
+#viewDiv {
+  position: relative;
+}
+
+#custom-control-top-left {
+  position: absolute;
+  top: 15px;
+  left: 300px;
+  border: 1px solid grey;
+}
+

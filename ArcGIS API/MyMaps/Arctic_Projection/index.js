@@ -8,7 +8,8 @@ require([
    "esri/geometry/SpatialReference",
    "esri/widgets/LayerList",
    "esri/widgets/TimeSlider",
-], function(Map, MapView, TileLayer, FeatureLayer, SpatialReference, LayerList, TimeSlider){
+   "esri/widgets/Zoom"
+], function(Map, MapView, TileLayer, FeatureLayer, SpatialReference, LayerList, TimeSlider, Zoom){
 
 
    const arcticReference = new TileLayer({
@@ -77,6 +78,16 @@ require([
          }
       })
    })
+
+   // zoom
+   view.ui.empty("top-left")
+
+   const zoom = new Zoom({
+      view,
+      container: "custom-control-top-left"
+   })
+
+   view.ui.add(zoom)
 
    // Layer List
    const layerList = new LayerList({
