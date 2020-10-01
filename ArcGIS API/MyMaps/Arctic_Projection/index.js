@@ -79,10 +79,10 @@ require([
       listItemCreatedFunction: function (e) {
          switch(e.item.layer.id){
             case 'seaIceSummer':
-               e.item.title = 'Race Related'
+               e.item.title = 'Ice in August'
                break
             case 'seaIceWinter':
-               e.item.title = 'Coronavirus Related'
+               e.item.title = 'Ice in February'
                break
 
          }
