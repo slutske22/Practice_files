@@ -19,3 +19,6 @@ html, body, #viewDiv {
   border: 1px solid grey;
 }
 
+.esri-ui-corner .esri-expand .esri-widget--panel, .esri-ui-corner .esri-expand .esri-widget--panel-height-only, .esri-ui-corner .esri-component>.esri-widget--panel, .esri-ui-corner .esri-component.esri-widget--panel {
+  width: 200px;
+}

@@ -140,6 +140,10 @@ require([
          }
       })
 
+      if (year === 2015) {
+         timeSlider.stop()
+      }
+
    });
 
 
