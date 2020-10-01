@@ -7,11 +7,13 @@ require([
    "esri/layers/FeatureLayer",
    "esri/geometry/SpatialReference",
    "esri/widgets/LayerList",
-], function(Map, MapView, TileLayer, FeatureLayer, SpatialReference, LayerList){
+   "esri/widgets/TimeSlider",
+], function(Map, MapView, TileLayer, FeatureLayer, SpatialReference, LayerList, TimeSlider){
 
 
    const arcticReference = new TileLayer({
-      url: 'https://services.arcgisonline.com/arcgis/rest/services/Polar/Arctic_Ocean_Reference/MapServer'
+      url: 'https://services.arcgisonline.com/arcgis/rest/services/Polar/Arctic_Ocean_Reference/MapServer',
+      listMode: 'hide'
    })
 
    const seaIceSummer = new FeatureLayer({
@@ -33,11 +35,13 @@ require([
    })
 
    const graticule_ocean_5deg = new FeatureLayer({
-      url: 'https://services.arcgis.com/nGt4QxSblgDfeJn9/ArcGIS/rest/services/Graticule/FeatureServer/2'
+      url: 'https://services.arcgis.com/nGt4QxSblgDfeJn9/ArcGIS/rest/services/Graticule/FeatureServer/2',
+      listMode: 'hide'
    })
 
    const graticule_land_10deg = new FeatureLayer({
-      url: 'https://services.arcgis.com/nGt4QxSblgDfeJn9/ArcGIS/rest/services/Graticule/FeatureServer/9'
+      url: 'https://services.arcgis.com/nGt4QxSblgDfeJn9/ArcGIS/rest/services/Graticule/FeatureServer/9',
+      listMode: 'hide'
    })
 
    const graticule = [graticule_ocean_5deg, graticule_land_10deg]
@@ -63,9 +67,11 @@ require([
       map: map
    })
 
-   iceLayers.forEach(layer => {
-      view.whenLayerView(layer)
+   const layerViews = []
+   iceLayers.forEach(layerView => {
+      view.whenLayerView(layerView)
       .then( layerView => {
+         layerViews.push(layerView)
          layerView.filter = {
             where: "Rec_Year = 1979"
          }
@@ -79,10 +85,10 @@ require([
       listItemCreatedFunction: function (e) {
          switch(e.item.layer.id){
             case 'seaIceSummer':
-               e.item.title = 'Ice in August'
+               e.item.title = 'Ice in Summer'
                break
             case 'seaIceWinter':
-               e.item.title = 'Ice in February'
+               e.item.title = 'Ice in Winter'
                break
 
          }
@@ -90,6 +96,39 @@ require([
    })
 
    view.ui.add(layerList, 'top-right')
+
+   // timeslider
+   var timeSlider = new TimeSlider({
+      container: "timeSlider",
+      playRate: 250,
+      mode: "instant",
+      loop: false,
+      fullTimeExtent: {
+         start: new Date(1979, 0, 1),
+         end: new Date(2019, 0, 1)
+      },
+      stops: {
+         interval: {
+           value: 1,
+           unit: "years"
+         }
+      }
+   })
+
+   view.ui.add(timeSlider, "bottom-right");
+
+   // update layer view filter to reflect current timeExtent, use sea ice polygon from timeExtent's current year
+   timeSlider.watch("timeExtent", function(value){
+
+      const year = value.end.getFullYear()
+
+      layerViews.forEach( layerView => {
+         layerView.filter = {
+            where: `Rec_Year = ${year}`
+         }
+      })
+
+   });
 
 
 })
