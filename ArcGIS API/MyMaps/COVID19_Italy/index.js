@@ -8,7 +8,8 @@ require([
 	const covidLayer = new FeatureLayer({
 		url:
 			// 'https://services2.arcgis.com/qpFFG6wHMKCXpc0N/arcgis/rest/services/Covid_province_pol_0326_WFL1/FeatureServer',
-			'https://services8.arcgis.com/PM5xrJqaktNKMWdG/arcgis/rest/services/ITA_adm1_COVID19/FeatureServer',
+			// 'https://services8.arcgis.com/PM5xrJqaktNKMWdG/arcgis/rest/services/ITA_adm1_COVID19/FeatureServer',
+			'https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/1',
 		outFields: ['*'],
 	});
 
@@ -40,9 +41,14 @@ require([
 		view,
 		attributes: [
 			{
-				field: 'COVID19',
+				// field: 'COVID19',
+				field: 'Total_Cases',
 				label: 'Cases',
 			},
+			// {
+			// 	field: 'Infections_Population',
+			// 	label: 'Infections as % of Population',
+			// },
 		],
 	};
 
