@@ -4,18 +4,17 @@ require([
 	'esri/geometry/Extent',
 	'esri/layers/FeatureLayer',
 	'esri/smartMapping/renderers/dotDensity',
-], function (Map, MapView, Extent, FeatureLayer, dotDensityRendererCreator) {
-	const covidLayer = new FeatureLayer({
-		url:
-			// 'https://services2.arcgis.com/qpFFG6wHMKCXpc0N/arcgis/rest/services/Covid_province_pol_0326_WFL1/FeatureServer',
-			// 'https://services8.arcgis.com/PM5xrJqaktNKMWdG/arcgis/rest/services/ITA_adm1_COVID19/FeatureServer',
-			'https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/1',
-		outFields: ['*'],
-	});
-
+	'esri/renderers/DotDensityRenderer',
+], function (
+	Map,
+	MapView,
+	Extent,
+	FeatureLayer,
+	dotDensityRendererCreator,
+	DotDensityRenderer
+) {
 	var map = new Map({
 		basemap: 'dark-gray-vector',
-		layers: [covidLayer],
 	});
 
 	var view = new MapView({
@@ -36,23 +35,64 @@ require([
 
 	view.on('click', (e) => console.log(view));
 
+	var italyProvincialPopulation = new FeatureLayer({
+		url:
+			'https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3',
+		outFields: ['*'],
+		renderer: new DotDensityRenderer({
+			referenceDotValue: 1000,
+			outline: null,
+			// referenceScale: view.scale,
+			legendOptions: {
+				unit: 'people',
+			},
+			attributes: [
+				{
+					field: 'TotR',
+					color: 'lightgrey',
+					label: 'Population',
+				},
+			],
+		}),
+	});
+
+	var covidLayer = new FeatureLayer({
+		url:
+			'https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/1',
+		outFields: ['*'],
+	});
+
+	// map.add(italyProvincialPopulation);
+	map.add(covidLayer);
+
 	const params = {
 		layer: covidLayer,
 		view,
 		attributes: [
 			{
-				// field: 'COVID19',
 				field: 'Total_Cases',
 				label: 'Cases',
 			},
-			// {
-			// 	field: 'Infections_Population',
-			// 	label: 'Infections as % of Population',
-			// },
 		],
 	};
 
 	dotDensityRendererCreator.createRenderer(params).then((result) => {
 		covidLayer.renderer = result.renderer;
 	});
+
+	// const params2 = {
+	// 	layer: italyProvincialPopulation,
+	// 	view,
+	// 	attributes: [
+	// 		{
+	// 			field: 'TotR',
+	// 			label: 'Population',
+	// 			color: 'white',
+	// 		},
+	// 	],
+	// };
+
+	// dotDensityRendererCreator.createRenderer(params2).then((result) => {
+	// 	italyProvincialPopulation.renderer = result.renderer;
+	// });
 });
