@@ -1,28 +1,41 @@
+import * as popupTemplates from "./popupTemplates.js";
+
 require([
-	'esri/Map',
-	'esri/views/MapView',
-	'esri/geometry/Extent',
-	'esri/layers/FeatureLayer',
-	'esri/smartMapping/renderers/dotDensity',
-	'esri/smartMapping/renderers/color',
-	'esri/renderers/DotDensityRenderer',
+	"esri/Map",
+	"esri/views/MapView",
+	"esri/geometry/Extent",
+	"esri/layers/FeatureLayer",
+	"esri/layers/TileLayer",
+	"esri/smartMapping/renderers/dotDensity",
+	"esri/smartMapping/renderers/color",
+	"esri/renderers/DotDensityRenderer",
+	"esri/widgets/LayerList",
 ], function (
 	Map,
 	MapView,
 	Extent,
 	FeatureLayer,
+	TileLayer,
 	dotDensityRendererCreator,
 	colorRendererCreator,
-	DotDensityRenderer
+	DotDensityRenderer,
+	LayerList
 ) {
+	// ----------------------------------------------------- //
+	// --------------- BASIC MAP SETUP --------------------- //
+	// ----------------------------------------------------- //
+	const GrayBase = new TileLayer({
+		url:
+			"https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer",
+	});
+
 	var map = new Map({
-		basemap: 'dark-gray-vector',
+		// basemap: "dark-gray-vector",
+		layers: [GrayBase],
 	});
 
 	var view = new MapView({
-		container: 'viewDiv',
-		// center: [12, 42],
-		// zoom: 5,
+		container: "viewDiv",
 		extent: new Extent({
 			xmax: 2401060.315701193,
 			xmin: 270607.4633373271,
@@ -35,81 +48,134 @@ require([
 		map: map,
 	});
 
-	view.on('click', (e) => console.log(view));
+	view.on("click", (e) => console.log(view));
 
-	var italyProvincialPopulation = new FeatureLayer({
+	// ----------------------------------------------------- //
+	// ---  COVID  MUNICIPALITY LAYER  SETUP --------------- //
+	// ----------------------------------------------------- //
+
+	var municipalLayer = new FeatureLayer({
 		url:
-			'https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3',
-		outFields: ['*'],
-		renderer: new DotDensityRenderer({
-			referenceDotValue: 1000,
-			outline: null,
-			// referenceScale: view.scale,
-			legendOptions: {
-				unit: 'people',
-			},
-			attributes: [
-				{
-					field: 'TotR',
-					color: 'lightgrey',
-					label: 'Population',
-				},
-			],
-		}),
+			"https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/1",
+		outFields: ["*"],
+		popupTemplate: popupTemplates.municipalPopup,
 	});
 
-	var covidLayer = new FeatureLayer({
-		url:
-			'https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/1',
-		outFields: ['*'],
-	});
-
-	map.add(italyProvincialPopulation);
-	map.add(covidLayer);
+	// map.add(municipalLayer);
 
 	const params = {
-		layer: covidLayer,
+		layer: municipalLayer,
 		view,
 		attributes: [
 			{
-				field: 'Total_Cases',
-				label: 'Cases',
+				field: "Total_Cases",
+				label: "Cases",
 			},
 		],
 	};
 
 	dotDensityRendererCreator.createRenderer(params).then((result) => {
-		covidLayer.renderer = result.renderer;
+		municipalLayer.renderer = result.renderer;
 	});
 
-	// const colorParams = {
-	// 	layer: italyProvincialPopulation,
-	// 	field: 'TotR',
-	// 	view,
-	// 	theme: 'high-to-low',
-	// 	// outlineOptimizationEnabled: true,
-	// };
+	// ----------------------------------------------------- //
+	// ------- COVID PROVINCIAL LAYERS SETUP --------------- //
+	// ----------------------------------------------------- //
 
-	// colorRendererCreator
-	// 	.createContinuousRenderer(colorParams)
-	// 	.then(function (response) {
-	// 		// set the renderer to the layer
-	// 		italyProvincialPopulation.renderer = response.renderer;
-	// 	});
+	var provincialPop = new FeatureLayer({
+		name: "Total Population",
+		url:
+			"https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3",
+		outFields: ["*"],
+		renderer: new DotDensityRenderer({
+			referenceDotValue: 1000,
+			outline: null,
+			legendOptions: {
+				unit: "people",
+			},
+			attributes: [
+				{
+					field: "TotR",
+					color: "lightgrey",
+					label: "Total Population",
+				},
+			],
+		}),
+		popupTemplate: popupTemplates.provincialPopup,
+	});
+
+	map.add(provincialPop);
+
+	var provincialLayerPercentOfPop = new FeatureLayer({
+		name: "Cases as % of Total Population",
+		url:
+			"https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3",
+		outFields: ["*"],
+		renderer: new DotDensityRenderer({
+			referenceDotValue: 10,
+			outline: null,
+			legendOptions: {
+				unit: "people",
+			},
+			attributes: [
+				{
+					valueExpression: "$feature.TotR / $feature.TotC * 25",
+					color: "orange",
+					label: "Cases as % of Population",
+				},
+			],
+		}),
+		popupTemplate: popupTemplates.provincialPopup,
+	});
+
+	map.add(provincialLayerPercentOfPop);
+
+	var provincialLayerTotalCases = new FeatureLayer({
+		name: "Total Cases",
+		url:
+			"https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3",
+		outFields: ["*"],
+		renderer: new DotDensityRenderer({
+			referenceDotValue: 10,
+			outline: null,
+			legendOptions: {
+				unit: "people",
+			},
+			attributes: [
+				{
+					valueExpression: "$feature.TotC",
+					color: "red",
+					label: "Total Cases",
+				},
+			],
+		}),
+	});
+
+	map.add(provincialLayerTotalCases);
 
 	// const params2 = {
-	// 	layer: italyProvincialPopulation,
+	// 	layer: provincialLayerTotalCases,
 	// 	view,
 	// 	attributes: [
 	// 		{
-	// 			field: 'TotR',
-	// 			label: 'Population',
-	// 			color: 'white',
+	// 			valueExpression: "$feature.TotR / $feature.TotC * 25",
+	// 			label: "Population",
+	// 			color: "white",
 	// 		},
 	// 	],
 	// };
 
 	// dotDensityRendererCreator.createRenderer(params2).then((result) => {
-	// 	italyProvincialPopulation.renderer = result.renderer;
+	// 	provincialLayerTotalCases.renderer = result.renderer;
 	// });
+
+	var layerList = new LayerList({
+		view,
+		statusIndicatorsVisible: false,
+		listItemCreatedFunction: function (e) {
+			e.item.title = e.item.layer.name;
+		},
+	});
+
+	view.ui.add(layerList, "top-right");
 });
