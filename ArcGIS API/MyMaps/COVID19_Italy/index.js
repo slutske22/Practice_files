@@ -27,6 +27,7 @@ require([
 	const GrayBase = new TileLayer({
 		url:
 			"https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer",
+		listMode: "hide",
 	});
 
 	var map = new Map({
@@ -101,6 +102,7 @@ require([
 			},
 		},
 		popupTemplate: popupTemplates.provincialPopup,
+		listMode: "hide",
 	});
 
 	map.add(bordersAndLabels);
@@ -128,6 +130,7 @@ require([
 				},
 			],
 		}),
+		visible: false,
 	});
 
 	map.add(provincialPop);
@@ -151,6 +154,7 @@ require([
 				},
 			],
 		}),
+		visible: false,
 	});
 
 	map.add(provincialLayerPercentOfPop);
