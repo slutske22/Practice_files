@@ -10,6 +10,7 @@ require([
 	"esri/smartMapping/renderers/color",
 	"esri/renderers/DotDensityRenderer",
 	"esri/widgets/LayerList",
+	"esri/widgets/Legend",
 ], function (
 	Map,
 	MapView,
@@ -19,7 +20,8 @@ require([
 	dotDensityRendererCreator,
 	colorRendererCreator,
 	DotDensityRenderer,
-	LayerList
+	LayerList,
+	Legend
 ) {
 	// ----------------------------------------------------- //
 	// --------------- BASIC MAP SETUP --------------------- //
@@ -141,14 +143,14 @@ require([
 			"https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3",
 		outFields: ["*"],
 		renderer: new DotDensityRenderer({
-			referenceDotValue: 10,
+			referenceDotValue: null,
 			outline: null,
 			legendOptions: {
-				unit: "people",
+				unit: "% of popuplation * 100",
 			},
 			attributes: [
 				{
-					valueExpression: "$feature.TotR / $feature.TotC * 25",
+					valueExpression: " $feature.TotC / $feature.TotR * 10000",
 					color: "orange",
 					label: "Cases as % of Population",
 				},
@@ -162,7 +164,7 @@ require([
 	var provincialLayerTotalCases = new FeatureLayer({
 		name: "Total Cases",
 		url:
-			"https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/0",
+			"https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3",
 		outFields: ["*"],
 		renderer: new DotDensityRenderer({
 			referenceDotValue: 10,
@@ -172,7 +174,7 @@ require([
 			},
 			attributes: [
 				{
-					valueExpression: "$feature.Total_Cases",
+					valueExpression: "$feature.TotC",
 					color: "red",
 					label: "Total Cases",
 				},
@@ -207,4 +209,24 @@ require([
 	});
 
 	view.ui.add(layerList, "top-right");
+
+	var legend = new Legend({
+		view: view,
+		layerInfos: [
+			{
+				layer: provincialLayerTotalCases,
+				title: "Total Cases",
+			},
+			{
+				layer: provincialLayerPercentOfPop,
+				title: "Cases as % of Population",
+			},
+			{
+				layer: provincialPop,
+				title: "Total Population",
+			},
+		],
+	});
+
+	view.ui.add(legend, "top-right");
 });
