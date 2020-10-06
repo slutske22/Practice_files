@@ -3,9 +3,9 @@ export const provincialPopup = {
 	content: `
        <div class="covid-popup">
           <div class="case-group">
-            <p>Total Cases: <b>{TotC}</b></p>
-            <p>Cases as % of Population: <b>{$feature.TotR / $feature.TotC}</b></p>
-            <p><span class="small">2019 Estimated Population: {TotR}</span></p>
+			<p>Total Cases: <b>{Total_Cases}</b></p>
+			<p>Confirmed Deaths: <b>{Confirmed_Deaths}</b></p>
+			<p>Cases as % of Population: <b>{Infections_Population }</b></p>
           </div>
        </div>`,
 	fieldInfos: [
@@ -17,7 +17,7 @@ export const provincialPopup = {
 			},
 		},
 		{
-			fieldName: "TotC",
+			fieldName: "Total_Cases ",
 			format: {
 				digitSeparator: true,
 				places: 0,

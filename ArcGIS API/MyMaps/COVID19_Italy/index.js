@@ -85,7 +85,7 @@ require([
 	var bordersAndLabels = new FeatureLayer({
 		name: "Borders and Labels",
 		url:
-			"https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3",
+			"https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/0",
 		outFields: ["*"],
 		renderer: {
 			type: "simple",
@@ -93,9 +93,10 @@ require([
 				type: "simple-fill", // autocasts as new SimpleFillSymbol()
 				outline: {
 					// autocasts as new SimpleLineSymbol()
-					color: [128, 128, 128, 0.2],
-					width: "0.5px",
+					color: [128, 128, 128, 0.5],
+					width: "0.25px",
 				},
+				color: [0, 0, 0, 0],
 				label: "Province",
 			},
 		},
@@ -127,7 +128,6 @@ require([
 				},
 			],
 		}),
-		popupTemplate: popupTemplates.provincialPopup,
 	});
 
 	map.add(provincialPop);
@@ -151,7 +151,6 @@ require([
 				},
 			],
 		}),
-		popupTemplate: popupTemplates.provincialPopup,
 	});
 
 	map.add(provincialLayerPercentOfPop);
@@ -159,7 +158,7 @@ require([
 	var provincialLayerTotalCases = new FeatureLayer({
 		name: "Total Cases",
 		url:
-			"https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3",
+			"https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/0",
 		outFields: ["*"],
 		renderer: new DotDensityRenderer({
 			referenceDotValue: 10,
@@ -169,7 +168,7 @@ require([
 			},
 			attributes: [
 				{
-					valueExpression: "$feature.TotC",
+					valueExpression: "$feature.Total_Cases",
 					color: "red",
 					label: "Total Cases",
 				},
