@@ -94,7 +94,7 @@ require([
 				type: "simple-fill", // autocasts as new SimpleFillSymbol()
 				outline: {
 					// autocasts as new SimpleLineSymbol()
-					color: [128, 128, 128, 0.5],
+					color: [0, 0, 0, 0.3],
 					width: "0.25px",
 				},
 				color: [0, 0, 0, 0],
