@@ -4,6 +4,7 @@ require([
 	'esri/geometry/Extent',
 	'esri/layers/FeatureLayer',
 	'esri/smartMapping/renderers/dotDensity',
+	'esri/smartMapping/renderers/color',
 	'esri/renderers/DotDensityRenderer',
 ], function (
 	Map,
@@ -11,6 +12,7 @@ require([
 	Extent,
 	FeatureLayer,
 	dotDensityRendererCreator,
+	colorRendererCreator,
 	DotDensityRenderer
 ) {
 	var map = new Map({
@@ -62,7 +64,7 @@ require([
 		outFields: ['*'],
 	});
 
-	// map.add(italyProvincialPopulation);
+	map.add(italyProvincialPopulation);
 	map.add(covidLayer);
 
 	const params = {
@@ -79,6 +81,21 @@ require([
 	dotDensityRendererCreator.createRenderer(params).then((result) => {
 		covidLayer.renderer = result.renderer;
 	});
+
+	// const colorParams = {
+	// 	layer: italyProvincialPopulation,
+	// 	field: 'TotR',
+	// 	view,
+	// 	theme: 'high-to-low',
+	// 	// outlineOptimizationEnabled: true,
+	// };
+
+	// colorRendererCreator
+	// 	.createContinuousRenderer(colorParams)
+	// 	.then(function (response) {
+	// 		// set the renderer to the layer
+	// 		italyProvincialPopulation.renderer = response.renderer;
+	// 	});
 
 	// const params2 = {
 	// 	layer: italyProvincialPopulation,
