@@ -78,6 +78,32 @@ require([
 		municipalLayer.renderer = result.renderer;
 	});
 
+	// ------------------------------------------------------------------- //
+	// ------- PROVINCIAL BORDERS AND LABELS  LAYERS SETUP --------------- //
+	// ------------------------------------------------------------------- //
+
+	var bordersAndLabels = new FeatureLayer({
+		name: "Borders and Labels",
+		url:
+			"https://services1.arcgis.com/0MSEUqKaxRlEPj5g/arcgis/rest/services/COVID19_MAP_of_Italy_WFL1/FeatureServer/3",
+		outFields: ["*"],
+		renderer: {
+			type: "simple",
+			symbol: {
+				type: "simple-fill", // autocasts as new SimpleFillSymbol()
+				outline: {
+					// autocasts as new SimpleLineSymbol()
+					color: [128, 128, 128, 0.2],
+					width: "0.5px",
+				},
+				label: "Province",
+			},
+		},
+		popupTemplate: popupTemplates.provincialPopup,
+	});
+
+	map.add(bordersAndLabels);
+
 	// ----------------------------------------------------- //
 	// ------- COVID PROVINCIAL LAYERS SETUP --------------- //
 	// ----------------------------------------------------- //
