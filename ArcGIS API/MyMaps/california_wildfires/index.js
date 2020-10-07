@@ -12,6 +12,7 @@ require([
 	'esri/geometry/projection',
 	'esri/geometry/Polygon',
 	'esri/core/watchUtils',
+	'esri/widgets/Legend',
 ], function (
 	Map,
 	Handles,
@@ -23,7 +24,8 @@ require([
 	TileInfo,
 	projection,
 	Polygon,
-	watchUtils
+	watchUtils,
+	Legend
 ) {
 	const MaskLayer = BaseLayerView2D.createSubclass({
 		constructor: function () {
@@ -360,4 +362,15 @@ require([
 			}
 		});
 	});
+
+	var legend = new Legend({
+		view: view,
+		layerInfos: [
+			{
+				layer: FIRMSfires,
+			},
+		],
+	});
+
+	view.ui.add(legend, 'bottom-left');
 });
