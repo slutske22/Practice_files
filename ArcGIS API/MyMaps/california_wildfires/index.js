@@ -1,4 +1,4 @@
-import * as renderers from './renderers.js';
+import { fireMarkerRenderer } from './renderers.js';
 
 require([
 	'esri/Map',
@@ -7,11 +7,11 @@ require([
 	'esri/views/2d/layers/BaseLayerView2D',
 	'esri/layers/Layer',
 	'esri/layers/FeatureLayer',
+	'esri/layers/WebTileLayer',
 	'esri/layers/support/TileInfo',
 	'esri/geometry/projection',
 	'esri/geometry/Polygon',
 	'esri/core/watchUtils',
-	'esri/widgets/Slider',
 ], function (
 	Map,
 	Handles,
@@ -19,11 +19,11 @@ require([
 	BaseLayerView2D,
 	Layer,
 	FeatureLayer,
+	WebTileLayer,
 	TileInfo,
 	projection,
 	Polygon,
-	watchUtils,
-	Slider
+	watchUtils
 ) {
 	const MaskLayer = BaseLayerView2D.createSubclass({
 		constructor: function () {
@@ -309,37 +309,39 @@ require([
 	}); // CustomLayer
 
 	const mask = new CustomLayer({
-		color: [0, 0, 0, 0.7],
+		color: [255, 255, 255, 1],
 	});
 
-	const firesLayer = new FeatureLayer({
-		url:
-			'https://services7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/AUBushfireBurnArea/FeatureServer',
-		renderer: renderers.fireRenderer,
+	var stamenTerrain = new WebTileLayer({
+		urlTemplate:
+			'https://stamen-tiles-{subDomain}.a.ssl.fastly.net/terrain-background/{level}/{col}/{row}{r}.png',
+		subDomains: ['a', 'b', 'c', 'd'],
 	});
 
-	const biodiversityHotspots = new FeatureLayer({
+	var caBoundaries = new FeatureLayer({
 		url:
-			'https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/Biodiversity_Hotspots_2016_WFL1/FeatureServer',
+			'https://egis.fire.ca.gov/arcgis/rest/services/FRAP/Counties/MapServer',
+	});
+
+	var FIRMSfires = new FeatureLayer({
+		url:
+			'https://services7.arcgis.com/WSiUmUhlFx4CtMBB/arcgis/rest/services/FIRMS_Active_Fire_Points_for_the_California_Fires_2020/FeatureServer',
+		renderer: fireMarkerRenderer,
 	});
 
 	const map = new Map({
 		basemap: 'satellite',
-		layers: [mask, firesLayer],
+		layers: [stamenTerrain, caBoundaries, FIRMSfires, mask],
 	});
 
 	const view = new MapView({
 		container: 'viewDiv',
 		map: map,
-		zoom: 3,
+		center: [-120, 37],
+		zoom: 6,
 	});
 
 	view.on('click', (e) => console.log(e.mapPoint));
-
-	const countries = new FeatureLayer({
-		url:
-			'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Countries_(Generalized)/FeatureServer/0',
-	});
 
 	const states = new FeatureLayer({
 		url:
@@ -358,21 +360,4 @@ require([
 			}
 		});
 	});
-
-	const slider = new Slider({
-		container: 'sliderDiv',
-		min: 0,
-		max: 100,
-		values: [50],
-		visibleElements: {
-			labels: true,
-			rangeLabels: true,
-		},
-	});
-
-	slider.on('thumb-drag', function (event) {
-		mask.color = [0, 0, 0, event.value / 100];
-	});
-
-	view.ui.add('controls', 'top-right');
 });
