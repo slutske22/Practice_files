@@ -6,8 +6,8 @@ require([
 	"esri/geometry/Extent",
 	"esri/layers/FeatureLayer",
 	"esri/layers/TileLayer",
+	"esri/layers/GroupLayer",
 	"esri/smartMapping/renderers/dotDensity",
-	"esri/smartMapping/renderers/color",
 	"esri/renderers/DotDensityRenderer",
 	"esri/widgets/LayerList",
 	"esri/widgets/Legend",
@@ -17,8 +17,8 @@ require([
 	Extent,
 	FeatureLayer,
 	TileLayer,
+	GroupLayer,
 	dotDensityRendererCreator,
-	colorRendererCreator,
 	DotDensityRenderer,
 	LayerList,
 	Legend
@@ -57,29 +57,29 @@ require([
 	// ---  COVID  MUNICIPALITY LAYER  SETUP --------------- //
 	// ----------------------------------------------------- //
 
-	var municipalLayer = new FeatureLayer({
-		url:
-			"https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/1",
-		outFields: ["*"],
-		popupTemplate: popupTemplates.municipalPopup,
-	});
+	// var municipalLayer = new FeatureLayer({
+	// 	url:
+	// 		"https://services6.arcgis.com/swIsfiMN39u9wKrT/ArcGIS/rest/services/Italy_COVID19_WFL1/FeatureServer/1",
+	// 	outFields: ["*"],
+	// 	popupTemplate: popupTemplates.municipalPopup,
+	// });
 
 	// map.add(municipalLayer);
 
-	const params = {
-		layer: municipalLayer,
-		view,
-		attributes: [
-			{
-				field: "Total_Cases",
-				label: "Cases",
-			},
-		],
-	};
+	// const params = {
+	// 	layer: municipalLayer,
+	// 	view,
+	// 	attributes: [
+	// 		{
+	// 			field: "Total_Cases",
+	// 			label: "Cases",
+	// 		},
+	// 	],
+	// };
 
-	dotDensityRendererCreator.createRenderer(params).then((result) => {
-		municipalLayer.renderer = result.renderer;
-	});
+	// dotDensityRendererCreator.createRenderer(params).then((result) => {
+	// 	municipalLayer.renderer = result.renderer;
+	// });
 
 	// ------------------------------------------------------------------- //
 	// ------- PROVINCIAL BORDERS AND LABELS  LAYERS SETUP --------------- //
@@ -135,8 +135,6 @@ require([
 		visible: false,
 	});
 
-	map.add(provincialPop);
-
 	var provincialLayerPercentOfPop = new FeatureLayer({
 		name: "Cases as % of Total Population",
 		url:
@@ -159,8 +157,6 @@ require([
 		visible: false,
 	});
 
-	map.add(provincialLayerPercentOfPop);
-
 	var provincialLayerTotalCases = new FeatureLayer({
 		name: "Total Cases",
 		url:
@@ -182,28 +178,26 @@ require([
 		}),
 	});
 
-	map.add(provincialLayerTotalCases);
+	const allLayers = new GroupLayer({
+		title: "Covid in Italy",
+		visible: true,
+		visibilityMode: "exclusive",
+		layers: [
+			provincialPop,
+			provincialLayerPercentOfPop,
+			provincialLayerTotalCases,
+		],
+	});
 
-	// const params2 = {
-	// 	layer: provincialLayerTotalCases,
-	// 	view,
-	// 	attributes: [
-	// 		{
-	// 			valueExpression: "$feature.TotR / $feature.TotC * 25",
-	// 			label: "Population",
-	// 			color: "white",
-	// 		},
-	// 	],
-	// };
-
-	// dotDensityRendererCreator.createRenderer(params2).then((result) => {
-	// 	provincialLayerTotalCases.renderer = result.renderer;
-	// });
+	map.add(allLayers);
 
 	var layerList = new LayerList({
 		view,
 		statusIndicatorsVisible: false,
 		listItemCreatedFunction: function (e) {
+			if ((e.item.title = "Covid in Italy")) {
+				e.item.open = true;
+			}
 			e.item.title = e.item.layer.name;
 		},
 	});
