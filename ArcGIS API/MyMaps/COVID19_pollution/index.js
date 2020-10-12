@@ -54,8 +54,11 @@ require([
 	const legend = new Legend({
 		view,
 	});
-
-	view.ui.add(legend, 'bottom-left');
+	const legendExpand = new Expand({
+		view: view,
+		content: legend,
+	});
+	view.ui.add(legendExpand, 'top-left');
 
 	const europeBookmark = new Bookmark({
 		name: 'Europe',
