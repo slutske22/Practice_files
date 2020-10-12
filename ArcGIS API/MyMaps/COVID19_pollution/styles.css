@@ -10,3 +10,7 @@ body,
 .esri-swipe__container:focus {
 	outline: 1px solid grey;
 }
+
+.esri-bookmarks {
+	width: 200px !important;
+}
