@@ -66,6 +66,7 @@ require([
 	const legendExpand = new Expand({
 		view: view,
 		content: legend,
+		expandIconClass: 'clipboard-icon'
 	});
 	view.ui.add(legendExpand, 'top-left');
 
