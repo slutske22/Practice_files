@@ -4,7 +4,15 @@ require([
 	'esri/layers/FeatureLayer',
 	'esri/layers/TileLayer',
 	'esri/layers/ElevationLayer',
-], function (Map, SceneView, FeatureLayer, TileLayer, ElevationLayer) {
+	'esri/layers/SceneLayer',
+], function (
+	Map,
+	SceneView,
+	FeatureLayer,
+	TileLayer,
+	ElevationLayer,
+	SceneLayer
+) {
 	// great example:
 	// esri item 56b890aa418f401e9819f26701766e30
 	// "Exploring Mars"
@@ -34,8 +42,26 @@ require([
 			'https://services5.arcgis.com/AMh9EzyFGgthLT1q/arcgis/rest/services/curiosity_track/FeatureServer',
 	});
 
+	// labels:
+	const labelsLargeTerra = new SceneLayer({
+		url:
+			'https://services.arcgis.com/RS8mqPfEEjgYh6uG/arcgis/rest/services/Mars3DLargeTerra/SceneServer',
+	});
+
+	const labelsSmallTerra = new SceneLayer({
+		url:
+			'https://services.arcgis.com/RS8mqPfEEjgYh6uG/arcgis/rest/services/Mars3DSmallTerra/SceneServer',
+	});
+
+	const labelsExtent = new SceneLayer({
+		url:
+			'https://services.arcgis.com/RS8mqPfEEjgYh6uG/arcgis/rest/services/Mars3DExtentLabels/SceneServer',
+	});
+
+	const labels = [labelsExtent, labelsLargeTerra, labelsSmallTerra];
+
 	var map = new Map({
-		layers: [mars_hypso],
+		layers: [mars_hypso, ...labels],
 	});
 
 	map.ground.layers.add(mars_ground);
