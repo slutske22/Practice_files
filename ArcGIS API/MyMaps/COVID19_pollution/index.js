@@ -21,6 +21,7 @@ require([
 		url:
 			'https://tiles.arcgis.com/tiles/WSiUmUhlFx4CtMBB/arcgis/rest/services/No2_mean_march_514_WTL1/MapServer',
 		blendMode: 'multiply',
+		maxZoom: 20,
 	});
 
 	const NO2_March_2020 = new TileLayer({
@@ -28,6 +29,7 @@ require([
 			'https://tiles.arcgis.com/tiles/WSiUmUhlFx4CtMBB/arcgis/rest/services/No2_2020_march_514_WTL1/MapServer',
 		blendMode: 'multiply',
 		legendEnabled: false,
+		maxZoom: 20,
 	});
 
 	var map = new Map({
@@ -37,8 +39,15 @@ require([
 
 	var view = new MapView({
 		container: 'viewDiv',
-		center: [120, 32],
-		zoom: 4,
+		extent: {
+			spatialReference: {
+			  wkid: 102100
+			},
+			xmax: 16132085.777604342,
+			xmin: 10584592.012780864,
+			ymax: 5529311.7286448255,
+			ymin: 1997309.5256443399,
+		},
 		map: map,
 	});
 
@@ -57,29 +66,56 @@ require([
 	const legendExpand = new Expand({
 		view: view,
 		content: legend,
+		expandIconClass: 'clipboard-icon'
 	});
 	view.ui.add(legendExpand, 'top-left');
 
-	const europeBookmark = new Bookmark({
-		name: 'Europe',
-		extent: {
-			xmax: 2743356.7939192792,
-			xmin: -1718119.673028702,
-			ymax: 8307988.7993809655,
-			ymin: 4956989.47935972,
-		},
-	});
 
-	const bookmarksWidget = new Bookmark({
-		bookmarks: [europeBookmark],
-		view,
-	});
-
-	const bookmarksExpand = new Expand({
+	const bookmarks = new Bookmarks({
 		view: view,
-		content: bookmarksWidget,
-	});
-	view.ui.add(bookmarksExpand, 'top-right');
+		bookmarks: [
+		  new Bookmark({
+			name: "East Easia",
+			extent: {
+			  spatialReference: {
+				wkid: 102100
+			  },
+			  xmax: 15936406.985194348,
+			  xmin: 10388913.22037087,
+			  ymax: 5541052.12774907,
+			  ymin: 2009049.924748584,
+			}
+		  }),
+		  new Bookmark({
+			name: "Europe",
+			extent: {
+			  spatialReference: {
+				wkid: 102100
+			  },
+			  xmax: 4970567.279388702,
+			  xmin: -2543498.3491552672,
+			  ymax: 7778638.790517052,
+			  ymin: 4246636.587516566,
+			}
+		  }),
+		  new Bookmark({
+			name: "Northeastern U.S.",
+			extent: {
+			  spatialReference: {
+				wkid: 102100
+			  },
+			  xmax: -6222260.094336465,
+			  xmin: -9979292.90860845,
+			  ymax: 5686343.242956702,
+			  ymin: 3920342.1414564587,
+			}
+		  })
+		]
+	  });
+
+	  view.ui.add(bookmarks, {
+		position: "top-right"
+	  });
 
 	view.on('click', (e) => console.log(view.extent, e.mapPoint));
 });

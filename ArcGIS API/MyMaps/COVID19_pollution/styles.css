@@ -10,3 +10,25 @@ body,
 .esri-swipe__container:focus {
 	outline: 1px solid grey;
 }
+
+.esri-bookmarks {
+	width: 200px !important;
+}
+
+.clipboard-icon::before {
+	width: 20px;
+	height: 20px;
+	margin-top: 2px;
+	color: inherit;
+	display: inline-block;
+	content: '';
+	-webkit-mask: url(clipboard.svg) no-repeat 50% 50%;
+	mask: url(clipboard.svg) no-repeat 50% 50%;
+	-webkit-mask-size: cover;
+	mask-size: cover;
+	background-color: red;
+}
+
+svg {
+	fill: currentColor;
+}

@@ -4,7 +4,8 @@ require([
    "esri/layers/FeatureLayer",
    "esri/layers/TileLayer",
    "esri/widgets/TimeSlider",
-], function (Map, MapView, FeatureLayer, TileLayer, TimeSlider, heatmapRendererCreator, heatmapSchemes) {
+   "esri/smartMapping/renderers/heatmap"
+], function (Map, MapView, FeatureLayer, TileLayer, TimeSlider, heatmapRendererCreator) {
 
    var fireflyLayer = new TileLayer({
       url: 'https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer'
@@ -72,7 +73,6 @@ require([
           labelsVisible: true,
           labelFormatFunction: (value) => {
             const date = new Date(value);
-            console.log(date)
             return date.toLocaleString("default", { month: "short" });
           }
         }
@@ -83,7 +83,23 @@ require([
    view.ui.add(timeSlider, "bottom-right");
 
    timeSlider.watch("timeExtent", function (value) {
+
       updateDefintionExpression(value);
+
+      // const params = {
+      //    layer: covidLayer,
+      //    view,
+      //    field: "Confirmed",
+      //    fadeToTransparent: true,
+      //    minRatio: 0.05
+      // }
+
+      // heatmapRendererCreator.createRenderer(params)
+      // .then(result => {
+      //    covidLayer.renderer = result.renderer
+      //    console.log(result.renderer)
+      // })
+
    });
 
    function updateDefintionExpression(timeExtent) {
@@ -101,4 +117,19 @@ require([
       const s = `${date.getUTCSeconds()}`.padStart(2, "0");
       return `${y}-${m}-${d} ${h}:${mm}:${s}`;
    }
+
+   // const params = {
+   //    layer: covidLayer,
+   //    view,
+   //    field: "Confirmed",
+   //    fadeToTransparent: true,
+   //    minRatio: 0.05
+   // }
+
+   // heatmapRendererCreator.createRenderer(params)
+   // .then(result => {
+   //    covidLayer.renderer = result.renderer
+   //    console.log(result.renderer)
+   // })
+
 });
