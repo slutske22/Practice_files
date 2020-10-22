@@ -68,8 +68,20 @@ require([
 
 	var view = new SceneView({
 		container: 'viewDiv',
-		center: [-100, 38],
-		zoom: 3,
+		camera: {
+			position: {
+				x: -17, // lon
+				y: 19, // lat
+				z: 3000000, // elevation in meters
+			},
+			tilt: 33,
+			heading: 217,
+		},
 		map: map,
+	});
+
+	view.on('click', (e) => {
+		console.log('view', view);
+		console.log('e', e);
 	});
 });
