@@ -1,4 +1,10 @@
-import workers from './workers/index.js';
+import workers, {
+	rainbowURL,
+	demShadingURL,
+	slopeShadingURL,
+	aspectShadingURL,
+	slopeaspectShadingURL,
+} from './workers/index.js';
 
 // UTIL FUNCTIONS
 
