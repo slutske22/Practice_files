@@ -5,8 +5,9 @@ var blobURL = URL.createObjectURL(
 		[
 			'(',
 
+			`importScripts(${rainbowVisURL});`,
+
 			function () {
-				importScripts(rainbowVisURL);
 
 				/**
 				 * Transforms ImageData() array of rgb encoded elevation values into elevation values (in meters)

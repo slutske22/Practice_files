@@ -5,8 +5,9 @@ var blobURL = URL.createObjectURL(
 		[
 			'(',
 
+			`importScripts(${demShadingURL});`,
+
 			function () {
-				importScripts(demShadingURL);
 
 				self.dems = {};
 
