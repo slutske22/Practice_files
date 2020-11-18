@@ -26,18 +26,23 @@ require([
 			'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/BLS_Monthly_Unemployment_Current_14_Months/FeatureServer/2',
 		outFields: ['*'],
 		popupTemplate: {
+			declaredClass: 'unemployment-popup',
 			content: [
 				{
 					type: 'text',
-					text: '<h2>BLS Unemployment Statistics, past 14 months<h2>',
+					text: `
+						<div>
+							<h2>{NAME}</h2>
+							<h3>BLS Unemployment Statistics, past 14 months<h3>
+						</div>
+					`,
 				},
 				{
 					type: 'media',
 					mediaInfos: [
 						{
 							type: 'line-chart',
-							title: 'Unemployment',
-							caption: 'BLS unemployment data for the last 14 months',
+							caption: '% of popuplation unemployed, last 14 months',
 							value: {
 								fields: [
 									'PctUnemployed_CurrentMonth',
