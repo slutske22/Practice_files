@@ -8,11 +8,13 @@ require([
 	'esri/layers/Layer',
 	'esri/layers/FeatureLayer',
 	'esri/layers/WebTileLayer',
+	'esri/layers/MapImageLayer',
 	'esri/layers/support/TileInfo',
 	'esri/geometry/projection',
 	'esri/geometry/Polygon',
 	'esri/core/watchUtils',
 	'esri/widgets/Legend',
+	'esri/config',
 ], function (
 	Map,
 	Handles,
@@ -21,12 +23,17 @@ require([
 	Layer,
 	FeatureLayer,
 	WebTileLayer,
+	MapImageLayer,
 	TileInfo,
 	projection,
 	Polygon,
 	watchUtils,
-	Legend
+	Legend,
+	esriConfig
 ) {
+	esriConfig.request.proxyUrl =
+		'https://utility.arcgis.com/usrsvcs/appservices/LmNXFvAttVIu5FBo/rest/services/World/Utilities/GPServer/GetToolInfo/execute';
+
 	const MaskLayer = BaseLayerView2D.createSubclass({
 		constructor: function () {
 			this.tileContexts = new window.Map();
@@ -331,9 +338,22 @@ require([
 		renderer: fireMarkerRenderer,
 	});
 
+	const SC2Sept29 = new MapImageLayer({
+		url:
+			'https://maps.disasters.nasa.gov/ags04/rest/services/ca_fires_202008/sentinel2/MapServer/547',
+		// sublayers: [
+		// 	{
+		// 		id: 976,
+		// 	},
+		// 	{
+		// 		id: 948,
+		// 	},
+		// ],
+	});
+
 	const map = new Map({
 		basemap: 'satellite',
-		layers: [stamenTerrain, caBoundaries, FIRMSfires, mask],
+		layers: [stamenTerrain, caBoundaries, FIRMSfires, mask, SC2Sept29],
 	});
 
 	const view = new MapView({
