@@ -18,6 +18,28 @@ require([
 	'esri/layers/FeatureLayer',
 	'esri/widgets/TimeSlider',
 ], function (Map, MapView, FeatureLayer, TimeSlider) {
+	// from https://developers.arcgis.com/javascript/latest/sample-code/animation-layer-visibility/index.html
+	function fadeVisibilityOn(layer) {
+		let animating = true;
+		let opacity = 0;
+		layer.opacity = opacity;
+
+		requestAnimationFrame(incrementOpacityByFrame);
+
+		// This function will fire on every frame before the browser repaints.
+		function incrementOpacityByFrame() {
+			if (opacity >= 1 && animating) {
+				animating = false;
+				return;
+			}
+
+			opacity += 0.05;
+			layer.opacity = opacity;
+
+			requestAnimationFrame(incrementOpacityByFrame);
+		}
+	}
+
 	const torchRelay = new FeatureLayer({
 		url:
 			'https://services6.arcgis.com/VqchQRhgtql2vsmO/arcgis/rest/services/Tokyo_Olympics_Torch_Relay_Schedule_2021/FeatureServer',
@@ -50,9 +72,16 @@ require([
 					source: [feature],
 					fields: results.fields,
 					popupTemplate: feature.popupTemplate,
+					opacity: 0,
 					// @ts-ignore
 					renderer,
 				});
+
+				map.add(layer);
+
+				// layer.on('layerview-create', () => {
+				// 	fadeVisibilityOn(layer);
+				// });
 
 				return {
 					time: feature.attributes.Time,
@@ -61,36 +90,18 @@ require([
 					layer,
 				};
 			});
-
-			// // capture add and remove events of layer and adjust details accordingly
-			// flFromResults.forEach((p) => {
-			// 	p.layer.on('layerview-create', () => (p.onmap = true));
-			// 	p.layer.on('layerview-destroy', () => (p.onmap = false));
-			// });
-
-			console.log('flFromResults', flFromResults);
-			// flFromResults.forEach((l) => map.add(l.layer));
 		});
 
 		layerView = lv;
 		layerView.filter = {
 			where: `Time <= 'nope'`,
 		};
-
-		lv.watch('updating', function (val) {
-			if (!val) {
-				// wait for the layer view to finish updating
-				lv.queryFeatures().then(function (results) {
-					console.log('results after filter', results); // prints all the client-side features to the console
-				});
-			}
-		});
 	});
 
 	// set up time slider
 	var timeSlider = new TimeSlider({
 		container: 'timeSlider',
-		playRate: 150,
+		playRate: 250,
 		mode: 'cumulative-from-start',
 		loop: false,
 		fullTimeExtent: {
@@ -123,14 +134,6 @@ require([
 	timeSlider.watch('timeExtent', function (value) {
 		const dateString = value.end.getTime();
 
-		// flFromResults.forEach((p) => {
-		// 	if (p.time <= dateString) {
-		// 		map.add(p.layer);
-		// 	} else {
-		// 		map.remove(p.layer);
-		// 	}
-		// });
-
 		flFromResults.forEach((p) => {
 			if (p.time <= dateString) {
 				p.shouldBeAdded = true;
@@ -139,12 +142,14 @@ require([
 			}
 
 			if (!p.onmap && p.shouldBeAdded) {
-				map.add(p.layer);
+				// map.add(p.layer);
+				fadeVisibilityOn(p.layer);
 				p.onmap = true;
 			}
 
 			if (p.onmap && !p.shouldBeAdded) {
-				map.remove(p.layer);
+				// map.remove(p.layer);
+				p.layer.opacity = 0;
 				p.onmap = false;
 			}
 		});
