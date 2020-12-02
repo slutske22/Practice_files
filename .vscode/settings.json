@@ -3,5 +3,6 @@
 	"git.ignoreLimitWarning": true,
 	"editor.formatOnSave": true,
 	"prettier.singleQuote": true,
-	"prettier.useTabs": true
+	"prettier.useTabs": true,
+	"eslint.format.enable": true
 }
