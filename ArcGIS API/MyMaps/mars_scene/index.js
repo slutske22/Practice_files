@@ -1,3 +1,6 @@
+import * as renderers from './renderers.js';
+import slides from './slides/index.js';
+
 require([
 	'esri/Map',
 	'esri/views/SceneView',
@@ -43,6 +46,7 @@ require([
 	const mars_curiosity_track_ath = new FeatureLayer({
 		url:
 			'https://services5.arcgis.com/AMh9EzyFGgthLT1q/arcgis/rest/services/curiosity_track/FeatureServer',
+		renderer: renderers.curiosityTrackRenderer,
 	});
 
 	// labels:
@@ -83,26 +87,26 @@ require([
 		map: map,
 	});
 
-	view.on('click', (e) => {
-		console.log('view', view);
-		console.log('e', e);
-	});
+	// view.on('click', (e) => {
+	// 	console.log('view', view);
+	// 	console.log('e', e);
+	// });
 
-	mars_curiosity_track_ath
-		.when(function () {
-			return mars_curiosity_track_ath.queryExtent();
-		})
-		.then(function (response) {
-			map.ground.layers.remove(mars_ground);
-			view.goTo(response.extent);
-		});
+	// mars_curiosity_track_ath
+	// 	.when(function () {
+	// 		return mars_curiosity_track_ath.queryExtent();
+	// 	})
+	// 	.then(function (response) {
+	// 		map.ground.layers.remove(mars_ground);
+	// 		view.goTo(response.extent);
+	// 	});
 
-	// click button to download screenshot of view and log a slide object
+	// click button to download screenshot of view and log a slide object // for testing only
 	const button = document.getElementById('slide-button');
 
 	button.addEventListener('click', () => {
 		var options = {
-			width: 200,
+			width: 200 * 1.6,
 			height: 200,
 		};
 
@@ -117,6 +121,23 @@ require([
 
 		Slide.createFrom(view).then(function (slide) {
 			console.log(slide);
+		});
+	});
+
+	// create slides and add them to the slides div
+	const slidesDiv = document.getElementById('slidesDiv');
+	slides.forEach((slide) => {
+		const slideDiv = document.createElement('div');
+		slideDiv.classList.add('slide');
+
+		const thumbnail = document.createElement('img');
+		thumbnail.src = slide.slide.thumbnail.url;
+
+		slideDiv.appendChild(thumbnail);
+		slidesDiv.appendChild(slideDiv);
+
+		slideDiv.addEventListener('click', () => {
+			view.goTo(slide.slide.viewpoint.camera);
 		});
 	});
 });
