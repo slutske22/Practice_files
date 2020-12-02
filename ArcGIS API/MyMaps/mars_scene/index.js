@@ -5,13 +5,15 @@ require([
 	'esri/layers/TileLayer',
 	'esri/layers/ElevationLayer',
 	'esri/layers/SceneLayer',
+	'esri/webscene/Slide',
 ], function (
 	Map,
 	SceneView,
 	FeatureLayer,
 	TileLayer,
 	ElevationLayer,
-	SceneLayer
+	SceneLayer,
+	Slide
 ) {
 	// great example:
 	// esri item 56b890aa418f401e9819f26701766e30
@@ -25,6 +27,7 @@ require([
 	const mars_hypso = new TileLayer({
 		url:
 			'https://tiles.arcgis.com/tiles/RS8mqPfEEjgYh6uG/arcgis/rest/services/Mars3Dhypso/MapServer',
+		maxScale: 0,
 	});
 
 	const mars_ground = new ElevationLayer({
@@ -61,7 +64,7 @@ require([
 	const labels = [labelsExtent, labelsLargeTerra, labelsSmallTerra];
 
 	var map = new Map({
-		layers: [mars_hypso, ...labels],
+		layers: [mars_hypso, ...labels, mars_curiosity_track_ath],
 	});
 
 	map.ground.layers.add(mars_ground);
@@ -83,5 +86,37 @@ require([
 	view.on('click', (e) => {
 		console.log('view', view);
 		console.log('e', e);
+	});
+
+	mars_curiosity_track_ath
+		.when(function () {
+			return mars_curiosity_track_ath.queryExtent();
+		})
+		.then(function (response) {
+			map.ground.layers.remove(mars_ground);
+			view.goTo(response.extent);
+		});
+
+	// click button to download screenshot of view and log a slide object
+	const button = document.getElementById('slide-button');
+
+	button.addEventListener('click', () => {
+		var options = {
+			width: 200,
+			height: 200,
+		};
+
+		view.takeScreenshot(options).then(function (screenshot) {
+			var link = document.createElement('a');
+			link.href = screenshot.dataUrl;
+			link.download = 'slide.jpg';
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		});
+
+		Slide.createFrom(view).then(function (slide) {
+			console.log(slide);
+		});
 	});
 });
