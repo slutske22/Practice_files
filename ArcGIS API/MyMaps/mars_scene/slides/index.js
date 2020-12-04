@@ -1,5 +1,73 @@
 export default [
 	{
+		name: 'Au',
+		slide: {
+			id: '1762c184f5d-slide-0',
+			title: {
+				text: '',
+			},
+			thumbnail: {
+				url: './slides/thumbnails/aurorae-chaos.jpg',
+			},
+			viewpoint: {
+				rotation: 143,
+				scale: 11508139.205232862,
+				targetGeometry: {
+					spatialReference: {
+						latestWkid: 3857,
+						wkid: 102100,
+					},
+					x: -3249325.373082674,
+					y: 256506.99926305987,
+					z: -25893.373442312703,
+				},
+				camera: {
+					position: {
+						spatialReference: {
+							latestWkid: 3857,
+							wkid: 102100,
+						},
+						x: -1892431.3434856508,
+						y: 2154935.915085894,
+						z: 3000000,
+					},
+					heading: 217,
+					tilt: 33.000000000000036,
+				},
+			},
+			ground: {
+				transparency: 0,
+			},
+			visibleLayers: [
+				{
+					id: '1762c180216-layer-0',
+				},
+				{
+					id: '1762c180216-layer-1',
+				},
+				{
+					id: '1762c180217-layer-2',
+				},
+				{
+					id: '1762c180217-layer-3',
+				},
+				{
+					id: '1762c180218-layer-4',
+				},
+				{
+					id: '9790623814cac7dc',
+				},
+			],
+			environment: {
+				lighting: {
+					datetime: 1584277680000,
+				},
+				atmosphereEnabled: true,
+				starsEnabled: true,
+			},
+		},
+	},
+	{
 		name: 'cusiosity',
 		slide: {
 			id: '17625a1b14b-slide-0',
@@ -58,6 +126,74 @@ export default [
 			environment: {
 				lighting: {
 					datetime: 1584240629000,
+				},
+				atmosphereEnabled: true,
+				starsEnabled: true,
+			},
+		},
+	},
+	{
+		name: 'Olmpus Mons',
+		slide: {
+			id: '1762c1c079a-slide-0',
+			title: {
+				text: '',
+			},
+			thumbnail: {
+				url: './slides/thumbnails/olympus-mons.jpg',
+			},
+			viewpoint: {
+				rotation: 232.68196521639572,
+				scale: 8596759.104842348,
+				targetGeometry: {
+					spatialReference: {
+						latestWkid: 3857,
+						wkid: 102100,
+					},
+					x: -14925103.689468669,
+					y: 2054591.8742843773,
+					z: 197989.5748129962,
+				},
+				camera: {
+					position: {
+						spatialReference: {
+							latestWkid: 3857,
+							wkid: 102100,
+						},
+						x: -16403340.655896716,
+						y: 3302917.5086428667,
+						z: 2466230.4099655114,
+					},
+					heading: 127.31803478360426,
+					tilt: 35.60285199504412,
+				},
+			},
+			ground: {
+				transparency: 0,
+			},
+			visibleLayers: [
+				{
+					id: '1762c19e098-layer-0',
+				},
+				{
+					id: '1762c19e098-layer-1',
+				},
+				{
+					id: '1762c19e099-layer-2',
+				},
+				{
+					id: '1762c19e099-layer-3',
+				},
+				{
+					id: '1762c19e099-layer-4',
+				},
+				{
+					id: '9790623814cac7dc',
+				},
+			],
+			environment: {
+				lighting: {
+					datetime: 1584308965000,
 				},
 				atmosphereEnabled: true,
 				starsEnabled: true,
