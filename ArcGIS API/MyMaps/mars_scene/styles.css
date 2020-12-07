@@ -21,21 +21,21 @@ button {
 #slidesDiv {
 	position: absolute;
 	background-color: transparent;
-	opacity: 1;
-	color: black;
 	padding: 10px;
-	top: 20px;
-	right: 20px;
-	text-align: center;
+	top: 0px;
+	right: 0px;
 	width: 20%;
 	max-width: 200px;
+	height: 100%;
 }
 
 #slidesDiv .slide {
 	/* Show cursor as pointer when on a slide */
 	cursor: pointer;
-	margin-bottom: 6px;
+	margin-bottom: 10px;
 	border: 1px solid #fff;
+	height: calc(100% / 6 - 10px);
+	overflow: hidden;
 }
 
 #slidesDiv .slide img {
