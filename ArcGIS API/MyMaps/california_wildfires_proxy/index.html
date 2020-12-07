@@ -35,12 +35,12 @@
 			], function (Map, MapView, MapImageLayer, urlUtils) {
 				urlUtils.addProxyRule({
 					urlPrefix: 'maps.disasters.nasa.gov',
-					proxyUrl: 'https://cors-anywhere.herokuapp.com/',
+					proxyUrl: 'http://localhost:3030/proxy/',
 				});
 
 				var layer = new MapImageLayer({
 					url:
-						'https://maps.disasters.nasa.gov/ags04/rest/services/ca_fires_202008/sentinel2/MapServer',
+						'https://maps.disasters.nasa.gov/ags04/rest/services/ca_fires_202008/sentinel2/MapServer?f=json',
 					sublayers: [
 						{
 							id: 549,
