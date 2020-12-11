@@ -41,10 +41,21 @@
 				var layer = new MapImageLayer({
 					url:
 						'http://localhost:3030/proxy/https://maps.disasters.nasa.gov/ags04/rest/services/ca_fires_202008/sentinel2/MapServer?f=json',
+					sublayers: [
+						{
+							id: 976,
+						},
+						{
+							id: 948,
+						},
+						{
+							id: 925,
+						},
+					],
 				});
 
 				var map = new Map({
-					basemap: 'dark-gray',
+					basemap: 'satellite',
 					layers: [layer],
 				});
 
