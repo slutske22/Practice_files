@@ -1,10 +1,15 @@
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
 import corsAnywhere from 'cors-anywhere';
+import path from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 const { PORT } = process.env;
 const port = PORT || 3030;
+
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 var app = express();
 
@@ -17,12 +22,12 @@ let proxy = corsAnywhere.createServer({
 app.use(cors());
 
 app.get('/proxy/:proxyUrl*', (req, res) => {
-	req.url = req.url.replace('/proxy/', '/'); // Strip '/proxy' from the front of the URL, else the proxy won't work.
+	// req.url = req.url.replace('/proxy/', '/');
+	req.url = req.url.replace('/proxy/https:/', '/https://');
 	proxy.emit('request', req, res);
 });
 
 app.get('*', (req, res) => {
-	// console.log('gotten');
 	res.sendFile(path.resolve(__dirname, 'index.html'));
 });
 
