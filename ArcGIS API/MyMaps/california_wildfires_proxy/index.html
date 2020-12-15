@@ -33,23 +33,29 @@
 				'esri/core/urlUtils',
 				'dojo/domReady!',
 			], function (Map, MapView, MapImageLayer, urlUtils) {
-				urlUtils.addProxyRule({
-					urlPrefix: 'maps.disasters.nasa.gov',
-					proxyUrl: 'http://localhost:3030/proxy/',
-				});
+				// urlUtils.addProxyRule({
+				// 	urlPrefix: 'maps.disasters.nasa.gov',
+				// 	proxyUrl: 'http://localhost:3030/proxy/',
+				// });
 
 				var layer = new MapImageLayer({
 					url:
-						'https://maps.disasters.nasa.gov/ags04/rest/services/ca_fires_202008/sentinel2/MapServer?f=json',
+						'http://localhost:3030/proxy/https://maps.disasters.nasa.gov/ags04/rest/services/ca_fires_202008/sentinel2/MapServer?f=json',
 					sublayers: [
 						{
-							id: 549,
+							id: 976,
+						},
+						{
+							id: 948,
+						},
+						{
+							id: 925,
 						},
 					],
 				});
 
 				var map = new Map({
-					basemap: 'dark-gray',
+					basemap: 'satellite',
 					layers: [layer],
 				});
 
