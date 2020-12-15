@@ -388,6 +388,12 @@ export const lightEyeOrbRenderer = {
 };
 
 export const solidBlueTrackRenderer = {
+	defaultSymbol: {
+		color: [255, 241, 224, 255],
+		width: 0.75,
+		type: 'simple-line',
+		style: 'short-dot',
+	},
 	visualVariables: [
 		{
 			type: 'size',
@@ -467,6 +473,7 @@ export const blueThatchRenderer = {
 				color: [43, 212, 212, 255],
 				width: 0.75,
 				type: 'simple-line',
+				style: 'short-dot',
 			},
 			// classMaxValue: 9007199254740991,
 		},

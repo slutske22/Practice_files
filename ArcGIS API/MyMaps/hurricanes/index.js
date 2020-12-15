@@ -38,7 +38,7 @@ require([
 		// id: 'Hurricane_Recent_4466_1123_2461_5598_8316_2112',
 		url:
 			'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Recent_Hurricanes_v1/FeatureServer/1',
-		// opacity: 0.14,
+		opacity: 0.14,
 		title: 'Light Trans Solid Track',
 		renderer: renderers.solidBlueTrackRenderer,
 	});
@@ -56,6 +56,7 @@ require([
 		basemap: 'dark-gray-vector',
 		layers: [
 			hurricaneBlueLines,
+			hurricaneTracks,
 			hurricanePositionsSwirls,
 			hurricanePositionsDots,
 		],
