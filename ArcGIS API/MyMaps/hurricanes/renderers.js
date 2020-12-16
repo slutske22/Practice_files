@@ -355,12 +355,9 @@ export const lightEyeOrbRenderer = {
 				xoffset: 0,
 				yoffset: 0,
 				type: 'simple-marker',
-				// style: 'esriSMSCircle',
 				outline: {
 					color: null,
 					width: 0.75,
-					// type: 'esriSLS',
-					// style: 'esriSLSNull',
 				},
 			},
 			label: 'Tropical Storm',
@@ -374,12 +371,9 @@ export const lightEyeOrbRenderer = {
 				xoffset: 0,
 				yoffset: 0,
 				type: 'simple-marker',
-				// style: 'esriSMSCircle',
 				outline: {
 					color: null,
 					width: 0.75,
-					// type: 'esriSLS',
-					// style: 'esriSLSNull',
 				},
 			},
 			label: 'Tropical Depression',
@@ -387,7 +381,7 @@ export const lightEyeOrbRenderer = {
 	],
 };
 
-export const solidBlueTrackRenderer = {
+export const whiteGhostLineRenderer = {
 	defaultSymbol: {
 		color: [255, 241, 224, 255],
 		width: 0.75,

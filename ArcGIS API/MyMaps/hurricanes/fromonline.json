@@ -1026,6 +1026,7 @@
 				"mediaInfos": []
 			}
 		},
+		// blue swirls at lower scales
 		{
 			"id": "Hurricane_Recent_951_8023_9949_3322_9097_4709_5528_3817_5484_3505_9357",
 			"layerType": "ArcGISFeatureLayer",

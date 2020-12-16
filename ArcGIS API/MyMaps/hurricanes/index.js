@@ -1,4 +1,6 @@
 import * as renderers from './renderers.js';
+import * as labeling from './labeling.js';
+import * as popupTemplates from './popupTemplates.js';
 import rasterFunctions from './rasterFunctioInfos.js';
 
 require([
@@ -39,6 +41,8 @@ require([
 		renderer: renderers.blueSwirlRenderer,
 		// minScale: 0,
 		// maxScale: 26601363,
+		outFields: ['*'],
+		popupTemplate: popupTemplates.hurricanePopup,
 	});
 
 	const hurricanePositionsDots = new FeatureLayer({
@@ -52,29 +56,32 @@ require([
 	});
 
 	const hurricaneTracks = new FeatureLayer({
+		// id: 'Hurricane_Recent_4466_1123_2461_5598_3670',
+		url:
+			'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Recent_Hurricanes_v1/FeatureServer/1',
+		title: 'Blue Hatched Track',
+		opacity: 0.45,
+		renderer: renderers.blueThatchRenderer,
+		labelingInfo: labeling.blueThatchLabeling,
+		outFields: ['*'],
+		popupTemplate: popupTemplates.trackPopup,
+	});
+
+	const hurricaneTracksHighlight = new FeatureLayer({
 		// id: 'Hurricane_Recent_4466_1123_2461_5598_8316_2112',
 		url:
 			'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Recent_Hurricanes_v1/FeatureServer/1',
 		opacity: 0.14,
 		title: 'Light Trans Solid Track',
-		renderer: renderers.solidBlueTrackRenderer,
-	});
-
-	const hurricaneBlueLines = new FeatureLayer({
-		// id: 'Hurricane_Recent_4466_1123_2461_5598_3670',
-		url:
-			'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Recent_Hurricanes_v1/FeatureServer/1',
-		title: 'Blue Hatched Track',
-		opacity: 0.15,
-		renderer: renderers.blueThatchRenderer,
+		renderer: renderers.whiteGhostLineRenderer,
 	});
 
 	var map = new Map({
 		basemap: 'dark-gray-vector',
 		layers: [
 			topobathLayer,
-			hurricaneBlueLines,
 			hurricaneTracks,
+			hurricaneTracksHighlight,
 			hurricanePositionsSwirls,
 			hurricanePositionsDots,
 		],
