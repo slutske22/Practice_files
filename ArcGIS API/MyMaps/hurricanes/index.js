@@ -1,11 +1,21 @@
 import * as renderers from './renderers.js';
+import rasterFunctions from './rasterFunctioInfos.js';
 
 require([
 	'esri/Map',
 	'esri/views/MapView',
 	'esri/layers/FeatureLayer',
 	'esri/layers/TileLayer',
-], function (Map, MapView, FeatureLayer, TileLayer) {
+	'esri/layers/ImageryLayer',
+	'esri/layers/support/RasterFunction',
+], function (
+	Map,
+	MapView,
+	FeatureLayer,
+	TileLayer,
+	ImageryLayer,
+	RasterFunction
+) {
 	var fireflyLayer = new TileLayer({
 		url:
 			'https://fly.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Firefly/MapServer',
@@ -14,6 +24,13 @@ require([
 	var referenceLayer = new TileLayer({
 		url:
 			'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Reference/MapServer',
+	});
+
+	const topobathLayer = new ImageryLayer({
+		url:
+			'https://utility.arcgis.com/usrsvcs/servers/ad47b1b7d5ea46ffafdc0c75526a1986/rest/services/WorldElevation/TopoBathy/ImageServer',
+		opacity: 0.15,
+		renderingRule: RasterFunction.fromJSON(rasterFunctions[2]),
 	});
 
 	const hurricanePositionsSwirls = new FeatureLayer({
@@ -48,13 +65,14 @@ require([
 		url:
 			'https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/Recent_Hurricanes_v1/FeatureServer/1',
 		title: 'Blue Hatched Track',
-		opacity: 0.65,
+		opacity: 0.15,
 		renderer: renderers.blueThatchRenderer,
 	});
 
 	var map = new Map({
 		basemap: 'dark-gray-vector',
 		layers: [
+			topobathLayer,
 			hurricaneBlueLines,
 			hurricaneTracks,
 			hurricanePositionsSwirls,
