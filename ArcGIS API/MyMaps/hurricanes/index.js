@@ -97,8 +97,10 @@ require([
 
 	var view = new MapView({
 		container: 'viewDiv',
-		center: [-92, 31],
-		zoom: 5,
+		center: [-151, 17],
+		zoom: 2,
 		map: map,
 	});
+
+	view.on('click', (e) => console.log(e.mapPoint));
 });
