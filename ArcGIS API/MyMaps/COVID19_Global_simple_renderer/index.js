@@ -55,21 +55,22 @@ require([
 		url:
 			'https://services8.arcgis.com/bc1qjUYAgNrEBXVh/arcgis/rest/services/COVID19_Time_Series_Combined/FeatureServer',
 		outFields: ['*'],
-		// renderer: {
-		// 	type: 'heatmap',
-		// 	field: 'Confirmed',
-		// 	colorStops: [
-		// 		{ ratio: 0, color: 'rgba(255, 255, 255, 0)' },
-		// 		{ ratio: 0.06, color: 'rgba(255, 255, 255, 1)' },
-		// 		{ ratio: 0.15, color: 'rgba(255, 255, 0, 1)' },
-		// 		{ ratio: 0.25, color: 'rgba(255, 140, 0, 1)' },
-		// 		{ ratio: 0.55, color: 'rgba(255, 0, 0, 1)' },
-		// 	],
-		// 	minPixelIntensity: 1,
-		// 	maxPixelIntensity: 150000000,
-		// 	blurRadius: 12,
-		// },
+		renderer: {
+			type: 'heatmap',
+			field: 'Confirmed',
+			colorStops: [
+				{ ratio: 0, color: 'rgba(255, 255, 255, 0)' },
+				{ ratio: 0.06, color: 'rgba(255, 255, 255, 1)' },
+				{ ratio: 0.15, color: 'rgba(255, 255, 0, 1)' },
+				{ ratio: 0.25, color: 'rgba(255, 140, 0, 1)' },
+				{ ratio: 0.55, color: 'rgba(255, 0, 0, 1)' },
+			],
+			minPixelIntensity: 1,
+			maxPixelIntensity: 150000000,
+			blurRadius: 12,
+		},
 		renderer: renderers.heatmap,
+		opacity: 0.7,
 	});
 
 	// define map and view
@@ -107,9 +108,7 @@ require([
 			{
 				mode: 'count',
 				values:
-					new Date(2020, 11, 31) > new Date()
-						? new Date().getMonth() + 1
-						: 12,
+					new Date(2020, 11, 31) > new Date() ? new Date().getMonth() + 1 : 12,
 				labelsVisible: true,
 				labelFormatFunction: (value) => {
 					const date = new Date(value);
@@ -145,13 +144,13 @@ require([
 		const end = toDateString(timeExtent.end);
 		covidLayer.definitionExpression = `Date >= DATE '${start}' AND Date <= DATE '${end}'`;
 
-		heatmapStatistics({
-			layer: covidLayer,
-			view,
-		}).then(function (stats) {
-			covidLayer.renderer = renderers.heatmapAsFunction(stats.max);
-			console.log(stats);
-		});
+		// heatmapStatistics({
+		// 	layer: covidLayer,
+		// 	view,
+		// }).then(function (stats) {
+		// 	covidLayer.renderer = renderers.heatmapAsFunction(stats.max);
+		// 	console.log(stats);
+		// });
 	}
 
 	function toDateString(date) {

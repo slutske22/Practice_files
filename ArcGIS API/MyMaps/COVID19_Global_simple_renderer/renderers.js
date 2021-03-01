@@ -19,7 +19,7 @@ export const multivariate = {
 			stops: [
 				{
 					value: 0,
-					color: [255, 252, 212, 255],
+					color: [255, 252, 212, 0],
 					label: '< 0',
 				},
 				{
