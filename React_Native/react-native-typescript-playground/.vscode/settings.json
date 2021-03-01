@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 2,
+  "launch": {
+    "configurations": [],
+    "compounds": []
+  },
+  "eslint.codeAction.showDocumentation": {
+    "enable": true
+  }
+}
