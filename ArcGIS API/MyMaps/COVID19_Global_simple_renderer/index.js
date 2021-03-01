@@ -163,17 +163,16 @@ require([
 		return `${y}-${m}-${d} ${h}:${mm}:${s}`;
 	}
 
-	// const params = {
-	//    layer: covidLayer,
-	//    view,
-	//    field: "Confirmed",
-	//    fadeToTransparent: true,
-	//    minRatio: 0.05
-	// }
+	const params = {
+		layer: covidLayer,
+		view,
+		field: 'Confirmed',
+		fadeToTransparent: true,
+		maxRatio: 0.1,
+	};
 
-	// heatmapRendererCreator.createRenderer(params)
-	// .then(result => {
-	//    covidLayer.renderer = result.renderer
-	//    console.log(result.renderer)
-	// })
+	heatmapRendererCreator.createRenderer(params).then((result) => {
+		covidLayer.renderer = result.renderer;
+		console.log(result.renderer);
+	});
 });
