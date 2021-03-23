@@ -12,6 +12,7 @@ print(pets[0])
 del pets[3]
 print(pets)
 
+
 # %%
 # Remove the nth item of array and stores it in variable
 n = 0
