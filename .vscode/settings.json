@@ -4,5 +4,9 @@
 	"editor.formatOnSave": true,
 	"prettier.singleQuote": true,
 	"prettier.useTabs": true,
-	"eslint.format.enable": true
+	"eslint.format.enable": true,
+	"files.associations": {
+		"time.h": "c",
+		"_time_t.h": "c"
+	}
 }
