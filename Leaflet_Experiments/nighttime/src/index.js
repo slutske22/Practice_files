@@ -2,6 +2,10 @@ import terminator from '@joergdietrich/leaflet.terminator';
 import 'leaflet-boundary-canvas';
 import './utils';
 
+/****************************************
+ *              MAP SETUP
+ ***************************************/
+
 // Define some maps options
 var mapOptions = {
 	center: [0, 0],
@@ -25,10 +29,9 @@ Stadia_AlidadeSmooth.addTo(map);
 
 // Create GeoJSON of nighttime based on leaflet.terminator:
 const nightmask = terminator().addTo(map);
-
 const nightmaskJson = nightmask.toGeoJSON();
 
-// Use nighttime mast geojson as boundary for a boundarycanvas:
+// Use nighttime geojson as boundary for a boundarycanvas:
 const nightraster = L.TileLayer.boundaryCanvas(
 	'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
 	{
@@ -44,11 +47,13 @@ nightraster.addTo(map);
 
 const updateMapTime = (time) => {
 	nightmask.setTime(time);
-
 	nightraster.options.boundary = nightmask.toGeoJSON();
+	nightraster.redraw();
 };
 
-/** Time slider stuff */
+/****************************************
+ *          TIME SLIDERS SETUP
+ ***************************************/
 
 // Grab dom nodes:
 const daySlider = document.getElementById('day-slider');
