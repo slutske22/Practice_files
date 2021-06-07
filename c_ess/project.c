@@ -6,6 +6,8 @@ int main() {
 
   int rows;
   int a;
+  int e;
+  int c;
 
   /* Process input */
   printf("Enter a value between 0 and 18: ");
@@ -16,11 +18,19 @@ int main() {
   }
 
   /* process rows */
-  printf("The computer will process %i rows\n", rows);
-  a = rows >> 1;
-  printf("%d is half of %d\n", a, rows);
-  a = rows << 1;
-  printf("%d is double %d\n", a, rows);
+  for (a = 0; a < rows; a++){
+    if (a % 2){
+      for (e = 0; e < 40; e ++){
+        putchar('=');
+      }
+      putchar('\n');
+    } else {
+      for (c = 'A'; c <= 'J'; c++){
+        printf(" %d%c ", a, c);
+      }
+      putchar('\n');
+    }
+  }
 
   return 0;
 }
