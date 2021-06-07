@@ -1,5 +1,7 @@
 /Leaflet_Experiments/Active_Area_Esri_Leaflet/node_modules
 /Leaflet_Experiments/Active_Area_Esri_Leaflet/dist
+/Leaflet_Experiments/nighttime/dist
+/Leaflet_Experiments/nighttime/.cache
 
 /Leaflet_Experiments/NPM_Testing/node_modules
 /Leaflet_Experiments/Topo_Testing/node_modules

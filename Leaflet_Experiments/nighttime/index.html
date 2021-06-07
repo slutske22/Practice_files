@@ -25,5 +25,21 @@
 	</head>
 	<body>
 		<div id="leafletMapid" class="mapdiv"></div>
+		<div id="sliders-container">
+			<div class="range-group">
+				<div class="range-header">
+					<h2>Month / Day</h2>
+					<h2 class="readout" id="day-readout">date</h2>
+				</div>
+				<input id="day-slider" type="range" min="0" max="365" step="1" />
+			</div>
+			<div class="range-group">
+				<div class="range-header">
+					<h2>Time</h2>
+					<h2 class="readout" id="time-readout">time</h2>
+				</div>
+				<input id="time-slider" type="range" min="0" max="1440" step="1" />
+			</div>
+		</div>
 	</body>
 </html>
