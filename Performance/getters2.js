@@ -15,5 +15,3 @@ cells.forEach((cell) => {
 		const cosine = cell.cosine;
 	}
 });
-
-console.log(cells[0].count);

@@ -20,9 +20,7 @@ const cells = Array.from({ length: 100 }).map(
 );
 
 cells.forEach((cell) => {
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < 100; i++) {
 		const cosine = cell.cosine;
 	}
 });
-
-console.log(cells[0].count);
