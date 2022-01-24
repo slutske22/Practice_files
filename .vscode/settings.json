@@ -8,5 +8,6 @@
 	"files.associations": {
 		"time.h": "c",
 		"_time_t.h": "c"
-	}
+	},
+	"C_Cpp.clang_format_fallbackStyle": "LLVM"
 }
