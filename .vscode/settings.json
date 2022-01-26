@@ -7,7 +7,9 @@
 	"eslint.format.enable": true,
 	"files.associations": {
 		"time.h": "c",
-		"_time_t.h": "c"
+		"_time_t.h": "c",
+		"queue": "cpp",
+		"stack": "cpp"
 	},
 	"C_Cpp.clang_format_fallbackStyle": "LLVM"
 }
