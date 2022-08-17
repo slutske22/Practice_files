@@ -8,18 +8,18 @@ int main() {
 
   // allocate array
   long int *ip;
-  try {
-    ip = new long int[count];
-  } catch (std::bad_alloc &ba) {
-    fprintf(stderr, "Cannot allocate memory (%s)\n", ba.what());
-    return 1;
-  }
-
-  // ip = new (std::nothrow) long int[count];
-  // if (!ip) {
-  //   fprintf(stderr, "Cannot allocate memory (%s)\n");
+  // try {
+  //   ip = new long int[count];
+  // } catch (std::bad_alloc &ba) {
+  //   fprintf(stderr, "Cannot allocate memory (%s)\n", ba.what());
   //   return 1;
   // }
+
+  ip = new (std::nothrow) long int[count];
+  if (!ip) {
+    fprintf(stderr, "Cannot allocate memory (%s)\n");
+    return 1;
+  }
 
   // initialize array
   for (long int i = 0; i < count; i++) {
