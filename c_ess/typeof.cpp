@@ -21,5 +21,7 @@ int main() {
     puts("different");
   }
 
+  printf("Type is %s\n", typeid(B).name());
+
   return 0;
 }
