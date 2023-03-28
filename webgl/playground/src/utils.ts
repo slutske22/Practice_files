@@ -58,5 +58,5 @@ export const setup = (vertexShaderText: string, fragmentShaderText: string) => {
 		console.error('ERROR validating program', gl.getProgramInfoLog(program));
 	}
 
-	return gl;
+	return { gl, program };
 };
