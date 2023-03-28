@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -19,12 +18,12 @@ const config = {
 		open: true,
 		host: 'localhost',
 		port: 3009,
+		watchContentBase: true,
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: 'src/index.html',
 		}),
-		new webpack.HotModuleReplacementPlugin(),
 	],
 	module: {
 		rules: [
