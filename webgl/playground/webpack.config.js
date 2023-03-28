@@ -18,7 +18,7 @@ const config = {
 		open: true,
 		host: 'localhost',
 		port: 3009,
-		watchContentBase: true,
+		hot: true,
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
