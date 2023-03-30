@@ -18,21 +18,32 @@
 		/* ----------------------------- Shader scripts ----------------------------- */
 
 		const vertex_shader = glsl`
-  // An attribute will receive data from a buffer 
-  attribute vec4 a_position;
+			// An attribute will receive data from a buffer
+			attribute vec2 a_position;
 
-  void main() {
-    gl_Position = a_position;
-  }
-`;
+			uniform vec2 u_resolution;
+
+			void main() {
+				// convert the position from pixels to 0.0 to 1.0
+				vec2 zeroToOne = a_position / u_resolution;
+
+				// convert from 0->1 to 0->2
+				vec2 zeroToTwo = zeroToOne * 2.0;
+
+				// convert from 0->2 to -1->+1 (clip space)
+				vec2 clipSpace = zeroToTwo - 1.0;
+
+				gl_Position = vec4(clipSpace, 0, 1);
+			}
+		`;
 
 		const fragment_shader = glsl`
-  precision mediump float;
+			precision mediump float;
 
-  void main() {
-    gl_FragColor = vec4(1, 0, 0.5, 1);
-  }
-`;
+			void main() {
+				gl_FragColor = vec4(1, 0, 0.5, 1);
+			}
+		`;
 
 		/* ----------------------------- Initialization code ----------------------------- */
 
@@ -87,11 +98,15 @@
 			program,
 			'a_position'
 		);
+		var resolutionUniformLocation = gl.getUniformLocation(
+			program,
+			'u_resolution'
+		);
 
 		const positionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-		const positions = [0, 0, 0, 0.5, 0.7, 0];
+		var positions = [10, 20, 80, 20, 10, 30, 10, 30, 80, 20, 80, 30];
 
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
@@ -106,6 +121,7 @@
 
 		gl.useProgram(program);
 
+		gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
 		gl.enableVertexAttribArray(positionAttributeLocation);
 		gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
@@ -125,7 +141,7 @@
 		);
 
 		const primitiveType = gl.TRIANGLES;
-		const count = 3;
+		const count = 6;
 
 		gl.drawArrays(primitiveType, offset, count);
 	</script>
