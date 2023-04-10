@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>WebGL Playground</title>
+	</head>
+	<body>
+		<h2>Magic Index Algorithm Question</h2>
+		<p>
+			For an array of sorted integers, find the integer such that its index in
+			the array is the same as its value. The assumption is that there is only
+			one such value in the array.
+		</p>
+		<code>
+			<pre>
+        // Example array:
+        [-9, -2, 1, 4, 5, 8, 19]
+        // 4 is the first magic index
+      </pre>
+		</code>
+	</body>
+	<script>
+		function magic(array, baseIndex = 0) {
+			// get the center index:
+			var midIndex = Math.floor(array.length / 2);
+			const valueAtMidIndex = array[midIndex];
+			const odd = midIndex !== array.length / 2;
+
+			debugger;
+
+			if (array.length === 1 && array[0] !== baseIndex) {
+				return 'No magic index';
+			}
+
+			if (array[0] === baseIndex) return array[0];
+
+			if (midIndex + baseIndex === valueAtMidIndex) {
+				return valueAtMidIndex;
+			}
+
+			if (valueAtMidIndex < midIndex) {
+				if (odd) midIndex++;
+				const newarray = array.slice(midIndex, array.length);
+				return magic(newarray, midIndex + baseIndex);
+			}
+
+			if (valueAtMidIndex > midIndex) {
+				const newarray = array.slice(0, midIndex);
+				return magic(newarray, baseIndex);
+			}
+		}
+
+		// In second half examples:
+		const example1 = [-10, -7, -3, 0, 1, 5, 7];
+		const example2 = [-10, -7, -3, 0, 1, 2, 6, 7, 8];
+		const example3 = [-10, -7, -3, 0, 1, 5, 7, 8];
+
+		// In first half examples:
+		const example4 = [-10, 1, 2, 5, 7, 9];
+		const example5 = [-10, -7, 2, 6, 7, 8, 9];
+		const example6 = [-20, -17, -13, 3, 5, 7, 8, 18, 19, 200];
+
+		const answer = magic(example4);
+		console.log(answer);
+	</script>
+</html>
