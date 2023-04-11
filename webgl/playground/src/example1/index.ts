@@ -16,7 +16,7 @@ function randomInt(range: number) {
 }
 
 // Fills the buffer with the values that define a rectangle.
-function setRectangle(
+export function setRectangle(
 	gl: WebGLRenderingContext,
 	x: number,
 	y: number,
@@ -33,9 +33,6 @@ function setRectangle(
 		new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2]),
 		gl.STATIC_DRAW
 	);
-
-	console.log(gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_SIZE));
-	console.log(gl.getBufferParameter(gl.ARRAY_BUFFER, gl.BUFFER_USAGE));
 }
 
 createAndFillBufferObject(gl, new Float32Array([]));

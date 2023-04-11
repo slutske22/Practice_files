@@ -6,7 +6,7 @@ export const glsl = (x: TemplateStringsArray) => x.join('');
  * @param canvasId The HTML id of the canvas element being used
  * @returns The WebGLRenderingContext
  */
-export function getGlContext(canvasId: string) {
+export function getGlContext(canvasId: string = 'canvas') {
 	const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
 	const gl = canvas.getContext('webgl') as WebGLRenderingContext;
 
