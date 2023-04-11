@@ -1,4 +1,4 @@
-import { glsl, setup } from '../utils';
+import { getGlContext, glsl, setup } from '../utils';
 
 const vertexShaderText = glsl`
   precision mediump float;
@@ -24,7 +24,9 @@ const fargmentShaderText = glsl`
   }
 `;
 
-const { gl, program } = setup(vertexShaderText, fargmentShaderText);
+const gl = getGlContext('canvas');
+
+const { program } = setup(gl, vertexShaderText, fargmentShaderText);
 
 /**
  * Check for linker errors

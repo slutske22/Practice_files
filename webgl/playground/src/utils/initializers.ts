@@ -62,7 +62,7 @@ export function createProgram(
  * @returns The resultant WebGLBuffer
  */
 export function createAndFillBufferObject(
-	gl: WebGL2RenderingContext,
+	gl: WebGLRenderingContext,
 	data: Float32Array
 ) {
 	var buffer_id = gl.createBuffer();

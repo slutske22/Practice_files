@@ -21,7 +21,11 @@ export const gl = canvas.getContext('webgl') as WebGLRenderingContext;
  * @param vertexShaderText
  * @param fragmentShaderText
  */
-export const setup = (vertexShaderText: string, fragmentShaderText: string) => {
+export const setup = (
+	gl: WebGLRenderingContext,
+	vertexShaderText: string,
+	fragmentShaderText: string
+) => {
 	gl.clearColor(0.75, 0.85, 0.8, 1);
 	gl.clear(gl.COLOR_BUFFER_BIT);
 

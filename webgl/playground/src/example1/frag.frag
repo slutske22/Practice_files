@@ -1,7 +1,7 @@
 precision mediump float;
 
-uniform float u_time;
+uniform vec4 u_color;
 
 void main() {
-	gl_FragColor = vec4(abs(sin(u_time)),0.0,0.0,1.0);
+	gl_FragColor = u_color;
 }
