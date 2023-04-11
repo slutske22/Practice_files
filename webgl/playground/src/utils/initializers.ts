@@ -54,3 +54,27 @@ export function createProgram(
 	console.log(gl.getProgramInfoLog(program));
 	gl.deleteProgram(program);
 }
+
+/**
+ * Function to create a GL buffer and populate it with data
+ * @param gl The webgl rendering context
+ * @param data A float 32 array to be transformed into a webgl buffer
+ * @returns The resultant WebGLBuffer
+ */
+export function createAndFillBufferObject(
+	gl: WebGL2RenderingContext,
+	data: Float32Array
+) {
+	var buffer_id = gl.createBuffer();
+
+	if (!buffer_id) {
+		console.log('Failed to create the buffer object');
+		return null;
+	}
+
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_id);
+
+	gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+
+	return buffer_id;
+}
