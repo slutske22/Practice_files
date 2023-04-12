@@ -7,6 +7,13 @@ uniform sampler2D u_image;
 varying vec2 v_texCoord;
 
 void main() {
+
+	vec4 color = texture2D(u_image, v_texCoord);
+
+	// Modify the individual RGBA elements:
+	// color[0] = 0.0;
+	// color[1] = 0.0;
+
 	// look up the color from the texture
-	gl_FragColor = texture2D(u_image, v_texCoord).rgba;
+	gl_FragColor = color;
 }
