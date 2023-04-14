@@ -1,1 +1,1 @@
-import './example2';
+import './example2-slope';
