@@ -1,1 +1,1 @@
-import './example2-slope';
+import './example3-image-stitcher';
