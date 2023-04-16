@@ -1,10 +1,10 @@
 import { getGlContext, setup } from '../utils';
 import vert1 from './vert.vert';
 import frag1 from './frag.frag';
-import topright from './tiles/252-1798.png';
 import topleft from './tiles/253-1798.png';
-import bottomright from './tiles/252-1799.png';
+import topright from './tiles/252-1798.png';
 import bottomleft from './tiles/253-1799.png';
+import bottomright from './tiles/252-1799.png';
 
 // Fills the buffer with the values that define a rectangle.
 export function setRectangle(
@@ -79,7 +79,7 @@ function main() {
 function render(tileImage: HTMLImageElement, i: number, tile: Tile) {
 	// look up where the vertex data needs to go.
 	var positionLocation = gl.getAttribLocation(program, 'a_position');
-	var texcoordLocation = gl.getAttribLocation(program, `a_texCoord${i}`);
+	var texcoordLocation = gl.getAttribLocation(program, 'a_texCoord');
 
 	// Create a buffer to put three 2d clip space points in
 	var positionBuffer = gl.createBuffer();
@@ -98,6 +98,7 @@ function render(tileImage: HTMLImageElement, i: number, tile: Tile) {
 	// provide texture coordinates for the rectangle.
 	var texcoordBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+
 	gl.bufferData(
 		gl.ARRAY_BUFFER,
 		// prettier-ignore
