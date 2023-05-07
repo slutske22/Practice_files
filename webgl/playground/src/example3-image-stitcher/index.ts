@@ -68,8 +68,8 @@ function main() {
 	// For each tile image
 	tiles.forEach((tile, i) => {
 		const image = new Image();
-		image.src = tile.path;
 		image.onload = () => render(image, i, tile);
+		image.src = tile.path;
 	});
 }
 
