@@ -33,7 +33,7 @@ export function setRectangle(
 	);
 }
 
-const gl = getGlContext();
+const gl = getGlContext(undefined, { preserveDrawingBuffer: true });
 const { program } = setup(gl, vert1, frag1);
 
 interface Tile {
