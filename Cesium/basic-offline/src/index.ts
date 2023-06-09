@@ -1,1 +1,1 @@
-import './examples/stripped';
+import './examples/terrain-api';

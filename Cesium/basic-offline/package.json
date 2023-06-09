@@ -26,7 +26,10 @@
 		"webpack-dev-server": "^4.11.1"
 	},
 	"dependencies": {
+		"@turf/bezier-spline": "^6.5.0",
+		"@turf/helpers": "^6.5.0",
 		"@types/cesium": "^1.70.0",
+		"@types/geojson": "^7946.0.10",
 		"cesium": "^1.106.1",
 		"glslify-loader": "^2.0.0",
 		"node-polyfill-webpack-plugin": "^2.0.1",
