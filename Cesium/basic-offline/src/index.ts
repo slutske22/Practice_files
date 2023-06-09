@@ -19,3 +19,9 @@ const viewer = new Cesium.Viewer('cesiumContainer', {
 	baseLayerPicker: false,
 	geocoder: false,
 });
+
+const osm = new Cesium.OpenStreetMapImageryProvider({
+	url: 'http://localhost:5000/world',
+});
+
+viewer.scene.imageryLayers.addImageryProvider(osm);
