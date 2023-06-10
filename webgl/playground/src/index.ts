@@ -1,1 +1,1 @@
-import './example4-image-stitcher-from-texture';
+import './example4-image-stitcher-with-processing';
