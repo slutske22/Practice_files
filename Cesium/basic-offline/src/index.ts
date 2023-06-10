@@ -1,1 +1,1 @@
-import './examples/terrain-api';
+import './examples/entities';

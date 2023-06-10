@@ -48,10 +48,31 @@ const wyoming = new Cesium.Entity({
 	},
 });
 
+const redCone = new Cesium.Entity({
+	name: 'Red cone',
+	position: Cesium.Cartesian3.fromDegrees(-105.0, 40.0, 200000.0),
+	cylinder: {
+		length: 800000.0,
+		topRadius: 200000,
+		bottomRadius: 0,
+		material: Cesium.Color.RED.withAlpha(0.5),
+	},
+	// @ts-expect-error wju
+	orientation: Cesium.Transforms.headingPitchRollQuaternion(
+		Cesium.Cartesian3.fromDegrees(-123.0744619, 44.0503706, 10),
+		new Cesium.HeadingPitchRoll(
+			Cesium.Math.toRadians(180),
+			Cesium.Math.toRadians(90),
+			Cesium.Math.toRadians(0)
+		)
+	),
+});
+
 viewer.entities.add(wyoming);
+viewer.entities.add(redCone);
 
 // zoomTo is a promise that can have a callback attached on completion
-viewer.zoomTo(wyoming).then(() => {
+viewer.zoomTo(redCone).then(() => {
 	// viewer.entities.remove(wyoming);
 });
 
