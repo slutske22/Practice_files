@@ -1,1 +1,1 @@
-import './example4-image-stitcher-with-processing';
+import './example5-image-stitcher-with-processing';
