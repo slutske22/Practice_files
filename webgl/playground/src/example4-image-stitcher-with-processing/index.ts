@@ -13,12 +13,13 @@ export function setRectangle(
 	x: number,
 	y: number,
 	width: number,
-	height: number
+	height: number,
+	flip = false
 ) {
 	const x1 = x,
 		x2 = x + width,
-		y1 = y,
-		y2 = y + height;
+		y1 = flip ? height - y : y,
+		y2 = flip ? y : y + height;
 
 	gl.bufferData(
 		gl.ARRAY_BUFFER,
@@ -208,7 +209,7 @@ function render(tileImage: HTMLImageElement, tile: Tile) {
 
 	// Bind back the position buffer to specify the full canvas to draw the targetTexture to
 	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	setRectangle(gl, 0, 0, gl.canvas.width, gl.canvas.height);
+	setRectangle(gl, 0, 0, gl.canvas.width, gl.canvas.height, true);
 	gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
 

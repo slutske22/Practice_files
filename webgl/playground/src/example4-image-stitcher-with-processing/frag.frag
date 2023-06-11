@@ -8,7 +8,7 @@ uniform vec2 u_textureSize;
 varying vec2 v_texCoord;
 
 void main() {
-  vec2 px = vec2(1.0, 1.0) / u_textureSize * 3.0;
+  vec2 px = vec2(1.0, 1.0) / u_textureSize * 3.0; // average over 3rd pixel neighbors
 
 	vec4 c = texture2D(u_image, v_texCoord);
   vec4 r = texture2D(u_image, v_texCoord + vec2(px.x, 0.0));
