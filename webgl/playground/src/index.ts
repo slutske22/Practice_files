@@ -1,1 +1,1 @@
-import './example5-image-stitcher-with-processing';
+import './example6-mouse-events';
