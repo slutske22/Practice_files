@@ -26,8 +26,11 @@
 		"webpack-dev-server": "^4.11.1"
 	},
 	"dependencies": {
+		"@turf/along": "^6.5.0",
+		"@turf/bearing": "^6.5.0",
 		"@turf/bezier-spline": "^6.5.0",
 		"@turf/helpers": "^6.5.0",
+		"@turf/length": "^6.5.0",
 		"@types/cesium": "^1.70.0",
 		"@types/geojson": "^7946.0.10",
 		"cesium": "^1.106.1",

@@ -3,7 +3,10 @@
  */
 
 import * as Cesium from 'cesium';
+import { geojson2flightpath } from '../utils/geo';
+import LA2SF from '../constants/LA2SF.json';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
+import { Feature, LineString } from 'geojson';
 
 // @ts-expect-error required by cesium offline
 window.CESIUM_BASE_URL = 'http://localhost:5000/Cesium';
@@ -34,6 +37,9 @@ viewer.scene.imageryLayers.addImageryProvider(
 	})
 );
 
+/**
+ * Al elevated square
+ */
 const wyoming = new Cesium.Entity({
 	polygon: {
 		hierarchy: Cesium.Cartesian3.fromDegreesArray([
@@ -47,7 +53,11 @@ const wyoming = new Cesium.Entity({
 		material: Cesium.Color.ROYALBLUE.withAlpha(0.5),
 	},
 });
+viewer.entities.add(wyoming);
 
+/**
+ * An elevated, tilted cone
+ */
 const redCone = new Cesium.Entity({
 	name: 'Red cone',
 	position: Cesium.Cartesian3.fromDegrees(-105.0, 40.0, 200000.0),
@@ -67,15 +77,16 @@ const redCone = new Cesium.Entity({
 		)
 	),
 });
-
-viewer.entities.add(wyoming);
 viewer.entities.add(redCone);
 
 // zoomTo is a promise that can have a callback attached on completion
-viewer.zoomTo(redCone).then(() => {
-	// viewer.entities.remove(wyoming);
-});
+// viewer.zoomTo(redCone).then(() => {
+// viewer.entities.remove(wyoming);
+// });
 
+/**
+ * Simple 2d, globe-clamped point
+ */
 const point = new Cesium.Entity({
 	position: Cesium.Cartesian3.fromDegrees(-109.080842, 45.002073),
 	point: {
@@ -83,5 +94,26 @@ const point = new Cesium.Entity({
 		color: Cesium.Color.RED,
 	},
 });
-
 viewer.entities.add(point);
+
+/**
+ * An elevated polyline
+ */
+const flightpath = geojson2flightpath(LA2SF as Feature<LineString>, 100000);
+console.log(flightpath);
+
+const polyline3d = new Cesium.Entity({
+	polyline: {
+		positions: Cesium.Cartesian3.fromDegreesArrayHeights(
+			flightpath.map((point) => point.coord).flat()
+		),
+		width: 5,
+		material: new Cesium.PolylineOutlineMaterialProperty({
+			color: Cesium.Color.ORANGE.withAlpha(0.8),
+		}),
+	},
+});
+
+viewer.entities.add(polyline3d);
+
+viewer.zoomTo(polyline3d);
