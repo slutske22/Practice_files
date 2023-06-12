@@ -1,1 +1,1 @@
-import './examples/entities';
+import './examples/movingmap';
