@@ -8,6 +8,5 @@
 		"moduleResolution": "node",
 		"resolveJsonModule": true
 	},
-	"include": ["./src/index.d.ts"],
-	"files": ["src/index.ts"]
+	"files": ["./index.ts"]
 }

@@ -61,36 +61,36 @@ let i = 0;
  */
 const INTERVAL = 1;
 
-setInterval(() => {
-	if (flightpath[i]) {
-		// @ts-expect-error ignore me
-		positions[i].point.color = Cesium.Color.BLUE;
+// setInterval(() => {
+// 	if (flightpath[i]) {
+// 		// @ts-expect-error ignore me
+// 		positions[i].point.color = Cesium.Color.BLUE;
 
-		const [x, y, z] = flightpath[i].coord;
+// 		const [x, y, z] = flightpath[i].coord;
 
-		viewer.camera.flyTo({
-			destination: Cesium.Cartesian3.fromDegrees(x, y, z + 1000),
-			duration: INTERVAL,
-			easingFunction: Cesium.EasingFunction.LINEAR_NONE,
-			orientation: new Cesium.HeadingPitchRange(
-				Cesium.Math.toRadians(flightpath[i].bearing),
-				Cesium.Math.toRadians(-25),
-				10000
-			),
-		});
+// 		viewer.camera.flyTo({
+// 			destination: Cesium.Cartesian3.fromDegrees(x, y, z + 1000),
+// 			duration: INTERVAL,
+// 			easingFunction: Cesium.EasingFunction.LINEAR_NONE,
+// 			orientation: new Cesium.HeadingPitchRange(
+// 				Cesium.Math.toRadians(flightpath[i].bearing),
+// 				Cesium.Math.toRadians(-25),
+// 				10000
+// 			),
+// 		});
 
-		// viewer.flyTo(positions[i], {
-		// 	duration: 1,
-		// 	offset: new Cesium.HeadingPitchRange(
-		// 		Cesium.Math.toRadians(flightpath[i].bearing),
-		// 		Cesium.Math.toRadians(-30),
-		// 		10000
-		// 	),
-		// });
+// 		// viewer.flyTo(positions[i], {
+// 		// 	duration: 1,
+// 		// 	offset: new Cesium.HeadingPitchRange(
+// 		// 		Cesium.Math.toRadians(flightpath[i].bearing),
+// 		// 		Cesium.Math.toRadians(-30),
+// 		// 		10000
+// 		// 	),
+// 		// });
 
-		i++;
-	}
-}, INTERVAL * 1000);
+// 		i++;
+// 	}
+// }, INTERVAL * 1000);
 
 // const polyline3d = new Cesium.Entity({
 // 	polyline: {
