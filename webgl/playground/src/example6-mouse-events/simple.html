@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>WebGL Playground</title>
+	</head>
+	<body>
+		<canvas id="canvas" height="600" width="600"></canvas>
+		<div>Demo here</div>
+	</body>
+
+	<script id="vert1" type="x-vertex-shader">
+		// Some extra code here to convert pixels to clip space within the shader,
+		// as opposed to within the javascript code
+
+		attribute vec2 a_position;
+		uniform vec2 u_resolution;
+
+		void main() {
+			// convert the position from pixels to 0.0 to 1.0
+			vec2 zeroToOne = a_position / u_resolution;
+
+			// convert from 0->1 to 0->2
+			vec2 zeroToTwo = zeroToOne * 2.0;
+
+			// convert from 0->2 to -1->+1 (clip space)
+			vec2 clipSpace = zeroToTwo - 1.0;
+
+			gl_Position = vec4(clipSpace, 0.0, 1.0);
+		}
+	</script>
+
+	<script id="frag1" type="x-fragment-shader">
+		precision mediump float;
+
+		uniform vec4 u_color;
+
+		void main() {
+				gl_FragColor = vec4(1,0,1,1);
+		}
+	</script>
+
+	<script type="text/javascript">
+		const canvas = document.getElementById('canvas');
+		const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+
+		// simple util to compile and attach shaders
+		const program = setup(gl, vert1.textContent, frag1.textContent);
+
+		gl.useProgram(program);
+
+		// disable position attribute
+		const positionAttributeLocation = gl.getAttribLocation(
+			program,
+			'a_position'
+		);
+		gl.disableVertexAttribArray(positionAttributeLocation);
+
+		// set the resolution
+		const resolutionUniformLocation = gl.getUniformLocation(
+			program,
+			'u_resolution'
+		);
+		gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
+
+		canvas.addEventListener('mousemove', (e) => {
+			const br = canvas.getBoundingClientRect();
+			const x = e.clientX - br.left;
+			const y = br.height - (e.clientY - br.top);
+			gl.vertexAttrib2f(positionAttributeLocation, x, y);
+			gl.drawArrays(gl.POINTS, 0, 1);
+		});
+
+		function setup(ctx, vert, frag) {
+			const vs = ctx.createShader(ctx.VERTEX_SHADER);
+			ctx.shaderSource(vs, vert);
+			ctx.compileShader(vs);
+
+			const fs = ctx.createShader(ctx.FRAGMENT_SHADER);
+			ctx.shaderSource(fs, frag);
+			ctx.compileShader(fs);
+
+			const program = ctx.createProgram();
+			ctx.attachShader(program, vs);
+			ctx.attachShader(program, fs);
+			ctx.linkProgram(program);
+			console.log(ctx.getProgramInfoLog(program));
+			return program;
+		}
+	</script>
+</html>
