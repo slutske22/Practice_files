@@ -17,9 +17,6 @@ export function getGlContext(
 	return gl;
 }
 
-const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-export const gl = canvas.getContext('webgl') as WebGLRenderingContext;
-
 /**
  * Util function to set up canvas and webgl context
  * @param vertexShaderText

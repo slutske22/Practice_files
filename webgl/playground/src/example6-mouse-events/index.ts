@@ -25,8 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
 
 	canvas.addEventListener('mousemove', (e) => {
-		const x = e.x - canvas.offsetLeft + 1;
-		const y = e.y - canvas.offsetTop + 1;
+		const br = canvas.getBoundingClientRect();
+		const x = e.clientX - br.left;
+		const y = br.height - (e.clientY - br.top);
 		gl.vertexAttrib2f(positionAttributeLocation, x, y);
 		gl.drawArrays(gl.POINTS, 0, 1);
 	});
