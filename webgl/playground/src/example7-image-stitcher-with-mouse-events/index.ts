@@ -232,15 +232,21 @@ main();
 
 const canvas = gl.canvas as HTMLCanvasElement;
 
-const mouseCoordAttributeLocation = gl.getAttribLocation(
-	program,
-	'a_mouseCoord'
-);
-
 canvas.addEventListener('mousemove', (e) => {
+	const mouseCoordUniformLocation = gl.getUniformLocation(
+		program,
+		'u_mouseCoord'
+	);
+
 	const br = canvas.getBoundingClientRect();
 	const x = e.clientX - br.left;
 	const y = br.height - (e.clientY - br.top) - 10;
-	gl.vertexAttrib2f(mouseCoordAttributeLocation, x, y);
+
+	const position = new Float32Array(2);
+
+	position[0] = x;
+	position[1] = y;
+
+	gl.uniform2f(mouseCoordUniformLocation, x, y);
 	gl.drawArrays(gl.POINTS, 0, 1);
 });
