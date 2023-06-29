@@ -1,1 +1,1 @@
-import './examples/movingmap';
+import './examples/entities-floating-papers';
