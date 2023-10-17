@@ -47,25 +47,39 @@ General commments
 //     }
 // }
 
+// fn main() {
+//     let years: [i32; 3] = [1987, 2019, 2023];
+//     // println!("{:?}", years);
+//     // println!("{:?}", years[1]);
+//     // println!("{:?}", years.len());
+
+//     for year in years {
+//         println!("{}", year);
+//     }
+//     println!("\n");
+
+//     for year in years.iter() {
+//         println!("{}", year);
+//     }
+//     println!("\n");
+
+//     let mut index = 0;
+//     while index < years.len() {
+//         println!("{}", years[index]);
+//         index += 1;
+//     }
+// }
+
+fn person_builder(person_info: (&str, u64, &str)) {
+    println!(
+        "I am {}, I am {} years old, and my last initial is {}",
+        person_info.0, person_info.1, person_info.2
+    )
+}
+
 fn main() {
-    let years: [i32; 3] = [1987, 2019, 2023];
-    // println!("{:?}", years);
-    // println!("{:?}", years[1]);
-    // println!("{:?}", years.len());
-
-    for year in years {
-        println!("{}", year);
-    }
-    println!("\n");
-
-    for year in years.iter() {
-        println!("{}", year);
-    }
-    println!("\n");
-
-    let mut index = 0;
-    while index < years.len() {
-        println!("{}", years[index]);
-        index += 1;
-    }
+    let person_info1 = ("Seth", 36, "L");
+    let person_info2 = ("Theo", 0, "L");
+    person_builder(person_info1);
+    person_builder(person_info2);
 }
