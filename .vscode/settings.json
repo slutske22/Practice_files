@@ -11,5 +11,6 @@
 		"queue": "cpp",
 		"stack": "cpp"
 	},
-	"C_Cpp.clang_format_fallbackStyle": "LLVM"
+	"C_Cpp.clang_format_fallbackStyle": "LLVM",
+	"rust-analyzer.linkedProjects": ["./rust/camping-app/Cargo.toml"]
 }
