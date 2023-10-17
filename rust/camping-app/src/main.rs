@@ -39,18 +39,33 @@ General commments
 //     println!("After eating, baby was {}", total_weight);
 // }
 
-fn calculate_weight(bottles: u64, feedings: u64) -> Result<u64, String> {
-    if bottles == 0 || feedings == 0 {
-        Err("Need to use bottle number".to_string())
-    } else {
-        Ok(bottles * feedings)
-    }
-}
+// fn calculate_weight(bottles: u64, feedings: u64) -> Result<u64, String> {
+//     if bottles == 0 || feedings == 0 {
+//         Err("Need to use bottle number".to_string())
+//     } else {
+//         Ok(bottles * feedings)
+//     }
+// }
 
 fn main() {
-    let result = calculate_weight(0, 9);
-    match result {
-        Ok(weight) => println!("Weight: {}", weight),
-        Err(weight) => println!("Weight: {}", weight),
+    let years: [i32; 3] = [1987, 2019, 2023];
+    // println!("{:?}", years);
+    // println!("{:?}", years[1]);
+    // println!("{:?}", years.len());
+
+    for year in years {
+        println!("{}", year);
+    }
+    println!("\n");
+
+    for year in years.iter() {
+        println!("{}", year);
+    }
+    println!("\n");
+
+    let mut index = 0;
+    while index < years.len() {
+        println!("{}", years[index]);
+        index += 1;
     }
 }
