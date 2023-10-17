@@ -70,16 +70,25 @@ General commments
 //     }
 // }
 
-fn person_builder(person_info: (&str, u64, &str)) {
-    println!(
-        "I am {}, I am {} years old, and my last initial is {}",
-        person_info.0, person_info.1, person_info.2
-    )
-}
+// fn person_builder(person_info: (&str, u64, &str)) {
+//     println!(
+//         "I am {}, I am {} years old, and my last initial is {}",
+//         person_info.0, person_info.1, person_info.2
+//     )
+// }
+
+// fn main() {
+//     let person_info1 = ("Seth", 36, "L");
+//     let person_info2 = ("Theo", 0, "L");
+//     person_builder(person_info1);
+//     person_builder(person_info2);
+// }
 
 fn main() {
-    let person_info1 = ("Seth", 36, "L");
-    let person_info2 = ("Theo", 0, "L");
-    person_builder(person_info1);
-    person_builder(person_info2);
+    let mut packing_list = Vec::new();
+    packing_list.push("sunglasses");
+    packing_list.push("sunscreen");
+    packing_list.push("towels");
+
+    println!("packing list: {:?}", packing_list)
 }
