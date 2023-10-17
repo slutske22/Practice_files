@@ -84,11 +84,26 @@ General commments
 //     person_builder(person_info2);
 // }
 
-fn main() {
-    let mut packing_list = Vec::new();
-    packing_list.push("sunglasses");
-    packing_list.push("sunscreen");
-    packing_list.push("towels");
+// fn main() {
+//     let mut packing_list = Vec::new();
+//     packing_list.push("sunglasses");
+//     packing_list.push("sunscreen");
+//     packing_list.push("towels");
 
-    println!("packing list: {:?}", packing_list)
-}
+//     println!("packing list: {:?}", packing_list)
+// }
+
+// #[derive(Debug)]
+
+// enum Steepness {
+//     Easy,
+//     Moderate,
+//     Difficult,
+// }
+
+// fn main() {
+//     let trail1 = Steepness::Easy;
+//     let trail2 = Steepness::Moderate;
+//     let trail3 = Steepness::Difficult;
+//     println!("Steepness is {:?}", trail1);
+// }
