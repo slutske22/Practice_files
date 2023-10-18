@@ -107,3 +107,17 @@ General commments
 //     let trail3 = Steepness::Difficult;
 //     println!("Steepness is {:?}", trail1);
 // }
+
+struct Hiker {
+    name: String,
+    miles_hiked: u64,
+}
+
+fn main() {
+    let me = Hiker {
+        name: String::from("Seth"),
+        miles_hiked: 33,
+    };
+
+    println!("{:?}", me.name);
+}
