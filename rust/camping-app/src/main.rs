@@ -122,17 +122,13 @@ General commments
 //     println!("{:?}", me.name);
 // }
 //
-use std::fs::OpenOptions;
-use std::io::Write;
-
 fn main() {
-    let mut file = OpenOptions::new()
-        .append(true)
-        .open("example.txt")
-        .expect("Something went wrong");
+    let destination = "Koolau Range";
 
-    let text = "Adding info";
-
-    file.write_all(text.as_bytes())
-        .expect("Something went wrong");
+    match destination {
+        "Koolau Range" => println!("We'ere going to koolau range"),
+        "Nanakuli" => println!("We'ere going to Nanakuli yeah brh"),
+        "Kapolei" => println!("We'ere going home"),
+        _ => println!("Where we going"),
+    }
 }
