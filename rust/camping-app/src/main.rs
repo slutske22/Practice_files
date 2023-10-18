@@ -108,16 +108,24 @@ General commments
 //     println!("Steepness is {:?}", trail1);
 // }
 
-struct Hiker {
-    name: String,
-    miles_hiked: u64,
-}
+// struct Hiker {
+//     name: String,
+//     miles_hiked: u64,
+// }
+
+// fn main() {
+//     let me = Hiker {
+//         name: String::from("Seth"),
+//         miles_hiked: 33,
+//     };
+
+//     println!("{:?}", me.name);
+// }
+//
+use std::fs;
 
 fn main() {
-    let me = Hiker {
-        name: String::from("Seth"),
-        miles_hiked: 33,
-    };
-
-    println!("{:?}", me.name);
+    let text =
+        fs::read_to_string("example.txt").expect("\n\nSomething went wrong reading the file\n\n");
+    println!("Contents of the file:\n{}", text);
 }
