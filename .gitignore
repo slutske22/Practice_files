@@ -8,5 +8,7 @@
 
 /React-Trasition-Group-Practice/node_modules
 
+target/
+
 node_modules
 .DS_Store

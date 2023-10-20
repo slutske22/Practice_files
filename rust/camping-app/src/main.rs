@@ -119,16 +119,14 @@ General commments
 //         miles_hiked: 33,
 //     };
 
-//     println!("{:?}", me.name);
-// }
-//
-fn main() {
-    let destination = "Koolau Range";
+//     let Hiker { name, miles_hiked } = me;
 
-    match destination {
-        "Koolau Range" => println!("We'ere going to koolau range"),
-        "Nanakuli" => println!("We'ere going to Nanakuli yeah brh"),
-        "Kapolei" => println!("We'ere going home"),
-        _ => println!("Where we going"),
-    }
+//     println!("{:?} {:?}", name, miles_hiked);
+//     println!("{{{{}}}}");
+// }
+extern crate image;
+
+fn main() {
+    let rgb = image::open("./tile.png").unwrap().to_rgba8();
+    println!("{:?}", rgb)
 }
