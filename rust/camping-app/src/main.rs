@@ -124,9 +124,21 @@ General commments
 //     println!("{:?} {:?}", name, miles_hiked);
 //     println!("{{{{}}}}");
 // }
-extern crate image;
+// extern crate image;
+
+// fn main() {
+//     let rgb = image::open("./tile.png").unwrap().to_rgba8();
+//     println!("{:?}", rgb)
+// }
 
 fn main() {
-    let rgb = image::open("./tile.png").unwrap().to_rgba8();
-    println!("{:?}", rgb)
+    let mut message = String::from("This is a test string");
+    println!("message is {}", message);
+
+    let last_word = &message[15..];
+    println!("last_word is {}", last_word);
+
+    // Will error because `last_word` has a borrowed reference to `message`
+    message = String::from("This is a test horse");
+    println!("last_word is {}", last_word);
 }
