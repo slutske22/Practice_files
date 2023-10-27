@@ -146,7 +146,22 @@ General commments
 fn main() {
     let example = "  some example text with spaces   ";
     let result = trim_spaces(example);
-    println!("'{}'", result);
+    let second = second_word(example);
+
+    println!(
+        "
+
+        Original input:
+        '{example}'
+
+        Trimmed input:
+        '{result}'
+
+        Second Word:
+        '{second}'
+        
+        ",
+    );
 }
 
 fn trim_spaces(input: &str) -> &str {
@@ -154,7 +169,7 @@ fn trim_spaces(input: &str) -> &str {
     let mut end = 0;
 
     for (index, character) in input.chars().enumerate() {
-        println!("chat at {} is '{}'", index, character);
+        // println!("chat at {} is '{}'", index, character);
         if character != ' ' {
             start = index;
             break;
@@ -162,7 +177,7 @@ fn trim_spaces(input: &str) -> &str {
     }
 
     for (index, character) in input.chars().rev().enumerate() {
-        println!("chat at {} is '{}'", index, character);
+        // println!("chat at {} is '{}'", index, character);
         if character != ' ' {
             end = index;
             break;
@@ -170,4 +185,28 @@ fn trim_spaces(input: &str) -> &str {
     }
 
     return &input[start..input.len() - end];
+}
+
+fn second_word(input: &str) -> &str {
+    let mut start = 0;
+
+    for (index, character) in input.chars().enumerate() {
+        if character != ' ' {
+            start = index;
+            break;
+        }
+    }
+
+    let trimmed = &input[start..input.len()];
+
+    let mut first_space_index = 0;
+
+    for (index, character) in trimmed.chars().enumerate() {
+        if character == ' ' {
+            first_space_index = index;
+            break;
+        }
+    }
+
+    return &trimmed[0..first_space_index];
 }
