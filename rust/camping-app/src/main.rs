@@ -131,14 +131,43 @@ General commments
 //     println!("{:?}", rgb)
 // }
 
+// fn main() {
+//     let mut message = String::from("This is a test string");
+//     println!("message is {}", message);
+
+//     let last_word = &message[15..];
+//     println!("last_word is {}", last_word);
+
+//     // Will error because `last_word` has a borrowed reference to `message`
+//     message = String::from("This is a test horse");
+//     println!("last_word is {}", last_word);
+// }
+
 fn main() {
-    let mut message = String::from("This is a test string");
-    println!("message is {}", message);
+    let example = "  some example text with spaces   ";
+    let result = trim_spaces(example);
+    println!("'{}'", result);
+}
 
-    let last_word = &message[15..];
-    println!("last_word is {}", last_word);
+fn trim_spaces(input: &str) -> &str {
+    let mut start = 0;
+    let mut end = 0;
 
-    // Will error because `last_word` has a borrowed reference to `message`
-    message = String::from("This is a test horse");
-    println!("last_word is {}", last_word);
+    for (index, character) in input.chars().enumerate() {
+        println!("chat at {} is '{}'", index, character);
+        if character != ' ' {
+            start = index;
+            break;
+        }
+    }
+
+    for (index, character) in input.chars().rev().enumerate() {
+        println!("chat at {} is '{}'", index, character);
+        if character != ' ' {
+            end = index;
+            break;
+        }
+    }
+
+    return &input[start..input.len() - end];
 }
