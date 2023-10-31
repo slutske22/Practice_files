@@ -143,70 +143,107 @@ General commments
 //     println!("last_word is {}", last_word);
 // }
 
+// fn main() {
+//     let example = "  some example text with spaces   ";
+//     let result = trim_spaces(example);
+//     let second = second_word(example);
+
+//     println!(
+//         "
+
+//         Original input:
+//         '{example}'
+
+//         Trimmed input:
+//         '{result}'
+
+//         Second Word:
+//         '{second}'
+
+//         ",
+//     );
+// }
+
+// fn trim_spaces(input: &str) -> &str {
+//     let mut start = 0;
+//     let mut end = 0;
+
+//     for (index, character) in input.chars().enumerate() {
+//         // println!("chat at {} is '{}'", index, character);
+//         if character != ' ' {
+//             start = index;
+//             break;
+//         }
+//     }
+
+//     for (index, character) in input.chars().rev().enumerate() {
+//         // println!("chat at {} is '{}'", index, character);
+//         if character != ' ' {
+//             end = index;
+//             break;
+//         }
+//     }
+
+//     return &input[start..input.len() - end];
+// }
+
+// fn second_word(input: &str) -> &str {
+//     let mut start = 0;
+
+//     for (index, character) in input.chars().enumerate() {
+//         if character != ' ' {
+//             start = index;
+//             break;
+//         }
+//     }
+
+//     let trimmed = &input[start..input.len()];
+
+//     let mut first_space_index = 0;
+
+//     for (index, character) in trimmed.chars().enumerate() {
+//         if character == ' ' {
+//             first_space_index = index;
+//             break;
+//         }
+//     }
+
+//     return &trimmed[0..first_space_index];
+// }
+
+#[derive(Debug)]
+
+/// Shape that describes a rectangle
+struct Rectangle {
+    /// The height of the rectangle
+    height: f32,
+    /// The width of th rectangle
+    width: f32,
+}
+
+impl Rectangle {
+    fn get_area(&self) -> f32 {
+        return self.height * self.width;
+    }
+
+    fn scale(&mut self, factor: f32) {
+        self.height = self.height * factor;
+        self.width = self.width * factor;
+    }
+
+    fn new(height: f32, width: f32) -> Rectangle {
+        return Rectangle { height, width };
+    }
+}
+
 fn main() {
-    let example = "  some example text with spaces   ";
-    let result = trim_spaces(example);
-    let second = second_word(example);
+    let mut example = Rectangle::new(5 as f32, 12.4);
 
-    println!(
-        "
+    println!("example is {:?}", example);
+    println!("The area of example is {}", example.get_area());
 
-        Original input:
-        '{example}'
+    example.scale(0.1);
 
-        Trimmed input:
-        '{result}'
-
-        Second Word:
-        '{second}'
-        
-        ",
-    );
-}
-
-fn trim_spaces(input: &str) -> &str {
-    let mut start = 0;
-    let mut end = 0;
-
-    for (index, character) in input.chars().enumerate() {
-        // println!("chat at {} is '{}'", index, character);
-        if character != ' ' {
-            start = index;
-            break;
-        }
-    }
-
-    for (index, character) in input.chars().rev().enumerate() {
-        // println!("chat at {} is '{}'", index, character);
-        if character != ' ' {
-            end = index;
-            break;
-        }
-    }
-
-    return &input[start..input.len() - end];
-}
-
-fn second_word(input: &str) -> &str {
-    let mut start = 0;
-
-    for (index, character) in input.chars().enumerate() {
-        if character != ' ' {
-            start = index;
-            break;
-        }
-    }
-
-    let trimmed = &input[start..input.len()];
-
-    let mut first_space_index = 0;
-
-    for (index, character) in trimmed.chars().enumerate() {
-        if character == ' ' {
-            first_space_index = index;
-            break;
-        }
-    }
-
-    return &trimmed[0..first_space_index];
+    println!("example is {:?}", example);
+    println!("The area of example is {}", example.get_area());
 }
