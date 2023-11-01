@@ -211,39 +211,70 @@ General commments
 //     return &trimmed[0..first_space_index];
 // }
 
-#[derive(Debug)]
+// #[derive(Debug)]
 
-/// Shape that describes a rectangle
-struct Rectangle {
-    /// The height of the rectangle
-    height: f32,
-    /// The width of th rectangle
-    width: f32,
-}
+// /// Shape that describes a rectangle
+// struct Rectangle {
+//     /// The height of the rectangle
+//     height: f32,
+//     /// The width of th rectangle
+//     width: f32,
+// }
 
-impl Rectangle {
-    fn get_area(&self) -> f32 {
-        return self.height * self.width;
-    }
+// impl Rectangle {
+//     fn get_area(&self) -> f32 {
+//         return self.height * self.width;
+//     }
 
-    fn scale(&mut self, factor: f32) {
-        self.height = self.height * factor;
-        self.width = self.width * factor;
-    }
+//     fn scale(&mut self, factor: f32) {
+//         self.height = self.height * factor;
+//         self.width = self.width * factor;
+//     }
 
-    fn new(height: f32, width: f32) -> Rectangle {
-        return Rectangle { height, width };
+//     fn new(height: f32, width: f32) -> Rectangle {
+//         return Rectangle { height, width };
+//     }
+// }
+
+// fn main() {
+//     let mut example = Rectangle::new(5 as f32, 12.4);
+
+//     println!("example is {:?}", example);
+//     println!("The area of example is {}", example.get_area());
+
+//     example.scale(0.1);
+
+//     println!("example is {:?}", example);
+//     println!("The area of example is {}", example.get_area());
+// }
+
+fn get_biggest<T: PartialOrd>(a: T, b: T) -> T {
+    if a > b {
+        return a;
+    } else {
+        return b;
     }
 }
 
 fn main() {
-    let mut example = Rectangle::new(5 as f32, 12.4);
+    let biggest = get_biggest(4, 5);
+    println!("Biggest is {}", biggest);
 
-    println!("example is {:?}", example);
-    println!("The area of example is {}", example.get_area());
+    let biggest2 = get_biggest("what", "can we do");
+    println!("biggest2 is {}", biggest2);
 
-    example.scale(0.1);
+    struct BadIdea {
+        thing: String,
+    }
 
-    println!("example is {:?}", example);
-    println!("The area of example is {}", example.get_area());
+    // will error because BadIdea struct does not satisy PartialOrd
+    let biggest3 = get_biggest(
+        BadIdea {
+            thing: String::from("what"),
+        },
+        BadIdea {
+            thing: String::from("can we do"),
+        },
+    );
+    println!("biggest2 is {}", biggest2);
 }
