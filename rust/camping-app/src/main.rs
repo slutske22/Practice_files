@@ -383,13 +383,43 @@ General commments
 
 // type coerving to `T: std::fmt::Display` means that T can only be something that
 // implements the trait fmt::Display
-fn print_type<T: std::fmt::Display>(item: T) {
-    println!("{} is of type: {}", item, std::any::type_name::<T>());
+// fn print_type<T: std::fmt::Display>(item: T) {
+//     println!("{} is of type: {}", item, std::any::type_name::<T>());
+// }
+
+// fn main() {
+//     print_type(12);
+//     print_type(23.3);
+//     print_type("something");
+//     print_type([12]); // won't work because arrays dont implement fmt::Display
+// }
+use std::fmt;
+
+fn compare_and_print<T: fmt::Display + PartialEq + From<U>, U: fmt::Display + PartialEq + Copy>(
+    a: T,
+    b: U,
+) {
+    if a == T::from(b) {
+        println!("{} is equal to {}", a, b)
+    } else {
+        println!("{} is NOT equal to{}", a, b)
+    }
+}
+
+// Secondary syntax for having multple trait bounds on each param
+fn compare_and_print2<T, U>(a: T, b: U)
+where
+    T: fmt::Display + PartialEq + From<U>,
+    U: fmt::Display + PartialEq + Copy,
+{
+    if a == T::from(b) {
+        println!("{} is equal to {}", a, b)
+    } else {
+        println!("{} is NOT equal to{}", a, b)
+    }
 }
 
 fn main() {
-    print_type(12);
-    print_type(23.3);
-    print_type("something");
-    print_type([12]); // won't work because arrays dont implement fmt::Display
+    compare_and_print(1.0, 1);
+    compare_and_print(1.1, 1);
 }
