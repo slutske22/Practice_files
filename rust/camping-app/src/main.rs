@@ -423,16 +423,55 @@ General commments
 //     compare_and_print(1.0, 1);
 //     compare_and_print(1.1, 1);
 // }
-use std::{env, fs};
+// use std::{env, fs};
+
+// fn main() {
+//     for (i, arg) in env::args().enumerate() {
+//         println!("{}", arg)
+//     }
+
+//     let paths = fs::read_dir("./").unwrap();
+
+//     for path in paths {
+//         println!("Name: {}", path.unwrap().path().display())
+//     }
+// }
+use clap::Parser;
+
+/// Defines command line args
+///
+/// example: `cargo run -- --source ./src`
+///
+/// example: `cargo run -- -s ./src`
+///
+/// example: `cargo run -- -s ./src --dest ./some/dest/dir`
+///
+/// example: `cargo run -- -s ./src -d ./some/dest/dir`
+#[derive(Parser, Debug)]
+struct Args {
+    /// Input directory to process files in
+    #[arg(short, long)]
+    source: String,
+
+    /// Out directory to save results to
+    #[arg(short, long)]
+    dest: Option<String>,
+}
 
 fn main() {
-    for (i, arg) in env::args().enumerate() {
-        println!("{}", arg)
-    }
+    let args = Args::parse();
 
-    let paths = fs::read_dir("./").unwrap();
+    println!("Processing files from {}", args.source);
+
+    let paths = std::fs::read_dir(args.source).unwrap();
 
     for path in paths {
-        println!("Name: {}", path.unwrap().path().display())
+        let filename = path.unwrap().path();
+        let extension = filename.extension();
+
+        if extension.unwrap_or_default() == "rs" {
+            println!("Name: {}", filename.display());
+            println!("Extension: {:?}\n", extension.unwrap());
+        }
     }
 }
