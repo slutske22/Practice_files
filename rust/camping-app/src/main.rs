@@ -248,33 +248,75 @@ General commments
 //     println!("The area of example is {}", example.get_area());
 // }
 
-fn get_biggest<T: PartialOrd>(a: T, b: T) -> T {
-    if a > b {
-        return a;
-    } else {
-        return b;
-    }
+// fn get_biggest<T: PartialOrd>(a: T, b: T) -> T {
+//     if a > b {
+//         return a;
+//     } else {
+//         return b;
+//     }
+// }
+
+// fn main() {
+//     let biggest = get_biggest(4, 5);
+//     println!("Biggest is {}", biggest);
+
+//     let biggest2 = get_biggest("what", "can we do");
+//     println!("biggest2 is {}", biggest2);
+
+//     struct BadIdea {
+//         thing: String,
+//     }
+
+//     // will error because BadIdea struct does not satisy PartialOrd
+//     let biggest3 = get_biggest(
+//         BadIdea {
+//             thing: String::from("what"),
+//         },
+//         BadIdea {
+//             thing: String::from("can we do"),
+//         },
+//     );
+//     println!("biggest2 is {}", biggest2);
+// }
+
+struct Shuttle {
+    name: String,
+    crew_size: u8,
+    peopellant: f64,
 }
 
 fn main() {
-    let biggest = get_biggest(4, 5);
-    println!("Biggest is {}", biggest);
+    let vehicle = Shuttle {
+        name: String::from("Atlantis"),
+        crew_size: 9,
+        peopellant: 8983.34,
+    };
 
-    let biggest2 = get_biggest("what", "can we do");
-    println!("biggest2 is {}", biggest2);
-
-    struct BadIdea {
-        thing: String,
-    }
-
-    // will error because BadIdea struct does not satisy PartialOrd
-    let biggest3 = get_biggest(
-        BadIdea {
-            thing: String::from("what"),
-        },
-        BadIdea {
-            thing: String::from("can we do"),
-        },
+    println!(
+        "Vehicle size on stack: {} bytes",
+        std::mem::size_of_val(&vehicle)
     );
-    println!("biggest2 is {}", biggest2);
+
+    let boxed_vehicle: Box<Shuttle> = Box::new(vehicle);
+
+    println!(
+        "boxed_vehicle size on stack: {} bytes",
+        std::mem::size_of_val(&boxed_vehicle)
+    );
+
+    println!(
+        "boxed_vehicle size on heap: {} bytes",
+        std::mem::size_of_val(&*boxed_vehicle)
+    );
+
+    let unboxed_vehicle: Shuttle = *boxed_vehicle;
+
+    println!(
+        "unboxed_vehicle size on stack: {} bytes",
+        std::mem::size_of_val(&unboxed_vehicle)
+    );
+}
+
+fn sum_boxes<T: std::ops::Add<Output = T>>(a: Box<T>, b: Box<T>) -> Box<T> {
+    return Box::new(*a + *b);
 }
