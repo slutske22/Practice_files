@@ -279,44 +279,93 @@ General commments
 //     println!("biggest2 is {}", biggest2);
 // }
 
-struct Shuttle {
+// struct Shuttle {
+//     name: String,
+//     crew_size: u8,
+//     peopellant: f64,
+// }
+
+// fn main() {
+//     let vehicle = Shuttle {
+//         name: String::from("Atlantis"),
+//         crew_size: 9,
+//         peopellant: 8983.34,
+//     };
+
+//     println!(
+//         "Vehicle size on stack: {} bytes",
+//         std::mem::size_of_val(&vehicle)
+//     );
+
+//     let boxed_vehicle: Box<Shuttle> = Box::new(vehicle);
+
+//     println!(
+//         "boxed_vehicle size on stack: {} bytes",
+//         std::mem::size_of_val(&boxed_vehicle)
+//     );
+
+//     println!(
+//         "boxed_vehicle size on heap: {} bytes",
+//         std::mem::size_of_val(&*boxed_vehicle)
+//     );
+
+//     let unboxed_vehicle: Shuttle = *boxed_vehicle;
+
+//     println!(
+//         "unboxed_vehicle size on stack: {} bytes",
+//         std::mem::size_of_val(&unboxed_vehicle)
+//     );
+// }
+
+// fn sum_boxes<T: std::ops::Add<Output = T>>(a: Box<T>, b: Box<T>) -> Box<T> {
+//     return Box::new(*a + *b);
+// }
+
+struct Satellite {
+    name: String,
+    velocity: f64,
+}
+
+struct SpaceStation {
     name: String,
     crew_size: u8,
-    peopellant: f64,
+    altitude: u32,
+}
+
+trait Description {
+    fn describe(&self) -> String;
+}
+
+impl Description for Satellite {
+    fn describe(&self) -> String {
+        return format!(
+            "the {} is flying at {} miles pers second",
+            self.name, self.velocity
+        );
+    }
+}
+
+impl Description for SpaceStation {
+    fn describe(&self) -> String {
+        return format!(
+            "the {} is at {} and has {} crew memebers",
+            self.name, self.altitude, self.crew_size
+        );
+    }
 }
 
 fn main() {
-    let vehicle = Shuttle {
-        name: String::from("Atlantis"),
-        crew_size: 9,
-        peopellant: 8983.34,
+    let hubble = Satellite {
+        name: String::from("Hubble Telescope"),
+        velocity: 620.0,
     };
 
-    println!(
-        "Vehicle size on stack: {} bytes",
-        std::mem::size_of_val(&vehicle)
-    );
+    let iss = SpaceStation {
+        name: String::from("International Space Station"),
+        crew_size: 85,
+        altitude: 10_000,
+    };
 
-    let boxed_vehicle: Box<Shuttle> = Box::new(vehicle);
-
-    println!(
-        "boxed_vehicle size on stack: {} bytes",
-        std::mem::size_of_val(&boxed_vehicle)
-    );
-
-    println!(
-        "boxed_vehicle size on heap: {} bytes",
-        std::mem::size_of_val(&*boxed_vehicle)
-    );
-
-    let unboxed_vehicle: Shuttle = *boxed_vehicle;
-
-    println!(
-        "unboxed_vehicle size on stack: {} bytes",
-        std::mem::size_of_val(&unboxed_vehicle)
-    );
-}
-
-fn sum_boxes<T: std::ops::Add<Output = T>>(a: Box<T>, b: Box<T>) -> Box<T> {
-    return Box::new(*a + *b);
+    println!("hubble is {}", hubble.describe());
+    println!("iss is {}", iss.describe());
 }
