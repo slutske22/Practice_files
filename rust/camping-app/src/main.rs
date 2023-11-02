@@ -393,33 +393,46 @@ General commments
 //     print_type("something");
 //     print_type([12]); // won't work because arrays dont implement fmt::Display
 // }
-use std::fmt;
+// use std::fmt;
 
-fn compare_and_print<T: fmt::Display + PartialEq + From<U>, U: fmt::Display + PartialEq + Copy>(
-    a: T,
-    b: U,
-) {
-    if a == T::from(b) {
-        println!("{} is equal to {}", a, b)
-    } else {
-        println!("{} is NOT equal to{}", a, b)
-    }
-}
+// fn compare_and_print<T: fmt::Display + PartialEq + From<U>, U: fmt::Display + PartialEq + Copy>(
+//     a: T,
+//     b: U,
+// ) {
+//     if a == T::from(b) {
+//         println!("{} is equal to {}", a, b)
+//     } else {
+//         println!("{} is NOT equal to{}", a, b)
+//     }
+// }
 
-// Secondary syntax for having multple trait bounds on each param
-fn compare_and_print2<T, U>(a: T, b: U)
-where
-    T: fmt::Display + PartialEq + From<U>,
-    U: fmt::Display + PartialEq + Copy,
-{
-    if a == T::from(b) {
-        println!("{} is equal to {}", a, b)
-    } else {
-        println!("{} is NOT equal to{}", a, b)
-    }
-}
+// // Secondary syntax for having multple trait bounds on each param
+// fn compare_and_print2<T, U>(a: T, b: U)
+// where
+//     T: fmt::Display + PartialEq + From<U>,
+//     U: fmt::Display + PartialEq + Copy,
+// {
+//     if a == T::from(b) {
+//         println!("{} is equal to {}", a, b)
+//     } else {
+//         println!("{} is NOT equal to{}", a, b)
+//     }
+// }
+
+// fn main() {
+//     compare_and_print(1.0, 1);
+//     compare_and_print(1.1, 1);
+// }
+use std::{env, fs};
 
 fn main() {
-    compare_and_print(1.0, 1);
-    compare_and_print(1.1, 1);
+    for (i, arg) in env::args().enumerate() {
+        println!("{}", arg)
+    }
+
+    let paths = fs::read_dir("./").unwrap();
+
+    for path in paths {
+        println!("Name: {}", path.unwrap().path().display())
+    }
 }
