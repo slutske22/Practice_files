@@ -321,6 +321,8 @@ General commments
 //     return Box::new(*a + *b);
 // }
 
+// partial eq considers 2 structs equal if all fields are equal
+#[derive(PartialEq, PartialOrd)]
 struct Satellite {
     name: String,
     velocity: f64,
@@ -361,6 +363,10 @@ fn main() {
         name: String::from("Hubble Telescope"),
         velocity: 620.0,
     };
+    let gps = Satellite {
+        name: String::from("GPS"),
+        velocity: 6220.0,
+    };
 
     let iss = SpaceStation {
         name: String::from("International Space Station"),
@@ -368,6 +374,9 @@ fn main() {
         altitude: 10_000,
     };
 
-    println!("hubble is {}", hubble.describe());
-    println!("iss is {}", iss.describe());
+    // println!("hubble is {}", hubble.describe());
+    // println!("iss is {}", iss.describe());
+
+    println!("hubble == gps: {}", hubble == gps);
+    println!("hubble > gps: {}", hubble > gps);
 }
