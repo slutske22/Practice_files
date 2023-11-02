@@ -321,62 +321,75 @@ General commments
 //     return Box::new(*a + *b);
 // }
 
-// partial eq considers 2 structs equal if all fields are equal
-#[derive(PartialEq, PartialOrd)]
-struct Satellite {
-    name: String,
-    velocity: f64,
-}
+// // partial eq considers 2 structs equal if all fields are equal
+// #[derive(PartialEq, PartialOrd)]
+// struct Satellite {
+//     name: String,
+//     velocity: f64,
+// }
 
-struct SpaceStation {
-    name: String,
-    crew_size: u8,
-    altitude: u32,
-}
+// struct SpaceStation {
+//     name: String,
+//     crew_size: u8,
+//     altitude: u32,
+// }
 
-trait Description {
-    fn describe(&self) -> String {
-        String::from("This is an object flying through space")
-    }
-}
+// trait Description {
+//     fn describe(&self) -> String {
+//         String::from("This is an object flying through space")
+//     }
+// }
 
-impl Description for Satellite {
-    // fn describe(&self) -> String {
-    //     return format!(
-    //         "the {} is flying at {} miles pers second",
-    //         self.name, self.velocity
-    //     );
-    // }
-}
+// impl Description for Satellite {
+//     // fn describe(&self) -> String {
+//     //     return format!(
+//     //         "the {} is flying at {} miles pers second",
+//     //         self.name, self.velocity
+//     //     );
+//     // }
+// }
 
-impl Description for SpaceStation {
-    fn describe(&self) -> String {
-        return format!(
-            "the {} is at {} and has {} crew memebers",
-            self.name, self.altitude, self.crew_size
-        );
-    }
+// impl Description for SpaceStation {
+//     fn describe(&self) -> String {
+//         return format!(
+//             "the {} is at {} and has {} crew memebers",
+//             self.name, self.altitude, self.crew_size
+//         );
+//     }
+// }
+
+// fn main() {
+//     let hubble = Satellite {
+//         name: String::from("Hubble Telescope"),
+//         velocity: 620.0,
+//     };
+//     let gps = Satellite {
+//         name: String::from("GPS"),
+//         velocity: 6220.0,
+//     };
+
+//     let iss = SpaceStation {
+//         name: String::from("International Space Station"),
+//         crew_size: 85,
+//         altitude: 10_000,
+//     };
+
+//     // println!("hubble is {}", hubble.describe());
+//     // println!("iss is {}", iss.describe());
+
+//     println!("hubble == gps: {}", hubble == gps);
+//     println!("hubble > gps: {}", hubble > gps);
+// }
+
+// type coerving to `T: std::fmt::Display` means that T can only be something that
+// implements the trait fmt::Display
+fn print_type<T: std::fmt::Display>(item: T) {
+    println!("{} is of type: {}", item, std::any::type_name::<T>());
 }
 
 fn main() {
-    let hubble = Satellite {
-        name: String::from("Hubble Telescope"),
-        velocity: 620.0,
-    };
-    let gps = Satellite {
-        name: String::from("GPS"),
-        velocity: 6220.0,
-    };
-
-    let iss = SpaceStation {
-        name: String::from("International Space Station"),
-        crew_size: 85,
-        altitude: 10_000,
-    };
-
-    // println!("hubble is {}", hubble.describe());
-    // println!("iss is {}", iss.describe());
-
-    println!("hubble == gps: {}", hubble == gps);
-    println!("hubble > gps: {}", hubble > gps);
+    print_type(12);
+    print_type(23.3);
+    print_type("something");
+    print_type([12]); // won't work because arrays dont implement fmt::Display
 }
