@@ -463,7 +463,11 @@ fn main() {
 
     println!("Processing files from {}", args.source);
 
-    let paths = std::fs::read_dir(args.source).unwrap();
+    let mut paths = std::fs::read_dir(args.source).unwrap();
+
+    let files = &paths.any(|p| p.unwrap().path().extension().is_some());
+
+    println!("there are files here (not just dirs): {}", files);
 
     for path in paths {
         let filename = path.unwrap().path();
@@ -472,10 +476,10 @@ fn main() {
         if extension.is_some() {
             println!("Name: {}", filename.display());
             println!("Extension: {:?}\n", extension.unwrap());
-            println!("File contents: ------------------------------ \n");
+            // println!("File contents: ------------------------------ \n");
 
-            let contents = std::fs::read_to_string(filename).unwrap();
-            println!("{}\n\n", contents);
+            // let contents = std::fs::read_to_string(filename).unwrap();
+            // println!("{}\n\n", contents);
         }
     }
 }
