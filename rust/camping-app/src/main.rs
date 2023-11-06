@@ -476,10 +476,10 @@ fn main() {
         if extension.is_some() {
             println!("Name: {}", filename.display());
             println!("Extension: {:?}\n", extension.unwrap());
-            // println!("File contents: ------------------------------ \n");
+            println!("File contents: ------------------------------ \n");
 
-            // let contents = std::fs::read_to_string(filename).unwrap();
-            // println!("{}\n\n", contents);
+            let contents = std::fs::read_to_string(filename).unwrap();
+            println!("{}\n\n", contents);
         }
     }
 }
