@@ -11,6 +11,7 @@ import Foundation
 /// Data that holds the observable landmarks array
 class ModelData {
     var landmarks: [Landmark] = load("landmarkData.json")
+    var hikes: [Hike] = load("hikeData.json")
 }
 
 func load<T: Decodable>(_ filename: String) -> T {
